@@ -1,17 +1,33 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
 import "./scss/style.scss";
 import $ from "jquery";
 import Foundation from "foundation-sites";
 
-$(document).ready(function(){
-	$(document).foundation();
-});
 
 
-var mountNode = document.getElementById("app");
 
-class Intro extends React.Component {
+/***
+
+FORM STEPS
+
+***/
+
+
+class StepOne extends React.Component {
+    constructor () {
+        super()
+        this.state = { 
+          name: ''
+        }
+        this.handleNameChanged = this.handleNameChanged.bind(this);
+    }
+
+    handleNameChanged (event) {
+        this.setState({name: event.target.value})
+    }
+
 	render() {
 		return (
 			<form data-abide noValidate>
@@ -20,7 +36,13 @@ class Intro extends React.Component {
             	<div className="grid-container">
 	            	<div className="grid-x grid-margin-x align-center margin-bottom-3">
                         <div className="cell medium-4">
-                            <InputTextValid placeHolder="Enter your name" pattern="alpha" error="Please enter your name." />
+                            <InputTextValid 
+                                placeHolder="Enter your name" 
+                                pattern="alpha" 
+                                error="Please enter your name."
+                                value={this.state.name} 
+                                onChange={this.handleNameChanged}
+                            />
                         </div>
                     </div>
                     <div className="grid-x grid-margin-x align-center">
@@ -34,20 +56,9 @@ class Intro extends React.Component {
 	}
 }
 
-class InputTextValid extends React.Component {
-	render(){
-		return(
-			<label>
-                <input type="text" placeholder={this.props.placeHolder} val={this.props.name} required pattern={this.props.pattern} />
-                <span className="form-error text-center">{this.props.error}</span>
-            </label>
-        )
-	}
-}
 
 
-
-class Step1 extends React.Component {
+class StepTwo extends React.Component {
 	render() {
 		return (
 			<div className="step-1">
@@ -64,4 +75,52 @@ class Step1 extends React.Component {
 	}
 }
 
-ReactDOM.render(<Intro name="Jane" />, mountNode);
+
+
+/***
+
+FOUNDATION FORM ELEMENT HELPERS
+
+***/
+
+
+class InputTextValid extends React.Component {
+	render(){
+		return(
+			<label>
+                <input 
+                	type="text" 
+                	placeholder={this.props.placeHolder} 
+                	val={this.props.name} 
+                	required 
+                	pattern={this.props.pattern} 
+                	value={this.props.value}
+                	onChange={this.props.onChange}
+                	/>
+                <span className="form-error text-center">{this.props.error}</span>
+            </label>
+        )
+	}
+}
+
+
+
+class StepButtons extends React.Component {
+	constructor () {
+        super()
+        this.state = { 
+          step: 1
+        }
+    }
+}
+
+
+/** RENDER CODE **/
+
+var mountNode = document.getElementById("app");
+
+ReactDOM.render(<StepOne name="Jane" />, mountNode);
+
+$(document).ready(function(){
+	$(document).foundation();
+});

@@ -45504,31 +45504,45 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-(0, _jquery.default)(document).ready(function () {
-  (0, _jquery.default)(document).foundation();
-});
-var mountNode = document.getElementById("app");
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-var Intro =
+/***
+
+FORM STEPS
+
+***/
+var StepOne =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(Intro, _React$Component);
+  _inherits(StepOne, _React$Component);
 
-  function Intro() {
-    _classCallCheck(this, Intro);
+  function StepOne() {
+    var _this;
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Intro).apply(this, arguments));
+    _classCallCheck(this, StepOne);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(StepOne).call(this));
+    _this.state = {
+      name: ''
+    };
+    _this.handleNameChanged = _this.handleNameChanged.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
   }
 
-  _createClass(Intro, [{
+  _createClass(StepOne, [{
+    key: "handleNameChanged",
+    value: function handleNameChanged(event) {
+      this.setState({
+        name: event.target.value
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react.default.createElement("form", {
@@ -45547,7 +45561,9 @@ function (_React$Component) {
       }, _react.default.createElement(InputTextValid, {
         placeHolder: "Enter your name",
         pattern: "alpha",
-        error: "Please enter your name."
+        error: "Please enter your name.",
+        value: this.state.name,
+        onChange: this.handleNameChanged
       }))), _react.default.createElement("div", {
         className: "grid-x grid-margin-x align-center"
       }, _react.default.createElement("div", {
@@ -45560,50 +45576,21 @@ function (_React$Component) {
     }
   }]);
 
-  return Intro;
+  return StepOne;
 }(_react.default.Component);
 
-var InputTextValid =
+var StepTwo =
 /*#__PURE__*/
 function (_React$Component2) {
-  _inherits(InputTextValid, _React$Component2);
+  _inherits(StepTwo, _React$Component2);
 
-  function InputTextValid() {
-    _classCallCheck(this, InputTextValid);
+  function StepTwo() {
+    _classCallCheck(this, StepTwo);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(InputTextValid).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(StepTwo).apply(this, arguments));
   }
 
-  _createClass(InputTextValid, [{
-    key: "render",
-    value: function render() {
-      return _react.default.createElement("label", null, _react.default.createElement("input", {
-        type: "text",
-        placeholder: this.props.placeHolder,
-        val: this.props.name,
-        required: true,
-        pattern: this.props.pattern
-      }), _react.default.createElement("span", {
-        className: "form-error text-center"
-      }, this.props.error));
-    }
-  }]);
-
-  return InputTextValid;
-}(_react.default.Component);
-
-var Step1 =
-/*#__PURE__*/
-function (_React$Component3) {
-  _inherits(Step1, _React$Component3);
-
-  function Step1() {
-    _classCallCheck(this, Step1);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Step1).apply(this, arguments));
-  }
-
-  _createClass(Step1, [{
+  _createClass(StepTwo, [{
     key: "render",
     value: function render() {
       return _react.default.createElement("div", {
@@ -45631,12 +45618,77 @@ function (_React$Component3) {
     }
   }]);
 
-  return Step1;
+  return StepTwo;
+}(_react.default.Component);
+/***
+
+FOUNDATION FORM ELEMENT HELPERS
+
+***/
+
+
+var InputTextValid =
+/*#__PURE__*/
+function (_React$Component3) {
+  _inherits(InputTextValid, _React$Component3);
+
+  function InputTextValid() {
+    _classCallCheck(this, InputTextValid);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(InputTextValid).apply(this, arguments));
+  }
+
+  _createClass(InputTextValid, [{
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("label", null, _react.default.createElement("input", {
+        type: "text",
+        placeholder: this.props.placeHolder,
+        val: this.props.name,
+        required: true,
+        pattern: this.props.pattern,
+        value: this.props.value,
+        onChange: this.props.onChange
+      }), _react.default.createElement("span", {
+        className: "form-error text-center"
+      }, this.props.error));
+    }
+  }]);
+
+  return InputTextValid;
 }(_react.default.Component);
 
-_reactDom.default.render(_react.default.createElement(Intro, {
+var StepButtons =
+/*#__PURE__*/
+function (_React$Component4) {
+  _inherits(StepButtons, _React$Component4);
+
+  function StepButtons() {
+    var _this2;
+
+    _classCallCheck(this, StepButtons);
+
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(StepButtons).call(this));
+    _this2.state = {
+      step: 1
+    };
+    return _this2;
+  }
+
+  return StepButtons;
+}(_react.default.Component);
+/** RENDER CODE **/
+
+
+var mountNode = document.getElementById("app");
+
+_reactDom.default.render(_react.default.createElement(StepOne, {
   name: "Jane"
 }), mountNode);
+
+(0, _jquery.default)(document).ready(function () {
+  (0, _jquery.default)(document).foundation();
+});
 },{"react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","./scss/style.scss":"scss/style.scss","jquery":"node_modules/jquery/dist/jquery.js","foundation-sites":"node_modules/foundation-sites/dist/js/foundation.esm.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
