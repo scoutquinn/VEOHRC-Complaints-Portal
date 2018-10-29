@@ -2,6 +2,7 @@
 @import "settings";
 @import "./node_modules/foundation-sites/scss/foundation";
 //@include foundation-everything;
+@import "./node_modules/foundation-datepicker/scss/foundation-datepicker";
 
   // Global styles
 
@@ -58,5 +59,14 @@
 
 html{
 	body{
+
+		// form Helpers
+		label{
+			padding-left: 1rem;
+		}
+		label > [type=checkbox], label > [type=radio]{
+			margin-left: -0.9rem;
+			margin-right: 0.1rem;
+		}
 	}
 }

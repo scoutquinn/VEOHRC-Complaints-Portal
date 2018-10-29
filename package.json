@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CodeforAustralia/VEOHRC-Complaints-Portal#readme",
   "dependencies": {
+    "foundation-datepicker": "^1.5.6",
     "foundation-sites": "^6.5.0-rc.4",
     "jquery": "^3.3.1",
     "react": "^16.6.0",
