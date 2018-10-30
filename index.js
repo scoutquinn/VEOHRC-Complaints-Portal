@@ -4,7 +4,10 @@ import ReactDOM from "react-dom";
 import "./scss/style.scss";
 import $ from "jquery";
 import Foundation from "foundation-sites";
-//import {*} from "foundation-datepicker";
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 /***
@@ -13,30 +16,48 @@ MULTI PART FORM
 
 ***/
 
+let steps = ['step1','step2','step3','step4'];
+
 let formData = {
 	step1: {
 		name: {
 			name:'Your Name',
 			value: ''
-		}
+		},
+		completed: false,
+		nextStep: 2,
+		prevStep: false
 	},
 	step2: {
 		radio: {
 			name: 'I am lodging a complaint for',
 			value: ''
-		}
+		},
+		completed: false,
+		nextStep: 3,
+		prevStep: 1
 	},
 	step3: {
 		checkbox: {
 			name: "What happened? i was..",
 			value: ['','','','']
-		}
+		},
+		completed: false,
+		nextStep: 4,
+		prevStep: 2
 	},
 	step4: {
 		radio: {
 			name: 'This happened to me at',
 			value: ''
-		}
+		},
+		otherText: {
+			name: 'Other place',
+			value: ''
+		},
+		completed: false,
+		nextStep: 5,
+		prevStep: 3
 	},
 	progress: 0
 };
@@ -48,15 +69,22 @@ class ComplaintForm extends React.Component {
         this.state = { 
           step: 1
         }
+        this.gotoStep = this.gotoStep.bind(this);
         this.nextStep = this.nextStep.bind(this);
         this.previousStep = this.previousStep.bind(this);
+        this.renderBreadcrumb = this.renderBreadcrumb.bind(this);
+        this.renderProgress = this.renderProgress.bind(this);
+
+
     }
 
     nextStep () {
 	  this.setState({
 	    step : this.state.step + 1
 	  })
-	  ReactDOM.render(<ProgressBar formValues={formData} />, document.getElementById("progress"));
+	  console.log(formData);
+	  //ReactDOM.render(<ProgressBar formValues={formData} />, document.getElementById("progress"));
+
 	}
 
 	// Same as nextStep, but decrementing
@@ -67,23 +95,62 @@ class ComplaintForm extends React.Component {
 	}
 
 	gotoStep (step) {
+		alert();
 		this.setState({
 	    step : step
 	  })
 	}
 
+	renderBreadcrumb(props) {
+		console.log(this.props.breadcrumbHolder);
+		console.log('ok1');
+
+	  return ReactDOM.createPortal(
+	    [
+	      <BreadCrumbs step={this.gotoStep} />,
+	    ],
+	    this.props.breadcrumbHolder
+	  );
+	}
+
+	renderProgress(props) {
+		console.log(this.props.progressHolder);
+		console.log('ok2');
+	  return ReactDOM.createPortal(
+	    [
+	      <ProgressBar formValues={formData} />,
+	    ],
+	    this.props.progressHolder
+	  );
+	}
+
 	render() {
-		switch (this.state.step){
+	    
+	  	switch (this.state.step){
 			case 1:
 				return (
-					<StepOne formValues={formData} nextStep={this.nextStep} previousStep={this.previousStep} />					
+					<StepOne formValues={formData} nextStep={this.nextStep} previousStep={this.previousStep} />	
+					//{this.renderBreadcrumb}
+					//{this.renderProgress}
 					)
 			case 2:
-				return <StepTwo formValues={formData} nextStep={this.nextStep} previousStep={this.previousStep} />
+				return (
+					<StepTwo formValues={formData} nextStep={this.nextStep} previousStep={this.previousStep} />
+					//{this.renderBreadcrumb}
+					//{this.renderProgress}
+					)
 			case 3:
-				return <StepThree formValues={formData} nextStep={this.nextStep} previousStep={this.previousStep} />
+				return (
+					<StepThree formValues={formData} nextStep={this.nextStep} previousStep={this.previousStep} />
+					//{this.renderBreadcrumb}
+					//{this.renderProgress}
+					)
 			case 4:
-				return <StepFour formValues={formData} nextStep={this.nextStep} previousStep={this.previousStep} />
+				return (
+					<StepFour formValues={formData} nextStep={this.nextStep} previousStep={this.previousStep} />
+					//{this.renderBreadcrumb}
+					//{this.renderProgress}
+					)
 		}
 	}
 }
@@ -107,7 +174,7 @@ class StepOne extends React.Component {
         this.saveAndContinue = this.saveAndContinue.bind(this);
     }
 
-    handleNameChanged (event) {
+    handleNameChanged(event) {
         this.setState({name: event.target.value})
         formData.step1.name.value = event.target.value;
     }
@@ -115,6 +182,7 @@ class StepOne extends React.Component {
 	saveAndContinue(event) {
 		event.preventDefault();
 		formData.progress = 10; 
+		formData.step1.completed = true;
 		this.props.nextStep();
 	}
 
@@ -204,6 +272,7 @@ class StepTwo extends React.Component {
 	saveAndContinue(event) {
 		event.preventDefault();
 		formData.progress = 20; 
+		formData.step2.completed = true;
 		this.props.nextStep();
 	}
 }
@@ -211,14 +280,24 @@ class StepTwo extends React.Component {
 class StepThree extends React.Component {
     constructor () {
         super()
-
+        this.state = { 
+          checkVal: '' /*,
+          radioGroup: {
+          	name: "step2",
+          	items: [
+          		{id: "val1", value: "Myself"},
+          		{id: "val2", value: "For someone else"}
+          	]
+          }*/
+        }
         this.saveAndContinue = this.saveAndContinue.bind(this);
         this.handleCheckBoxChanged = this.handleCheckBoxChanged.bind(this);
     }
 
     handleCheckBoxChanged (event) {
-        this.setState({radio: event.target.value})
-        formData.step3.checkbox.value = event.target.value;
+        this.setState({checkVal: event.target.value})
+        console.log(event.target.dataset.key);
+        formData.step3.checkbox.value[event.target.dataset.key] = event.target.value;
     }
 
     render() {
@@ -228,9 +307,9 @@ class StepThree extends React.Component {
 				<p className="margin-left-2 margin-bottom-2" >Q2. I was...</p>
 				<div className="grid-x grid-padding-x margin-left-3">
 					<fieldset className="large-6 cell">
-					    <label className="margin-bottom-1"><input type="checkbox" name="stepThree" onChange={this.handleCheckboxChanged} value="Bullied"/> Bullied</label>
-					    <label className="margin-bottom-1"><input type="checkbox" name="stepThree" onChange={this.handleCheckboxChanged} value="Treated unfairly"/> Treated unfairly</label>
-					    <label className="margin-bottom-1"><input type="checkbox" name="stepThree" onChange={this.handleCheckboxChanged} value="Sexually harassed"/> Sexually harassed <a className="tiny button primary" href="#" data-toggle="more-info-sh">?</a></label>
+					    <label className="margin-bottom-1"><input data-key={0} type="checkbox" name="stepThree" onChange={this.handleCheckBoxChanged} value="Bullied"/> Bullied</label>
+					    <label className="margin-bottom-1"><input data-key={1} type="checkbox" name="stepThree" onChange={this.handleCheckBoxChanged} value="Treated unfairly"/> Treated unfairly</label>
+					    <label className="margin-bottom-1"><input data-key={2} type="checkbox" name="stepThree" onChange={this.handleCheckBoxChanged} value="Sexually harassed"/> Sexually harassed <a className="tiny button primary" href="#" data-toggle="more-info-sh">?</a></label>
 					    <p className="hide" id="more-info-sh" data-toggler=".hide">
 					    	<small>Under the Equal Opportunity Act 2010, sexual harassment is defined as:
 							<br/>an unwelcome sexual advance
@@ -239,7 +318,7 @@ class StepThree extends React.Component {
 							<br/>
 							which would lead a reasonable person to experience offence, humiliation or intimidation. It can be physical, verbal, or written.</small>
 						</p>
-					    <label className="margin-bottom-1"><input type="checkbox" name="stepThree" onChange={this.handleCheckboxChanged} value="Victimised"/> Victimised <a className="tiny button primary" href="#" data-toggle="more-info-vi">?</a></label>
+					    <label className="margin-bottom-1"><input data-key={3} type="checkbox" name="stepThree" onChange={this.handleCheckBoxChanged} value="Victimised"/> Victimised <a className="tiny button primary" href="#" data-toggle="more-info-vi">?</a></label>
 					    <p className="hide" id="more-info-vi" data-toggler=".hide">
 					    	<small>Victimisation is treating someone badly because they spoke up about being treated unfairly, made a complaint or helped someone else make a complaint.
 					    	<br/>Victimisation is also against the law and can be part of a complaint.
@@ -266,6 +345,7 @@ class StepThree extends React.Component {
 	saveAndContinue(event) {
 		event.preventDefault();
 		formData.progress = 30; 
+		formData.step3.completed = true;
 		this.props.nextStep();
 	}
 }
@@ -337,6 +417,7 @@ class StepFour extends React.Component {
 	saveAndContinue(event) {
 		event.preventDefault();
 		formData.progress = 40; 
+		formData.step4.completed = true;
 		this.props.nextStep();
 	}
 
@@ -431,17 +512,38 @@ class ProgressBar extends React.Component {
 	}
 }
 
+class BreadCrumbs extends React.Component {
+	render(){
+		return(
+			<nav aria-label="You are here:" role="navigation">
+                <ul className="breadcrumbs">
+                    <li><a href="#start">Start</a></li>
+                    <li>
+                        <span className="show-for-sr">Current: </span> Step 1
+                    </li>
+                    <li><a href="#start" onClick={this.props.step(2)}>Step 2</a></li>
+                    <li><a href="#start" onClick={this.props.step(3)}>Step 3</a></li>
+                    <li><a href="#start" onClick={this.props.step(4)}>Step 4</a></li>
+                </ul>
+            </nav>
+		)
+	}
+}
+
 
 /** RENDER CODE **/
 
 var mountNode = document.getElementById("app");
+let progressHolder = document.getElementById("progress");
+let breadcrumbHolder = document.getElementById("breadcrumb");
 
-ReactDOM.render(<ComplaintForm/>, mountNode);
-ReactDOM.render(<ProgressBar formValues={formData} />, document.getElementById("progress"));
+
+ReactDOM.render(<ComplaintForm progressHolder={progressHolder} breadcrumbHolder={breadcrumbHolder} />, mountNode);
+//ReactDOM.render(<ProgressBar formValues={formData} />, document.getElementById("progress"));
 
 $(document).ready(function(){
 	$(document).foundation();
-	$('#dp2').fdatepicker({
-		closeButton: true
-	});
+	// $('#dp2').fdatepicker({
+	// 	closeButton: true
+	// });
 });
