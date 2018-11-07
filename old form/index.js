@@ -62,176 +62,6 @@ let formData = {
 	progress: 0
 };
 
-class ComplaintPortal extends React.Component {
-	constructor () {
-        super()
-        this.state = { 
-          sideBar: "testing..."
-        }
-        this.showSidebar = this.showSidebar.bind(this);
-    }
-
-    showSidebar (html, data) {
-    	console.log(html)
-    	this.setState({sideBar: html})
-    }
-
-	render() {
-		return(
-			<div className="grid-container full-height">        
-				<div className="grid-x padding-top-2">
-		            <div className="cell medium-8">
-		            	<FirstStep showSidebar={this.showSidebar} />
-		            </div>
-		            <div className="cell medium-4">
-		            	<ComplaintFormSidebar>
-		            		{this.state.sideBar}
-		            	</ComplaintFormSidebar>
-		            </div>
-		        </div>
-		    </div>
-		)
-	}
-}
-
-class ComplaintFormSidebar extends React.Component {
-	render() {
-		return(
-			<div className="form">{this.props.children}</div>
-		)
-	}
-}
-
-class FirstStep extends React.Component {
-    constructor () {
-        super()
-        this.state = { 
-          radio: '',
-          radioGroup: {
-          	name: "step2",
-          	items: [
-          		{id: "val1", value: "Myself"},
-          		{id: "val2", value: "For someone else"}
-          	]
-          }
-        }
-        this.handleRadioChanged = this.handleRadioChanged.bind(this);
-        this.showSidebar = this.showSidebar.bind(this);
-        this.sideBar = this.sideBar.bind(this);
-        this.sideBar2 = this.sideBar2.bind(this);
-    }
-
-    handleRadioChanged (event) {
-        this.setState({radio: event.target.value})
-    }
-
-    showSidebar(elem){
-    	this.props.showSidebar(elem)
-    }
-
-    sideBar () {
-    	let isMobile = true;
-    	let html = (
-    		<div className="infoBlock">
-    			<h3>Tips</h3>
-    			<p>If you are lodging a complaint for <strong>someone else</strong>, you may need to provide a consent form if you are not a parent or carer of that person.
-    			</p>
-    		</div>
-    	)
-    	if (isMobile) {
-    		return html 
-    	} else {
-    		this.props.showSidebar(html)
-    		return false
-    	}
-    }
-
-    sideBar2 (event) {
-
-    	this.props.showSidebar(
-    		<div className="infoBlock">
-    			<h3>Tips</h3>
-    			<p>Help will be displayed here while you fill out the form
-    			</p>
-    		</div>
-    	)
-    }
-
-    componentDidMount () {
-		this.sideBar()
-	}
-
-    render() {
-		return(
-			<div className="FirstStep">
-				<p className="margin-left-2 margin-bottom-2" onClick={this.sideBar2}>Q1. I am lodging a complaint for</p>
-				<div className="grid-x grid-padding-x margin-left-3" >
-					<fieldset className="large-5 cell">
-						<RadioGroup radioData={this.state.radioGroup} value={this.state.radio} onChange={this.handleRadioChanged}/>
-					</fieldset>
-					<div className="helptext">{this.sideBar()}</div>
-				</div>
-			</div>
-		)
-	}
-}
-
-class StepTwo extends React.Component {
-    constructor () {
-        super()
-        this.state = { 
-          radio: '',
-          radioGroup: {
-          	name: "step2",
-          	items: [
-          		{id: "val1", value: "Myself"},
-          		{id: "val2", value: "For someone else"}
-          	]
-          }
-        }
-        this.saveAndContinue = this.saveAndContinue.bind(this);
-        this.handleRadioChanged = this.handleRadioChanged.bind(this);
-    }
-
-    handleRadioChanged (event) {
-        this.setState({radio: event.target.value})
-        formData.step2.radio.value = event.target.value;
-    }
-
-    render() {
-		return (
-			<div className="step-2">
-				<h5 className="margin-bottom-2"><strong>Hi {this.props.formValues.step1.name.value}, who are you looking to lodge a complaint for?</strong></h5>
-				<p className="margin-left-2 margin-bottom-2" >Q1. I am lodging a complaint for</p>
-				<div className="grid-x grid-padding-x margin-left-3">
-					<fieldset className="large-5 cell">
-						<RadioGroup radioData={this.state.radioGroup} value={this.props.formValues.step2.radio.value} onChange={this.handleRadioChanged}/>
-					</fieldset>
-				</div>
-	            <div className="grid-x grid-margin-x align-center margin-top-3">
-	                <div className="cell medium-4 text-center">
-	                	<button className="button" type="" onClick={this.props.previousStep} value="">Previous</button>
-	                </div>
-	                <div className="cell medium-4 text-center">
-	                	<button className="button" type="submit" onClick={this.saveAndContinue} value="Submit">Continue</button>
-	                </div>
-	            </div>
-			</div>
-		);
-	}
-
-	componentDidMount () {
-		$("#app").foundation();
-	}
-
-	saveAndContinue(event) {
-		event.preventDefault();
-		formData.progress = 20; 
-		formData.step2.completed = true;
-		this.props.nextStep();
-	}
-}
-
 
 class ComplaintForm extends React.Component {
     constructor () {
@@ -391,7 +221,61 @@ class StepOne extends React.Component {
 
 
 
+class StepTwo extends React.Component {
+    constructor () {
+        super()
+        this.state = { 
+          radio: '',
+          radioGroup: {
+          	name: "step2",
+          	items: [
+          		{id: "val1", value: "Myself"},
+          		{id: "val2", value: "For someone else"}
+          	]
+          }
+        }
+        this.saveAndContinue = this.saveAndContinue.bind(this);
+        this.handleRadioChanged = this.handleRadioChanged.bind(this);
+    }
 
+    handleRadioChanged (event) {
+        this.setState({radio: event.target.value})
+        formData.step2.radio.value = event.target.value;
+    }
+
+    render() {
+		return (
+			<div className="step-2">
+				<h5 className="margin-bottom-2"><strong>Hi {this.props.formValues.step1.name.value}, who are you looking to lodge a complaint for?</strong></h5>
+				<p className="margin-left-2 margin-bottom-2" >Q1. I am lodging a complaint for</p>
+				<div className="grid-x grid-padding-x margin-left-3">
+					<fieldset className="large-5 cell">
+						<RadioGroup radioData={this.state.radioGroup} value={this.props.formValues.step2.radio.value} onChange={this.handleRadioChanged}/>
+					</fieldset>
+				</div>
+	            <div className="grid-x grid-margin-x align-center margin-top-3">
+	                <div className="cell medium-4 text-center">
+	                	<button className="button" type="" onClick={this.props.previousStep} value="">Previous</button>
+	                </div>
+	                <div className="cell medium-4 text-center">
+	                	<button className="button" type="submit" onClick={this.saveAndContinue} value="Submit">Continue</button>
+	                </div>
+	            </div>
+			</div>
+		);
+	}
+
+	componentDidMount () {
+		$("#app").foundation();
+	}
+
+	saveAndContinue(event) {
+		event.preventDefault();
+		formData.progress = 20; 
+		formData.step2.completed = true;
+		this.props.nextStep();
+	}
+}
 
 class StepThree extends React.Component {
     constructor () {
@@ -598,18 +482,68 @@ class RadioGroup extends React.Component {
 }
 
 
+class StepButtons extends React.Component {
+	constructor () {
+        super()
+        this.state = { 
+          step: 1
+        }
+    }
+
+}
+
+class ProgressBar extends React.Component {
+	constructor (props) {
+        super(props)
+        this.state = { 
+          progress: 25
+        }
+    }
+
+    //updateProgress 
+	render () {
+		return(
+			<div className="primary progress" role="progressbar" tabIndex="0" aria-valuenow={this.props.formValues.progress} aria-valuemin="0" aria-valuetext={this.props.formValues.progress+" percent"} aria-valuemax="100">
+                <div className="progress-meter" style={{width: this.props.formValues.progress+"%"}}>
+                    <p className="progress-meter-text">{this.props.formValues.progress}%</p>
+                </div>
+            </div>
+		)
+	}
+}
+
+class BreadCrumbs extends React.Component {
+	render(){
+		return(
+			<nav aria-label="You are here:" role="navigation">
+                <ul className="breadcrumbs">
+                    <li><a href="#start">Start</a></li>
+                    <li>
+                        <span className="show-for-sr">Current: </span> Step 1
+                    </li>
+                    <li><a href="#start" onClick={this.props.step(2)}>Step 2</a></li>
+                    <li><a href="#start" onClick={this.props.step(3)}>Step 3</a></li>
+                    <li><a href="#start" onClick={this.props.step(4)}>Step 4</a></li>
+                </ul>
+            </nav>
+		)
+	}
+}
+
 
 /** RENDER CODE **/
 
-var mountNode = document.getElementById("complaints_portal");
+var mountNode = document.getElementById("app");
 let progressHolder = document.getElementById("progress");
 let breadcrumbHolder = document.getElementById("breadcrumb");
 
 
-ReactDOM.render(<ComplaintPortal />, mountNode);
+ReactDOM.render(<ComplaintForm progressHolder={progressHolder} breadcrumbHolder={breadcrumbHolder} />, mountNode);
 //ReactDOM.render(<ProgressBar formValues={formData} />, document.getElementById("progress"));
 
 $(document).ready(function(){
 	$(document).foundation();
-
+	// $('#dp2').fdatepicker({
+	// 	closeButton: true
+	// });
 });

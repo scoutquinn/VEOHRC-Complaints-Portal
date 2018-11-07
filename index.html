@@ -20,26 +20,15 @@
 	    <div class="top-bar-left">
 	        <ul class="dropdown menu" data-dropdown-menu>
 	            <li class="menu-text">VEOHRC Complaints Form</li>
-<!-- 	            <li>
-	                <a href="#">One</a>
-	                <ul class="menu vertical">
-	                    <li><a href="#">One</a></li>
-	                    <li><a href="#">Two</a></li>
-	                    <li><a href="#">Three</a></li>
-	                </ul>
-	            </li>
-	            <li><a href="#">Two</a></li>
-	            <li><a href="#">Three</a></li> -->
 	        </ul>
 	    </div>
 	    <div class="top-bar-right">
-<!-- 	        <ul class="menu">
-	            <li><input type="search" placeholder="Search"></li>
-	            <li><button type="button" class="button">Search</button></li>
-	        </ul> -->
+	        <ul class="menu">
+	            <li><button type="button" class="button">Save for later</button></li>
+	        </ul>
 	    </div>
 	</div>
-	<div class="grid-container full-height">        
+<!-- 	<div class="grid-container full-height">        
 		<div class="grid-x padding-top-2 grid-margin-x">
             <div class="cell medium-8" id="breadcrumb">
             	<nav aria-label="You are here:" role="navigation">
@@ -59,181 +48,24 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="grid-container full-height">        
-		<div class="grid-x padding-top-2">
-            <div class="cell medium-8">
-            	<div id="app">
-            	</div>
-            </div>
-            <div class="cell medium-4">
-            	<div class="callout primary">
-            		<img src="https://via.placeholder.com/400x600/3d5874/ffffff?"/>
-            	</div>
-            </div>
-        </div>
-    </div>
+    </div> -->
+    <div id="complaints_portal">
+	    <div class="grid-container full-height">        
+			<div class="grid-x padding-top-2">
+	            <div class="cell medium-8">
+	            	<div id="app">
+	            	</div>
+	            </div>
+	            <div class="cell medium-4">
+	            	<div class="callout primary">
+	            		<img src="https://via.placeholder.com/400x600/3d5874/ffffff?"/>
+	            	</div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
     <script src="./index.js"></script>
-    <!-- <div class="grid-container">
-        <div class="grid-x">
-            <div class="cell">
-                <nav aria-label="You are here:" role="navigation">
-                    <ul class="breadcrumbs">
-                        <li><a href="#0">Home</a></li>
-                        <li><a href="#0">Features</a></li>
-                        <li class="disabled">Gene Splicing</li>
-                        <li>
-                            <span class="show-for-sr">Current: </span> Cloning
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="cell">
-                <a href="#0" class="button">Learn More</a>
-                <a href="#features" class="button">View All Features</a>
-                <button type="button" class="success button">Save</button>
-                <button type="button" class="alert button">Delete</button>
-                <a class="tiny button" href="#0">So Tiny</a>
-                <a class="small button" href="#0">So Small</a>
-                <a class="large button" href="#0">So Large</a>
-                <a class="expanded button" href="#0">Such Expand</a>
-                <div class="button-group">
-                    <a class="button">One</a>
-                    <a class="button">Two</a>
-                    <a class="button">Three</a>
-                </div>
-            </div>
-        </div>
-        <div class="grid-x">
-            <div class="cell small-6">6 cells</div>
-            <div class="cell small-6">
-                <div class="primary progress" role="progressbar" tabindex="0" aria-valuenow="25" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
-                    <div class="progress-meter" style="width: 25%">
-                        <p class="progress-meter-text">25%</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="grid-x grid-margin-x">
-            <div class="cell medium-6 large-4">
-                <ul class="accordion" data-accordion>
-                    <li class="accordion-item is-active" data-accordion-item>
-                        <a href="#" class="accordion-title">Accordion 1</a>
-                        <div class="accordion-content" data-tab-content>
-                            <p>Panel 1. Lorem ipsum dolor</p>
-                            <a href="#">Nowhere to Go</a>
-                        </div>
-                    </li>
-                    <li class="accordion-item" data-accordion-item>
-                        <a href="#" class="accordion-title">Accordion 2</a>
-                        <div class="accordion-content" data-tab-content>
-                            <textarea></textarea>
-                            <button class="button">I do nothing!</button>
-                        </div>
-                    </li>
-                    <li class="accordion-item" data-accordion-item>
-                        <a href="#" class="accordion-title">Accordion 3</a>
-                        <div class="accordion-content" data-tab-content>
-                            Type your name!
-                            <input type="text"></input>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="cell medium-6 large-8">
-                <form data-abide novalidate>
-                    <div class="grid-x grid-margin-x">
-                        <div class="cell">
-                            <div data-abide-error class="alert callout" style="display: none;">
-                                <p><i class="fi-alert"></i> There are some errors in your form.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid-x grid-margin-x">
-                        <div class="cell small-12">
-                            <label>Number Required
-                                <input type="text" placeholder="1234" aria-describedby="exampleHelpText" required pattern="number">
-                                <span class="form-error">
-          Yo, you had better fill this out, it's required.
-        </span>
-                            </label>
-                            <p class="help-text" id="exampleHelpText">Here's how you use this input field!</p>
-                        </div>
-                        <div class="cell small-12">
-                            <label>Nothing Required!
-                                <input type="text" placeholder="Use me, or don't" aria-describedby="exampleHelpTex" data-abide-ignore>
-                            </label>
-                            <p class="help-text" id="exampleHelpTex">This input is ignored by Abide using `data-abide-ignore`</p>
-                        </div>
-                        <div class="cell small-12">
-                            <label>Password Required
-                                <input type="password" id="password" placeholder="yeti4preZ" aria-describedby="exampleHelpText" required>
-                                <span class="form-error">
-          I'm required!
-        </span>
-                            </label>
-                            <p class="help-text" id="exampleHelpText">Enter a password please.</p>
-                        </div>
-                        <div class="cell small-12">
-                            <label>Re-enter Password
-                                <input type="password" placeholder="yeti4preZ" aria-describedby="exampleHelpText2" required pattern="alpha_numeric" data-equalto="password">
-                                <span class="form-error">
-          Hey, passwords are supposed to match!
-        </span>
-                            </label>
-                            <p class="help-text" id="exampleHelpText2">This field is using the `data-equalto="password"` attribute, causing it to match the password field above.</p>
-                        </div>
-                    </div>
-                    <div class="grid-x grid-margin-x">
-                        <div class="cell medium-6">
-                            <label>URL Pattern, not required, but throws error if it doesn't match the Regular Expression for a valid URL.
-                                <input type="text" placeholder="https://foundation.zurb.com" pattern="url">
-                            </label>
-                        </div>
-                        <div class="cell medium-6">
-                            <label>European Cars, Choose One, it can't be the blank option.
-                                <select id="select" required>
-                                    <option value=""></option>
-                                    <option value="volvo">Volvo</option>
-                                    <option value="saab">Saab</option>
-                                    <option value="mercedes">Mercedes</option>
-                                    <option value="audi">Audi</option>
-                                </select>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="grid-x grid-margin-x">
-                        <fieldset class="cell medium-6">
-                            <legend>Choose Your Favorite, and this is required, so you have to pick one.</legend>
-                            <input type="radio" name="pokemon" value="Red" id="pokemonRed"><label for="pokemonRed">Red</label>
-                            <input type="radio" name="pokemon" value="Blue" id="pokemonBlue" required><label for="pokemonBlue">Blue</label>
-                            <input type="radio" name="pokemon" value="Yellow" id="pokemonYellow"><label for="pokemonYellow">Yellow</label>
-                        </fieldset>
-                        <fieldset class="cell medium-6">
-                            <legend>Choose Your Favorite - not required, you can leave this one blank.</legend>
-                            <input type="radio" name="pockets" value="Red" id="pocketsRed"><label for="pocketsRed">Red</label>
-                            <input type="radio" name="pockets" value="Blue" id="pocketsBlue"><label for="pocketsBlue">Blue</label>
-                            <input type="radio" name="pockets" value="Yellow" id="pocketsYellow"><label for="pocketsYellow">Yellow</label>
-                        </fieldset>
-                        <fieldset class="cell medium-6">
-                            <legend>Check these out</legend>
-                            <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
-                            <input id="checkbox2" type="checkbox" required><label for="checkbox2">Checkbox 2</label>
-                            <input id="checkbox3" type="checkbox"><label for="checkbox3">Checkbox 3</label>
-                        </fieldset>
-                    </div>
-                    <div class="grid-x grid-margin-x">
-                        <fieldset class="cell medium-6">
-                            <button class="button" type="submit" value="Submit">Submit</button>
-                        </fieldset>
-                        <fieldset class="cell medium-6">
-                            <button class="button" type="reset" value="Reset">Reset</button>
-                        </fieldset>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>-->
+ 
 </body>
 
 </html>
