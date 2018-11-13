@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CodeforAustralia/VEOHRC-Complaints-Portal#readme",
   "dependencies": {
+    "babel-preset-stage-2": "^6.24.1",
     "foundation-sites": "^6.5.0-rc.4",
     "jquery": "^3.3.1",
     "moment": "^2.22.2",

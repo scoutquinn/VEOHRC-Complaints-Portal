@@ -71,5 +71,10 @@ html{
 		.helper{
 			background-color: lighten($veohrc_primary, 50%)
 		}
+
+		span.option{
+			text-decoration: underline;
+			background-color: lighten($veohrc_primary, 80%)
+		}
 	}
 }
