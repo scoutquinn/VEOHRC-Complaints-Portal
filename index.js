@@ -41,14 +41,14 @@ class ComplaintPortal extends React.Component {
     // 	//console.log(sidebars)
     // 	this.setState({sidebars : sidebars})
     // }
+
+    // function to prevent default actions
     anchorClick (e){
     	e.preventDefault()
     }
 
-
+    // sidebar 
     showHelp (id) {
-    	//let sidebar = this.state.sidebars[id];
-    	//console.log(sidebar)
     	this.setState({sideBar: id})
     }
 
@@ -61,21 +61,27 @@ class ComplaintPortal extends React.Component {
     }
 
     handleCheckboxChanged (event) {
-    	let val = (this.state.formData[event.target.name]) ? this.state.formData[event.target.name] : {} ;
-    	val[event.target.value] = event.target.checked;
+    	let val = (this.state.formData[event.target.name]) ? this.state.formData[event.target.name] : [] ;
+    	
+    	if(event.target.checked && val.indexOf(event.target.value) === -1 ) {
+    		val.push(event.target.value)
+    	}else{
+    		val = val.filter(item => item !== event.target.value)
+    	}
+
     	this.formStateUpdate(event.target.name, val)
     }
 
     formStateUpdate(key, val){
-    	let formData = this.state.formData;
-    	formData[key] = val;
-        this.setState(formData)
-        // this.setState({
-        // 	formData: {
-        // 		...this.state.formData,
-        // 		 [key]: val
-        // 	}
-        // });
+    	// let formData = this.state.formData;
+    	// formData[key] = val;
+     //    this.setState(formData)
+        this.setState({
+        	formData: {
+        		...this.state.formData,
+        		 [key]: val
+        	}
+        });
     }
 
 
@@ -98,9 +104,9 @@ class ComplaintPortal extends React.Component {
 							onChange={this.handleRadioChanged}
 						/>*/}
             			<fieldset>
-						    <input type="radio" name="who_for" value="Myself" id="fe_1" />
+						    <input type="radio" name="who_for" value="Myself" id="fe_1" onChange={this.handleRadioChanged} />
 						    <label htmlFor="fe_1">Myself</label>
-						    <input type="radio" name="who_for" value="Someone Else" id="fe_2" />
+						    <input type="radio" name="who_for" value="Someone Else" id="fe_2" onChange={this.handleRadioChanged} />
 						    <label htmlFor="fe_2">Someone Else</label>
 						</fieldset>
             		</Element>
@@ -231,16 +237,16 @@ class ComplaintPortal extends React.Component {
 	            				I want to make a complaint about the &nbsp;
 	            			</div>
 	            			<div className="cell auto">
-		            			<a className="button expanded hollow" onClick={this.anchorClick} href="#">Choose...</a>
+		            			<ShowChoices field="q_6" formData={this.state.formData}/>
 		            		</div>
 	            		</div>
             		</Element>
             		<Helper id="q_6" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Who are you making a complaint about?</h4>
             			<fieldset>
-					    	<label className="margin-bottom-0"><input type="radio" name="q_6" value="Individual(s)" />Individual(s)</label>
+					    	<label className="margin-bottom-0"><input type="radio" name="q_6" onChange={this.handleRadioChanged} value="Individual(s)" />Individual(s)</label>
 
-					    	<label className="margin-bottom-0"><input type="radio" name="q_6" value="Organisation" />Organisation</label>
+					    	<label className="margin-bottom-0"><input type="radio" name="q_6" onChange={this.handleRadioChanged} value="Organisation" />Organisation</label>
 
 						</fieldset>
             		</Helper>
@@ -260,7 +266,6 @@ class ComplaintPortal extends React.Component {
             		<Element clickHandler={this.showHelp} helper="q_7">
             			<div className="grid-x">
 	            			<div className="cell auto">
-		            			<a className="button expanded hollow" onClick={this.anchorClick} href="#">Choose...</a>
 		            			<ShowChoices field="q_7" formData={this.state.formData}/>
 		            		</div>
 	            		</div>
@@ -279,23 +284,23 @@ class ComplaintPortal extends React.Component {
 
 							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Sex/Gender" onChange={this.handleCheckboxChanged} />Sex/Gender</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />LGBITQ status</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="LGBITQ status" onChange={this.handleCheckboxChanged} />LGBITQ status</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />Physical appearance (how you look)</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Physical appearance" onChange={this.handleCheckboxChanged} />Physical appearance (how you look)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />Parental/Carer status (you are providing ongoing care to someone dependent on you)</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Parental/Carer status" onChange={this.handleCheckboxChanged} />Parental/Carer status (you are providing ongoing care to someone dependent on you)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />Pregnancy/Breastfeeding</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Pregnancy/Breastfeeding" onChange={this.handleCheckboxChanged} />Pregnancy/Breastfeeding</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Marital status" onChange={this.handleCheckboxChanged} />Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />Political belief or association</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Political belief or association" onChange={this.handleCheckboxChanged} />Political belief or association</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />Union (participation or association)</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Union" onChange={this.handleCheckboxChanged} />Union (participation or association)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />Personal association with someone who could be treated unfairly because of one or more of the above reasons  </label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Personal association" onChange={this.handleCheckboxChanged} />Personal association with someone who could be treated unfairly because of one or more of the above reasons  </label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="" onChange={this.handleCheckboxChanged} />Other</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Other" onChange={this.handleCheckboxChanged} />Other</label>
 
 						</fieldset>
             		</Helper>
@@ -324,7 +329,7 @@ class ComplaintPortal extends React.Component {
 	            		</div>
 	            		<div className="grid-x">
 	            			<div className="cell auto">
-		            			<a className="button expanded hollow" onClick={this.anchorClick} href="#">Choose...</a>
+		            			<ShowChoices field="q_9" formData={this.state.formData}/>
 		            		</div>
 	            		</div>
             		</Element>
@@ -332,21 +337,21 @@ class ComplaintPortal extends React.Component {
             			<h4>Please select the harms you have experienced, you can tick more than one:</h4>
             			<fieldset>
 
-					    	<label className="margin-bottom-0"><input type="checkbox" name="q_8" value="" />I was not able to participate in the activity</label>
+					    	<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I was not able to participate in the activity" />I was not able to participate in the activity</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_8" value="" />My needs were ignored or rejected</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="My needs were ignored or rejected" />My needs were ignored or rejected</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_8" value="" />I lost money</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I lost money" />I lost money</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_8" value="" />I lost my reputation</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I lost my reputation" />I lost my reputation</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_8" value="" />I feel disrespected</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I feel disrespected" />I feel disrespected</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_8" value="" />I feel unhappy</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I feel unhappy" />I feel unhappy</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_8" value="" />I did not get a fair treatment</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I did not get a fair treatment" />I did not get a fair treatment</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_8" value="" />Other</label>
+							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="Other" />Other</label>
 
 
 						</fieldset>
@@ -426,6 +431,7 @@ class ShowChoices extends React.Component{
     }
 	render(){
 		let val = this.props.formData[this.props.field];
+		if(Array.isArray(val)) val = val.join(", ");
 		return(
 			<a className="button expanded hollow" onClick={this.anchorClick} href="#">{val ? val : 'Choose...' }</a>
 		)
@@ -484,11 +490,6 @@ sidebar.addEventListener('affix.top.stickySidebar', function () {
 sidebar.addEventListener('affix.bottom.stickySidebar', function (event) {
     //console.log('Sidebar has stuck bottom of viewport.');
 });
-
-let test1 = { id1 : true, id2 : false };
-let test2 = { id3 : "something", id4 : 345 };
-
-let spread = {...test1, ...test2};
 
 $(document).ready(function(){
 	$(document).foundation();
