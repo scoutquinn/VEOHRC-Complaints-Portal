@@ -1,5 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { reduxForm, Field, propTypes, formValueSelector } from 'redux-form';
+import { Provider, connect } from "react-redux";
+import { createStore, combineReducers } from 'redux';
+import { reducer as reduxFormReducer } from 'redux-form';
+
 
 import "./scss/style.scss";
 import $ from "jquery";
@@ -16,11 +21,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 MULTI PART FORM
 
 ***/
-
+const MobileContext = React.createContext('desktop');
 
 class ComplaintPortal extends React.Component {
-	constructor () {
-        super()
+	constructor (props) {
+        super(props)
         this.state = { 
           sideBar: "q_1",
           sidebars: {},
@@ -34,13 +39,6 @@ class ComplaintPortal extends React.Component {
         this.handleRadioChanged = this.handleRadioChanged.bind(this);
         this.handleCheckboxChanged = this.handleCheckboxChanged.bind(this);
     }
-
-    // showSidebar (html, id) {
-    // 	let sidebars = this.state.sidebars;
-    // 	sidebars[id] = html;
-    // 	//console.log(sidebars)
-    // 	this.setState({sidebars : sidebars})
-    // }
 
     // function to prevent default actions
     anchorClick (e){
@@ -88,29 +86,27 @@ class ComplaintPortal extends React.Component {
 	
 	render() {
 		return(
-			<React.Fragment>
-				<FormElement>
+			<form onSubmit={this.props.handleSubmit}>
+				<FormElement onSubmit={showResults}>
             		<h3>Q1. Who are you lodging a complaint for?</h3>
             		<Element clickHandler={this.showHelp} helper="q_1">
-						{/*<RadioGroup 
-							radioData={{
-					          	name: "step2",
-					          	items: [
-					          		{id: "val1", value: "Myself"},
-					          		{id: "val2", value: "For someone else"}
-					          	]
-					        }} 
-							value={this.state.formData.q_2.radio.value} 
-							onChange={this.handleRadioChanged}
-						/>*/}
-            			<fieldset>
-						    <input type="radio" name="who_for" value="Myself" id="fe_1" onChange={this.handleRadioChanged} />
-						    <label htmlFor="fe_1">Myself</label>
-						    <input type="radio" name="who_for" value="Someone Else" id="fe_2" onChange={this.handleRadioChanged} />
-						    <label htmlFor="fe_2">Someone Else</label>
-						</fieldset>
+            			<div className="grid-x">
+						    <div className="cell medium-6">
+							    <label>
+							    	<Field name="q_1" component="input" type="radio" value="Myself" />
+							    	Myself
+							    </label>
+							</div>
+						    <div className="cell medium-6">
+							    <label>
+							    	<Field name="q_1" component="input" type="radio" value="Someone Else" />
+							    	Someone Else
+							    </label>
+							</div>
+						</div>
+						
             		</Element>
-            		<Helper id="q_1" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_1" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Tips</h4>
             			<p>If you are lodging a complaint for someone else, you
 						may need to provide a consent form if you are not
@@ -118,7 +114,7 @@ class ComplaintPortal extends React.Component {
             		</Helper>
             	</FormElement>
             	<br/>
-            	<FormElement>
+            	<FormElement onSubmit={showResults}>
             		<h3>Q2. What happened to you?</h3>
             		<Element clickHandler={this.showHelp} helper="q_2">
             			<div className="grid-x">
@@ -126,11 +122,17 @@ class ComplaintPortal extends React.Component {
 	            				My name is &nbsp;
 	            			</div>
 	            			<div className="cell auto">
-		            			<input type="text" name="form_name" placeholder="Type your full name"/>
+		            			{/*<input type="text" name="form_name" placeholder="Type your full name"/>*/}
+		            			<Field
+						            name="q_2"
+						            component="input"
+						            type="text"
+						            placeholder="Type your full name"
+						        />
 		            		</div>
 	            		</div>
             		</Element>
-            		<Helper id="q_2" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_2" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Suggestions</h4>
             			<p>Please tell us about your story. This box will help you
 						fill in your story as you click through each selection
@@ -143,16 +145,25 @@ class ComplaintPortal extends React.Component {
 	            				and I was &nbsp;
 	            			</div>
 	            			<div className="cell auto">
-		            			<ShowChoices field="q_3" formData={this.state.formData}/>
+		            			<ShowChoices field="q_3" formData={this.props.fieldData}/>
 	            			</div>
 	            		</div>
             		</Element>
-            		<Helper id="q_3" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_3" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Please choose one of the following:</h4>
             			<fieldset className="large-6 cell">
-						    <label className="margin-bottom-1"><input data-key={0} type="radio" name="q_3" onChange={this.handleRadioChanged} value="Bullied"/> Bullied</label>
-						    <label className="margin-bottom-1"><input data-key={1} type="radio" name="q_3" onChange={this.handleRadioChanged} value="Treated unfairly"/> Treated unfairly</label>
-						    <label className="margin-bottom-1"><input data-key={2} type="radio" name="q_3" onChange={this.handleRadioChanged} value="Sexually harassed"/> Sexually harassed <a className="tiny button primary" href="#" data-toggle="more-info-sh">?</a></label>
+						    <label className="margin-bottom-1">
+						    	<Field name="q_3" component="input" type="radio" value="Bullied" />
+						    	
+						    Bullied</label>
+						    <label className="margin-bottom-1">
+						    	<Field name="q_3" component="input" type="radio" value="Treated unfairly" />
+						    	 Treated unfairly
+						    	</label>
+						    <label className="margin-bottom-1">
+						    	<Field name="q_3" component="input" type="radio" value="Sexually harassed" />
+						    	 Sexually harassed <a className="tiny button primary" href="#" data-toggle="more-info-sh">?</a>
+						    	</label>
 						    <p className="hide" id="more-info-sh" data-toggler=".hide">
 						    	<small>Under the Equal Opportunity Act 2010, sexual harassment is defined as:
 								<br/>an unwelcome sexual advance
@@ -161,7 +172,10 @@ class ComplaintPortal extends React.Component {
 								<br/>
 								which would lead a reasonable person to experience offence, humiliation or intimidation. It can be physical, verbal, or written.</small>
 							</p>
-						    <label className="margin-bottom-1"><input data-key={3} type="radio" name="q_3" onChange={this.handleRadioChanged} value="Victimised"/> Victimised <a className="tiny button primary" href="#" data-toggle="more-info-vi">?</a></label>
+						    <label className="margin-bottom-1">
+						    	<Field component="input" name="q_3" type="radio" value="Victimised" />
+						    	 Victimised <a className="tiny button primary" href="#" data-toggle="more-info-vi">?</a>
+						    	</label>
 						    <p className="hide" id="more-info-vi" data-toggler=".hide">
 						    	<small>Victimisation is treating someone badly because they spoke up about being treated unfairly, made a complaint or helped someone else make a complaint.
 						    	<br/>Victimisation is also against the law and can be part of a complaint.
@@ -175,23 +189,23 @@ class ComplaintPortal extends React.Component {
 	            				This happened to me at &nbsp;
 	            			</div>
 	            			<div className="cell auto">
-		            			<ShowChoices field="q_4" formData={this.state.formData}/>
+		            			<ShowChoices field="q_4" formData={this.props.fieldData}/>
 	            			</div>
 	            		</div>
             		</Element>
-            		<Helper id="q_4" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_4" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Please choose one location:</h4>
             			<fieldset>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="Work" onChange={this.handleRadioChanged}/>Work</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="School, university, tafe college or training institution" onChange={this.handleRadioChanged}/>School, university, tafe college or training institution</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="Hospital or a medical clinic" onChange={this.handleRadioChanged}/>Hospital or a medical clinic</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="A store or venue" onChange={this.handleRadioChanged}/>A store or venue (where you pay to purchase a product or gain access to a service)</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="Public transport" onChange={this.handleRadioChanged}/>Public transport</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="Accommodation " onChange={this.handleRadioChanged}/>Accommodation such as public housing or real estate agents</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="Local government" onChange={this.handleRadioChanged}/>Local government (e.g. local council)</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="Sporting activities" onChange={this.handleRadioChanged}/>Sporting activities such as sports events or games</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="" onChange={this.handleRadioChanged}/>Club (for social, literary, cultural, political, sporting, or other lawful purposes.</label>
-					    	<label className="margin-bottom-1"><input type="radio" name="q_4" value="" onChange={this.handleRadioChanged}/>Other</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="Work" />Work</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="School, university, tafe college or training institution" />School, university, tafe college or training institution</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="Hospital or a medical clinic" />Hospital or a medical clinic</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="A store or venue" />A store or venue (where you pay to purchase a product or gain access to a service)</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="Public transport" />Public transport</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="Accommodation " />Accommodation such as public housing or real estate agents</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="Local government" />Local government (e.g. local council)</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="Sporting activities" />Sporting activities such as sports events or games</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="" />Club (for social, literary, cultural, political, sporting, or other lawful purposes.</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="radio" name="q_4" value="" />Other</label>
 					    	<input type="text" name="q4_other" placeholder="Please Specify"/>
 						</fieldset>
             		</Helper>
@@ -205,15 +219,15 @@ class ComplaintPortal extends React.Component {
 		            		</div>
 	            		</div>
             		</Element>
-            		<Helper id="q_5" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_5" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Please select a date:</h4>
             			<fieldset>
-					    	<label className="margin-bottom-0"><input type="radio" name="q_5" value="On this date" />On this date</label>
+					    	<label className="margin-bottom-0"><Field component="input" type="radio" name="q_5" value="On this date" />On this date</label>
 					    	<DatePicker
 							    selected={this.state.startDate}
 							    onChange={this.handleChange}
 							/>
-					    	<label className="margin-bottom-0"><input type="radio" name="q_5" value="Between these dates" />Between these dates</label>
+					    	<label className="margin-bottom-0"><Field component="input" type="radio" name="q_5" value="Between these dates" />Between these dates</label>
 					    	<div className="grid-x">
 		            			<div className="cell ">
 							    	<DatePicker
@@ -228,7 +242,7 @@ class ComplaintPortal extends React.Component {
 									/>
 								</div>
 							</div>
-					    	<label className="margin-bottom-0"><input type="radio" name="q_5" value="I don't remember" />I don't remember</label>
+					    	<label className="margin-bottom-0"><Field component="input" type="radio" name="q_5" value="I don't remember" />I don't remember</label>
 						</fieldset>
             		</Helper>
             		<Element clickHandler={this.showHelp} helper="q_6">
@@ -237,16 +251,18 @@ class ComplaintPortal extends React.Component {
 	            				I want to make a complaint about the &nbsp;
 	            			</div>
 	            			<div className="cell auto">
-		            			<ShowChoices field="q_6" formData={this.state.formData}/>
+		            			<ShowChoices field="q_6" formData={this.props.fieldData} store={store}/>
 		            		</div>
 	            		</div>
             		</Element>
-            		<Helper id="q_6" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_6" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Who are you making a complaint about?</h4>
             			<fieldset>
-					    	<label className="margin-bottom-0"><input type="radio" name="q_6" onChange={this.handleRadioChanged} value="Individual(s)" />Individual(s)</label>
+					    	<label className="margin-bottom-0"><Field name="q_6" component="input" type="radio" value="Individual(s)" />Individual(s)</label>
 
-					    	<label className="margin-bottom-0"><input type="radio" name="q_6" onChange={this.handleRadioChanged} value="Organisation" />Organisation</label>
+					    	<label className="margin-bottom-0"><Field name="q_6" component="input" type="radio" value="Organisation" />Organisation</label>
+					    	
+
 
 						</fieldset>
             		</Helper>
@@ -256,7 +272,7 @@ class ComplaintPortal extends React.Component {
 	            				I believe I was &nbsp;
 	            			</div>
 	            			<div className="cell auto">
-		            			<ShowChoices field="q_3" formData={this.state.formData}/>
+		            			<ShowChoices field="q_3" formData={this.props.fieldData}/>
 	            			</div>
 	            			<div className="cell shrink">
 	            				&nbsp; because of my
@@ -266,41 +282,41 @@ class ComplaintPortal extends React.Component {
             		<Element clickHandler={this.showHelp} helper="q_7">
             			<div className="grid-x">
 	            			<div className="cell auto">
-		            			<ShowChoices field="q_7" formData={this.state.formData}/>
+		            			<ShowChoices field="q_7" formData={this.props.fieldData}/>
 		            		</div>
 	            		</div>
             		</Element>
-            		<Helper id="q_7" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_7" sidebar={stickySidebar} isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Please choose what you believe is true, you can select more than one:</h4>
             			<fieldset>
 
-					    	<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Race" onChange={this.handleCheckboxChanged} />Race, skin color, ethnicity, nationality, where I came from, or my culture</label>
+					    	<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Race"  />Race, skin color, ethnicity, nationality, where I came from, or my culture</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Religion" onChange={this.handleCheckboxChanged} />Religious beliefs or association</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Religion"  />Religious beliefs or association</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Health/Disability" onChange={this.handleCheckboxChanged} />Health, disability or illness (this can be mental or physical)</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Health/Disability"  />Health, disability or illness (this can be mental or physical)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Employment activities" onChange={this.handleCheckboxChanged} />Employment activities (asking for my rights or entitlements at work)</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Employment activities"  />Employment activities (asking for my rights or entitlements at work)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Sex/Gender" onChange={this.handleCheckboxChanged} />Sex/Gender</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Sex/Gender"  />Sex/Gender</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="LGBITQ status" onChange={this.handleCheckboxChanged} />LGBITQ status</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="LGBITQ status"  />LGBITQ status</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Physical appearance" onChange={this.handleCheckboxChanged} />Physical appearance (how you look)</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Physical appearance"  />Physical appearance (how you look)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Parental/Carer status" onChange={this.handleCheckboxChanged} />Parental/Carer status (you are providing ongoing care to someone dependent on you)</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Parental/Carer status"  />Parental/Carer status (you are providing ongoing care to someone dependent on you)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Pregnancy/Breastfeeding" onChange={this.handleCheckboxChanged} />Pregnancy/Breastfeeding</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Pregnancy/Breastfeeding"  />Pregnancy/Breastfeeding</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Marital status" onChange={this.handleCheckboxChanged} />Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Marital status"  />Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Political belief or association" onChange={this.handleCheckboxChanged} />Political belief or association</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Political belief or association"  />Political belief or association</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Union" onChange={this.handleCheckboxChanged} />Union (participation or association)</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Union"  />Union (participation or association)</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Personal association" onChange={this.handleCheckboxChanged} />Personal association with someone who could be treated unfairly because of one or more of the above reasons  </label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Personal association"  />Personal association with someone who could be treated unfairly because of one or more of the above reasons  </label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_7" value="Other" onChange={this.handleCheckboxChanged} />Other</label>
+							<label className="margin-bottom-1"><Field component="input" type="checkbox" name="q_7" value="Other"  />Other</label>
 
 						</fieldset>
             		</Helper>
@@ -313,11 +329,18 @@ class ComplaintPortal extends React.Component {
 	            		</div>
 	            		<div className="grid-x">
 	            			<div className="cell auto">
-		            			<textarea rows="5" placeholder="None"></textarea>
+	            				
+		            			<Field
+						            name="q_8"
+						            component="textarea"
+						            type="textarea"
+						            rows="5"
+						            placeholder="Add Something Here"
+						        />
 		            		</div>
 	            		</div>
             		</Element>
-            		<Helper id="q_8" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_8" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Help copy here</h4>
             		</Helper>
 
@@ -329,29 +352,29 @@ class ComplaintPortal extends React.Component {
 	            		</div>
 	            		<div className="grid-x">
 	            			<div className="cell auto">
-		            			<ShowChoices field="q_9" formData={this.state.formData}/>
+		            			<ShowChoices field="q_9" formData={this.props.fieldData}/>
 		            		</div>
 	            		</div>
             		</Element>
-            		<Helper id="q_9" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            		<Helper sidebar={stickySidebar} id="q_9" isShown={this.state.sideBar} isMobile={this.state.mobile}>
             			<h4>Please select the harms you have experienced, you can tick more than one:</h4>
             			<fieldset>
 
-					    	<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I was not able to participate in the activity" />I was not able to participate in the activity</label>
+					    	<label className="margin-bottom-0"><Field component="input" type="checkbox" groupname="q_9" name="I was not able to participate in the activity" />I was not able to participate in the activity</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="My needs were ignored or rejected" />My needs were ignored or rejected</label>
+							<label className="margin-bottom-0"><Field component="input" type="checkbox" groupname="q_9" name="My needs were ignored or rejected" />My needs were ignored or rejected</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I lost money" />I lost money</label>
+							<label className="margin-bottom-0"><Field component="input" type="checkbox" groupname="q_9" name="I lost money" />I lost money</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I lost my reputation" />I lost my reputation</label>
+							<label className="margin-bottom-0"><Field component="input" type="checkbox" groupname="q_9" name="I lost my reputation" />I lost my reputation</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I feel disrespected" />I feel disrespected</label>
+							<label className="margin-bottom-0"><Field component="input" type="checkbox" groupname="q_9" name="I feel disrespected" />I feel disrespected</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I feel unhappy" />I feel unhappy</label>
+							<label className="margin-bottom-0"><Field component="input" type="checkbox" groupname="q_9" name="I feel unhappy" />I feel unhappy</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="I did not get a fair treatment" />I did not get a fair treatment</label>
+							<label className="margin-bottom-0"><Field component="input" type="checkbox" groupname="q_9" name="I did not get a fair treatment" />I did not get a fair treatment</label>
 
-							<label className="margin-bottom-0"><input type="checkbox" name="q_9" onChange={this.handleCheckboxChanged} value="Other" />Other</label>
+							<label className="margin-bottom-0"><Field component="input" type="checkbox" groupname="q_9" name="Other" />Other</label>
 
 
 						</fieldset>
@@ -361,7 +384,7 @@ class ComplaintPortal extends React.Component {
             	<div className="padding-3">&nbsp;</div>
             	<div className="padding-3">&nbsp;</div>
             	<div className="padding-3">&nbsp;</div>
-		    </React.Fragment>
+		    </form>
 		)
 	}
 }
@@ -369,17 +392,25 @@ class ComplaintPortal extends React.Component {
 class FormElement extends React.Component{
 	constructor(props) {
     	super(props);
-    	console.log(this.props.children)
+    	console.log(this.props.fieldData)
     }	
+
 	render(){
-		return this.props.children
+		return this.props.children;
+		/*
+		return (
+			<form onSubmit={this.props.handleSubmit}>
+				{this.props.children}
+			</form>
+		)*/
 	}
 }
+
 
 class Element extends React.Component{
 	render(){
 		return(
-			<div className="form_element padding-0 padding-left-1" onClick={this.props.clickHandler.bind(this, this.props.helper)}>
+			<div aria-describedby={this.props.helper} className="form_element padding-0 padding-left-1" onClick={this.props.clickHandler.bind(this, this.props.helper)}>
 				{this.props.children}
 			</div>
 		)
@@ -387,6 +418,8 @@ class Element extends React.Component{
 }
 
 class Helper extends React.Component{
+	static contextType = MobileContext;
+
 	constructor(props) {
     	super(props);
     	//this.props.setSide(this.props.children, this.props.id);
@@ -400,24 +433,23 @@ class Helper extends React.Component{
 
     componentDidMount(){
     	$("#sidebar").foundation()
-    	//stickySidebar.updateSticky();
+    	if(this.props.sidebar) this.props.sidebar.updateSticky();
     }
 	
 	render(){
-		let children = this.props.children
-		if (this.props.id == this.props.isShown) {
-			return (
-				<div className={!this.props.isMobile ? "show-for-sr helper" : "helper"}>
-			 		{children}
-			 		{ReactDOM.createPortal(children, sidebarNode)}
-			 	</div>
-			)
-		} else{
+		let children = <div className={(this.props.id == this.props.isShown)? "show" : "hide"} id={this.props.id}>{this.props.children}</div>
+
+		if (!this.props.isMobile) {
+			return ReactDOM.createPortal(children, sidebarNode);
+		} else if (this.props.isMobile){
 			return(
-				<div className={!this.props.isMobile ? "show-for-sr helper" : "helper"}>
+				<div className="helper">
+					{children}
 				</div>
 			)
 
+		}else {
+			return false;
 		}
 	}
 }
@@ -425,6 +457,7 @@ class Helper extends React.Component{
 class ShowChoices extends React.Component{
 	constructor(props) {
     	super(props);
+    	//let vals = formValues(this.props.field)
     }
 	anchorClick (e){
     	e.preventDefault()
@@ -467,6 +500,55 @@ class RadioGroup extends React.Component {
 }
 
 
+function showResults(values) {
+  window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+};
+
+const reducer = combineReducers({
+  form: reduxFormReducer, // mounted under "form"
+});
+
+
+const store = (window.devToolsExtension
+  ? window.devToolsExtension()(createStore)
+  : createStore)(reducer);
+
+
+
+ComplaintPortal = reduxForm({
+  form: 'complaintForm',
+  destroyOnUnmount: false
+})(ComplaintPortal);
+
+// Decorate with connect to read form values
+const selector = formValueSelector('complaintForm'); // <-- same as form name
+ComplaintPortal = connect(state => {
+  const fieldData = selector(state, 
+  	'q_1',
+  	'q_2',
+  	'q_3',
+  	'q_4',
+  	'q_4_other',
+  	'q_5',
+  	'q_5_single',
+  	'q_5_start',
+  	'q_5_end',
+  	'q_6',
+  	'q_7',
+  	'q_7_other',
+  	'q_8',
+  	'q_9',
+  	'q_9_other',
+  	'q_10',
+  	'q_11'
+  );
+  return {
+    fieldData
+  };
+})(ComplaintPortal);
+
+
+
 /** RENDER CODE **/
 
 let mountNode = document.getElementById("app"),
@@ -474,9 +556,10 @@ let mountNode = document.getElementById("app"),
 
 
 
-ReactDOM.render(<ComplaintPortal />, mountNode);
-//ReactDOM.render(<ProgressBar formValues={formData} />, document.getElementById("progress"));
-//let sidebar = new StickySidebar('#sidebar_holder', {topSpacing: 1});
+ReactDOM.render(<Provider store={store}>
+					<ComplaintPortal onSubmit={showResults}/>
+				</Provider>
+				, mountNode);
 
 
 var sidebar = document.getElementById('sidebar_holder');
