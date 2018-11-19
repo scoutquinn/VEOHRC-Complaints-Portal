@@ -69,12 +69,24 @@ html{
 		}
 
 		.helper{
-			background-color: lighten($veohrc_primary, 50%)
+			background-color: lighten($veohrc_primary, 60%)
 		}
 
 		span.option{
 			text-decoration: underline;
 			background-color: lighten($veohrc_primary, 80%)
+		}
+		.helper-hilight{
+			position: absolute;
+			z-index: -1;
+			background-color: lighten($veohrc_primary, 60%);
+			transition-property: top left width height;
+			transition-duration: .2s;
+			border-radius: 1rem;
+		}
+		.form_element{
+			padding-top: .2rem;
+			padding-bottom: .2rem;
 		}
 	}
 }
