@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { reduxForm, Field, FormSection, propTypes, formValueSelector } from 'redux-form';
+import { reduxForm, Field, FormSection, propTypes, FieldArray, formValueSelector } from 'redux-form';
 import { Provider, connect } from "react-redux";
 import { createStore, combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
@@ -23,22 +23,6 @@ MULTI PART FORM
 ***/
 const MobileContext = React.createContext('desktop');
 
-
-const datePicker = ({ input, label, type, className, selected, meta: { touched, error } }) => (
-      <div>
-        <div>
-          <DatePicker {...input}
-            selected={moment(selected)} placeholder={label}
-            type={type} className={className}
-            peekNextMonth
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-          />
-          {touched && error && <span className="error_field">{error}</span>}
-        </div>
-      </div>
-    )
 
 class ComplaintPortal extends React.Component {
 	constructor (props) {
@@ -498,6 +482,28 @@ class ComplaintPortal extends React.Component {
             			<p>You can use this section to tell us more information about your story. </p>
             		</Helper>
             	</FormElement>
+            	<FormElement onSubmit={showResults}>
+            		<h3 className="padding-top-3">Q4. Please provide the Organisation details below</h3>
+            		<Element clickHandler={this.showHelp} helper="q_12">
+            			<div className="grid-x">
+	            			<div className="cell auto">
+	            				Please provide the Organisation details below.
+	            			</div>
+	            		</div>
+	            		<div className="grid-x">
+	            			<div className="cell auto">
+            					<FieldArraysForm onSubmit={showResults} />
+            				</div>
+            			</div>
+            		</Element>
+            		<Helper sidebar={stickySidebar} id="q_12" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            			<h4>Why do we ask?</h4>
+            			<p>The Commission uses this information to contact the other party in order to begin the dispute resolution process.</p>
+            			<h4>What if I don't know their details?</h4>
+            			<p>This means we won't be able to help you with our dispute resolution service but we still want to learn about your story. Sharing your story will help the Commission to work towards helping more people like yourself.</p>
+            		</Helper>
+            	</FormElement>
+            	<input type="submit" value="submit"/>
             	<div className="padding-3">&nbsp;</div>
             	<div className="padding-3">&nbsp;</div>
             	<div className="padding-3">&nbsp;</div>
@@ -506,6 +512,115 @@ class ComplaintPortal extends React.Component {
 	}
 }
 
+/*
+Repeatable fields example
+*/
+const renderField = ({ input, label, type, meta: { touched, error } }) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} type={type} placeholder={label} />
+      {touched && error && <span>{error}</span>}
+    </div>
+  </div>
+)
+
+const FieldArraysForm = props => {
+  const { handleSubmit, pristine, reset, submitting } = props
+  return (
+    <FormSection name="q_12"> 
+      <Field
+        name="org_name"
+        type="text"
+        component={renderField}
+        label="Organisation Name"
+      />
+      <Field
+        name="org_number"
+        type="text"
+        component={renderField}
+        label="Contact Number"
+      />
+      <Field
+        name="org_email"
+        type="email"
+        component={renderField}
+        label="Email Address"
+      />
+      <Field
+        name="org_address"
+        type="text"
+        component={renderField}
+        label="Address"
+      />
+      <FieldArray name="individuals" component={renderIndividuals} />
+    </FormSection>  
+  )
+}
+
+const renderIndividuals = ({ fields, meta: { error, submitFailed } }) => (
+	<React.Fragment>
+      {submitFailed && error && <span>{error}</span>}
+	    {fields.map((member, index) => (
+	      <div className="card" key={index}>
+	        
+	        <div className="card-divider clearfix">Individual No. {index + 1} &emsp;<a className="button hollow float-right"
+	          type="button"
+	          onClick={() => fields.remove(index)}
+	        >Remove Individual</a></div>
+	        <div className="card-section">
+		        <Field
+		          name={`${member}.firstName`}
+		          type="text"
+		          component={renderField}
+		          label="First Name"
+		        />
+		        <Field
+		          name={`${member}.lastName`}
+		          type="text"
+		          component={renderField}
+		          label="Last Name"
+		        />
+	        </div>
+	      </div>
+	    ))}
+      <a className="button hollow" onClick={() => fields.push({})}>Add Individual</a>
+	</React.Fragment>
+)
+
+
+
+/*
+DatePicker Element:
+renders datepicker into a redux-form element
+uses "moment" for time calculations
+*/
+
+const datePicker = ({ input, label, type, className, selected, meta: { touched, error } }) => (
+      <div>
+        <div>
+          <DatePicker {...input}
+            selected={moment(selected)} placeholder={label}
+            type={type} className={className}
+            peekNextMonth
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+          />
+          {touched && error && <span className="error_field">{error}</span>}
+        </div>
+      </div>
+    )
+
+
+
+
+
+
+/*
+Dummy holder for top level for sections
+Possibly uneeded
+*/
 
 class FormElement extends React.Component{
 	constructor(props) {
@@ -515,14 +630,18 @@ class FormElement extends React.Component{
 
 	render(){
 		return this.props.children;
-		/*
-		return (
-			<form onSubmit={this.props.handleSubmit}>
-				{this.props.children}
-			</form>
-		)*/
+
 	}
 }
+
+
+
+
+
+/*
+Holder for question/ input field in left side of form.
+also handles clicks for highlighting the section
+*/
 
 
 class Element extends React.Component{
@@ -539,6 +658,15 @@ class Element extends React.Component{
 	}
 }
 
+
+
+
+
+/*
+Helper section.
+Is displayed in the sidebar for desktop, and below the element for mobile
+*/
+
 class Helper extends React.Component{
 	static contextType = MobileContext;
 
@@ -549,9 +677,9 @@ class Helper extends React.Component{
     	//if (!this.props.isMobile) this.props.setSide(this.props.children, this.props.id);
   	}
 
-  	showhelp(){
-  		console.log("diggy");
-  	}
+  	// showhelp(){
+  	// 	console.log("diggy");
+  	// }
 
     componentDidMount(){
     	$("#sidebar").foundation()
@@ -576,6 +704,15 @@ class Helper extends React.Component{
 	}
 }
 
+
+
+
+
+
+/* 
+Button element. displays choices made (if an object is provided) or radio button value
+*/
+
 class ShowChoices extends React.Component{
 	constructor(props) {
     	super(props);
@@ -595,6 +732,14 @@ class ShowChoices extends React.Component{
 	}
 }
 
+
+
+
+
+/*
+helper function to conver a checkbox object into a comma seperated string
+*/
+
 function objToString(val){
 	let out = [];
 	Object.keys(val).map((key) => {
@@ -602,6 +747,8 @@ function objToString(val){
 	})
 	return out.join(", ");
 }
+
+
 
 
 
@@ -632,6 +779,13 @@ class RadioGroup extends React.Component {
 }
 
 
+
+
+
+
+/*
+Return function for form. just outputs to an alert box currently
+*/
 function showResults(values) {
   window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
 };
@@ -660,8 +814,8 @@ ComplaintPortal = reduxForm({
 const selector = formValueSelector('complaintForm'); // <-- same as form name
 ComplaintPortal = connect(state => {
   const fieldData = selector(state, 
-  	'q_1',
-  	'q_2',
+  	'q_1',  //string
+  	'q_2',	
   	'q_3',
   	'q_4',
   	'q_4_other',
