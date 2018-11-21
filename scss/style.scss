@@ -88,5 +88,15 @@ html{
 			padding-top: .2rem;
 			padding-bottom: .2rem;
 		}
+
+		.sidebar_holder{
+		    will-change: min-height;
+		}
+
+		.sidebar__inner{
+		    transform: translate(0, 0); /* For browsers don't support translate3d. */
+		    transform: translate3d(0, 0, 0);
+		    will-change: position, transform;
+		}
 	}
 }

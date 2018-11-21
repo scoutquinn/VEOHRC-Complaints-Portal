@@ -75,6 +75,7 @@ class ComplaintPortal extends React.Component {
     	//console.log(os);
     	this.setState({os})
     	this.setState({sideBar: id})
+    	this.props.sidebar();
     }
 
     sidebarClick () {
@@ -702,7 +703,6 @@ Possibly uneeded
 class FormElement extends React.Component{
 	constructor(props) {
     	super(props);
-    	console.log(this.props.fieldData)
     }	
 
 	render(){
@@ -759,7 +759,7 @@ class Helper extends React.Component{
   	// }
 
     componentDidMount(){
-    	$("#sidebar").foundation()
+    	$("#sidebar").foundation();
     	if(this.props.sidebar) this.props.sidebar.updateSticky();
     }
 	
@@ -920,30 +920,42 @@ ComplaintPortal = connect(state => {
 
 /** RENDER CODE **/
 
+function updateSidebar(){
+	stickySidebar.updateSticky()
+}
+
 let mountNode = document.getElementById("app"),
 	sidebarNode = document.getElementById("sidebar");
 
 
 
 ReactDOM.render(<Provider store={store}>
-					<ComplaintPortal onSubmit={showResults}/>
+					<ComplaintPortal sidebar={updateSidebar} onSubmit={showResults}/>
 				</Provider>
 				, mountNode);
 
 
 var sidebar = document.getElementById('sidebar_holder');
 
-var stickySidebar = new StickySidebar(sidebar);
-
-sidebar.addEventListener('affix.top.stickySidebar', function () {
-    //console.log('Sidebar has stuck top of viewport.');
+var stickySidebar = new StickySidebar(sidebar,{
+    containerSelector: '#complaints_portal',
+    topSpacing: 40,
+    bottomSpacing: 40,
 });
 
-sidebar.addEventListener('affix.bottom.stickySidebar', function (event) {
-    //console.log('Sidebar has stuck bottom of viewport.');
-});
+
+// sidebar.addEventListener('affix.top.stickySidebar', function () {
+//     console.log('Sidebar has stuck top of viewport.');
+// });
+
+// sidebar.addEventListener('affix.bottom.stickySidebar', function (event) {
+//     console.log('Sidebar has stuck bottom of viewport.');
+// });
+// sidebar.addEventListener('update.stickySidebar', function (event) {
+//     console.log('Sidebar has updated');
+// });
 
 $(document).ready(function(){
 	$(document).foundation();
-	//
+	//var test = setTimeout(function(){stickySidebar.updateSticky();console.log('go');},3000)
 });
