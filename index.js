@@ -18,9 +18,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 /***
 
-MULTI PART FORM
+COMPLAINT FORM
+
+Submit is handled by "showResults" function on line: 866
 
 ***/
+
 const MobileContext = React.createContext('desktop');
 
 
@@ -40,7 +43,9 @@ class ComplaintPortal extends React.Component {
           	top: 0,
           	left: 0
           },
-          startDate: new Date()
+          singleDate: new Date(),
+          startDate: new Date(),
+          endDate: new Date()
         }
         this.formStateUpdate = this.formStateUpdate.bind(this);
         this.showHelp = this.showHelp.bind(this);
@@ -257,7 +262,7 @@ class ComplaintPortal extends React.Component {
 						            name="q_5_single"
 						            component={datePicker}
 						            type="text"
-						            selected={moment(this.state.startDate)}
+						            selected={moment(this.state.singleDate)}
 						            onChange={this.handleChange.bind(this)}
 						            className="form-control"
 						          />
@@ -278,7 +283,7 @@ class ComplaintPortal extends React.Component {
 							            name="q_5_end"
 							            component={datePicker}
 							            type="text"
-							            selected={moment(this.state.startDate)}
+							            selected={moment(this.state.endDate)}
 							            onChange={this.handleChange.bind(this)}
 							            className="form-control"
 							          />
@@ -861,6 +866,8 @@ Return function for form. just outputs to an alert box currently
 function showResults(values) {
   window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
 };
+
+
 
 // function coords(elem){
 // 	console.log($(elem).offset());
