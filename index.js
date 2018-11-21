@@ -153,7 +153,6 @@ class ComplaintPortal extends React.Component {
 	            				My name is &nbsp;
 	            			</div>
 	            			<div className="cell auto">
-		            			{/*<input type="text" name="form_name" placeholder="Type your full name"/>*/}
 		            			<Field
 						            name="q_2"
 						            component="input"
@@ -503,8 +502,62 @@ class ComplaintPortal extends React.Component {
             			<p>This means we won't be able to help you with our dispute resolution service but we still want to learn about your story. Sharing your story will help the Commission to work towards helping more people like yourself.</p>
             		</Helper>
             	</FormElement>
-            	<input type="submit" value="submit"/>
-            	<div className="padding-3">&nbsp;</div>
+            	<FormElement onSubmit={showResults}>
+            		<h3 className="padding-top-3">Q5. Your Details</h3>
+            		<Element clickHandler={this.showHelp} helper="q_13">
+            			<div className="grid-x">
+	            			<div className="cell auto">
+	            				Please provide your contact details below.
+	            			</div>
+	            		</div>
+	            		<div className="grid-x">
+	            			<div className="cell auto">
+            					<FormSection name="q_13">
+            						<label>Preferred Title</label>
+							          <Field name="title" component="select">
+							            <option>Choose one.</option>
+							            <option value="Mrs">Mrs</option>
+							            <option value="Ms">Ms</option>
+							            <option value="Mr">Mr</option>
+							            <option value="Mx">Mx</option>
+							            <option value="Other">Other</option>
+							          </Field>
+            						<label>Contact Number</label>
+            						<Field
+								        name="contact_number"
+								        type="text"
+								        component='input'
+								    />
+            						<label>Email</label>
+            						<Field
+								        name="contact_email"
+								        type="email"
+								        component='input'
+								    />
+            						<label>Address</label>
+            						<Field
+								        name="contact_address"
+								        type="text"
+								        component='input'
+								    />
+								    <p>Do you need any of the following assistance?</p>
+								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="Interpreter Service" />Interpreter Service</label>
+								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="Accessible Documents" />Accessible Documents</label>
+								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="TTY" />TTY</label>
+								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="Other" />Other</label>
+            					</FormSection> 
+            				</div>
+            			</div>
+            		</Element>
+            		<Helper sidebar={stickySidebar} id="q_13" isShown={this.state.sideBar} isMobile={this.state.mobile}>
+            			<h4>Why do we ask?</h4>
+            			<p>The Commission uses this information to contact you.</p>
+            			<h4>What if I don't want to share my details?</h4>
+            			<p>This means we won't be able to help you with our dispute resolution service but we still want to learn about your story. Sharing your story will help the Commission to work towards helping more people like yourself.</p>
+            		</Helper>
+            	</FormElement>
+            	<div className="padding-1">&nbsp;</div>
+            	<input className="button" type="submit" value="Next"/>
             	<div className="padding-3">&nbsp;</div>
             	<div className="padding-3">&nbsp;</div>
 		    </form>
@@ -513,8 +566,11 @@ class ComplaintPortal extends React.Component {
 }
 
 /*
-Repeatable fields example
+Repeatable fields for or and individuals
+
 */
+
+// individual field and label
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div>
     <label>{label}</label>
@@ -525,6 +581,8 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
   </div>
 )
 
+
+// initial organisation fields
 const FieldArraysForm = props => {
   const { handleSubmit, pristine, reset, submitting } = props
   return (
@@ -558,6 +616,8 @@ const FieldArraysForm = props => {
   )
 }
 
+
+// subfields for individuaLs
 const renderIndividuals = ({ fields, meta: { error, submitFailed } }) => (
 	<React.Fragment>
       {submitFailed && error && <span>{error}</span>}
@@ -594,6 +654,18 @@ const renderIndividuals = ({ fields, meta: { error, submitFailed } }) => (
 DatePicker Element:
 renders datepicker into a redux-form element
 uses "moment" for time calculations
+
+usage:
+
+<Field
+    name="q_5_start"
+    component={datePicker}
+    type="text"
+    selected={moment(this.state.startDate)}
+    onChange={this.handleChange.bind(this)}
+    className="form-control"
+/>
+
 */
 
 const datePicker = ({ input, label, type, className, selected, meta: { touched, error } }) => (
