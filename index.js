@@ -26,17 +26,12 @@ Submit is handled by "showResults" function on line: 866
 
 const MobileContext = React.createContext('desktop');
 
-
 class ComplaintPortal extends React.Component {
 	constructor (props) {
         super(props)
         this.state = { 
           sideBar: "q_1",
-          sidebars: {},
           mobile: false,
-          formData: {
-          	
-          },
           os:{
           	w: 0,
           	h: 0,
@@ -45,48 +40,62 @@ class ComplaintPortal extends React.Component {
           },
           singleDate: new Date(),
           startDate: new Date(),
-          endDate: new Date()
+          endDate: new Date(),
+          width : 0
         }
-        this.formStateUpdate = this.formStateUpdate.bind(this);
-        this.showHelp = this.showHelp.bind(this);
-        this.handleRadioChanged = this.handleRadioChanged.bind(this);
-        this.handleCheckboxChanged = this.handleCheckboxChanged.bind(this);
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(date) {
+
+    // set state of date fields
+    handleDateChange = (field, date) => {
 	    this.setState({
-	    	startDate: moment(date)
+	    	[field]: moment(date)
 	    });
 	}
 
     // function to prevent default actions
-    anchorClick (e){
+    anchorClick = (e) => {
     	e.preventDefault()
     }
 
     // sidebar 
-    showHelp (id, ref) {
-    	//console.log(ref)
+    showHelp = (id, ref) => {
+
+    	//get DOM element and calc offset, width and height (jQuery)
     	const $e = $(ref.current)
     	let os = $e.offset();
     	os.h = $e.height();
     	os.w = $e.width();
-    	//console.log(os);
     	this.setState({os})
+
+    	// set sidebar from id
     	this.setState({sideBar: id})
     	this.props.sidebar();
     }
+
+    componentDidMount() {
+	    // this.setState(
+	    //   { width: window.innerWidth },
+	    //   window.addEventListener("resize", ({ target }) =>
+	    //     this.setState({ width: target.innerWidth })
+	    //   )
+	    // );
+	}
+
+	componentWillUnmount(){
+
+	}
 
     sidebarClick () {
     	console.log('workzz')
     }
 
-    handleRadioChanged (event) {
+    /*
+    handleRadioChanged = (event) => {
     	this.formStateUpdate(event.target.name, event.target.value)
     }
 
-    handleCheckboxChanged (event) {
+    handleCheckboxChanged = (event) => {
     	let val = (this.state.formData[event.target.name]) ? this.state.formData[event.target.name] : [] ;
     	
     	if(event.target.checked && val.indexOf(event.target.value) === -1 ) {
@@ -111,6 +120,7 @@ class ComplaintPortal extends React.Component {
     	console.log(vars);
     	return vars;
     }
+    */
 
 
 	
@@ -124,17 +134,17 @@ class ComplaintPortal extends React.Component {
 					left: this.state.os.left+"px",
 					top: (this.state.os.top-10)+"px"
 				}}/>
-				<FormElement onSubmit={showResults}>
+				<FormElement>
             		<h3>Q1. Who are you lodging a complaint for?</h3>
             		<Element clickHandler={this.showHelp} helper="q_1">
-            			<div className="grid-x">
-						    <div className="cell medium-6">
+            			<div className="grid-x grid-margin-x">
+						    <div className="cell medium-shrink">
 							    <label>
 							    	<Field name="q_1" component="input" label="myself" type="radio" value="Myself" />
 							    	Myself
 							    </label>
 							</div>
-						    <div className="cell medium-6">
+						    <div className="cell medium-shrink">
 							    <label>
 							    	<Field name="q_1" component="input" type="radio" value="Someone Else" />
 							    	Someone Else
@@ -151,7 +161,7 @@ class ComplaintPortal extends React.Component {
             		</Helper>
             	</FormElement>
             	<br/>
-            	<FormElement onSubmit={showResults}>
+            	<FormElement>
             		<h3 className="padding-top-2">Q2. What happened to you?</h3>
             		<Element clickHandler={this.showHelp} helper="q_2">
             			<div className="grid-x">
@@ -264,7 +274,7 @@ class ComplaintPortal extends React.Component {
 						            component={datePicker}
 						            type="text"
 						            selected={moment(this.state.singleDate)}
-						            onChange={this.handleChange.bind(this)}
+						            onChange={this.handleDateChange.bind(this, 'singleDate')}
 						            className="form-control"
 						          />
 					    	<label className="margin-bottom-0"><Field component="input" type="radio" name="q_5" value="Between these dates" />Between these dates</label>
@@ -275,7 +285,7 @@ class ComplaintPortal extends React.Component {
 							            component={datePicker}
 							            type="text"
 							            selected={moment(this.state.startDate)}
-							            onChange={this.handleChange.bind(this)}
+							            onChange={this.handleDateChange.bind(this, "startDate")}
 							            className="form-control"
 							          />
 								</div>
@@ -285,7 +295,7 @@ class ComplaintPortal extends React.Component {
 							            component={datePicker}
 							            type="text"
 							            selected={moment(this.state.endDate)}
-							            onChange={this.handleChange.bind(this)}
+							            onChange={this.handleDateChange.bind(this, "endDate")}
 							            className="form-control"
 							          />
 								</div>
@@ -461,7 +471,7 @@ class ComplaintPortal extends React.Component {
             		</Helper>
             		
             	</FormElement>
-            	<FormElement onSubmit={showResults}>
+            	<FormElement>
             		<h3 className="padding-top-3">Q3. (Optional) Is there anything else you would like the Commission to know?</h3>
             		<Element clickHandler={this.showHelp} helper="q_11">
             			<div className="grid-x">
@@ -487,7 +497,7 @@ class ComplaintPortal extends React.Component {
             			<p>You can use this section to tell us more information about your story. </p>
             		</Helper>
             	</FormElement>
-            	<FormElement onSubmit={showResults}>
+            	<FormElement>
             		<h3 className="padding-top-3">Q4. Please provide the Organisation details below</h3>
             		<Element clickHandler={this.showHelp} helper="q_12">
             			<div className="grid-x">
@@ -508,7 +518,7 @@ class ComplaintPortal extends React.Component {
             			<p>This means we won't be able to help you with our dispute resolution service but we still want to learn about your story. Sharing your story will help the Commission to work towards helping more people like yourself.</p>
             		</Helper>
             	</FormElement>
-            	<FormElement onSubmit={showResults}>
+            	<FormElement>
             		<h3 className="padding-top-3">Q5. Your Details</h3>
             		<Element clickHandler={this.showHelp} helper="q_13">
             			<div className="grid-x">
@@ -572,8 +582,7 @@ class ComplaintPortal extends React.Component {
 }
 
 /*
-Repeatable fields for or and individuals
-
+Repeatable fields for organisation and individuals
 */
 
 // individual field and label
@@ -680,6 +689,7 @@ const datePicker = ({ input, label, type, className, selected, meta: { touched, 
           <DatePicker {...input}
             selected={moment(selected)} placeholder={label}
             type={type} className={className}
+            dateFormat="MMMM Do YYYY"
             peekNextMonth
             showMonthDropdown
             showYearDropdown
@@ -793,15 +803,23 @@ Button element. displays choices made (if an object is provided) or radio button
 class ShowChoices extends React.Component{
 	constructor(props) {
     	super(props);
-    	//let vals = formValues(this.props.field)
     }
-	anchorClick (e){
+
+	anchorClick = (e) => {
     	e.preventDefault()
     }
+
+    objToString = (obj) => {
+		let out = [];
+		Object.keys(obj).map((key) => {
+			if (obj[key]) out.push(key);
+		})
+		return out.join(", ");
+	}
+	
 	render(){
 		let val = this.props.formData[this.props.field];
-		//console.log(val)
-		if(typeof(val) == 'object') val = objToString(val);
+		if(typeof(val) == 'object') val = this.objToString(val);
 
 		return(
 			<a className="button expanded hollow" onClick={this.anchorClick} href="#">{val ? val : 'Choose...' }</a>
@@ -817,10 +835,10 @@ class ShowChoices extends React.Component{
 helper function to conver a checkbox object into a comma seperated string
 */
 
-function objToString(val){
+function objToString(obj){
 	let out = [];
-	Object.keys(val).map((key) => {
-		if (val[key]) out.push(key);
+	Object.keys(obj).map((key) => {
+		if (obj[key]) out.push(key);
 	})
 	return out.join(", ");
 }
@@ -864,7 +882,7 @@ class RadioGroup extends React.Component {
 Return function for form. just outputs to an alert box currently
 */
 function showResults(values) {
-  window.alert(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+  console.log(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
 };
 
 
