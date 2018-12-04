@@ -139,13 +139,13 @@ class ComplaintPortal extends React.Component {
 						    <div className="cell medium-shrink">
 							    <label>
 							    	<Field name="q_1" component="input" label="myself" type="radio" value="Myself" />
-							    	Myself
+							    	&ensp; Myself
 							    </label>
 							</div>
 						    <div className="cell medium-shrink">
 							    <label>
 							    	<Field name="q_1" component="input" type="radio" value="Someone Else" />
-							    	Someone Else
+							    	&ensp; Someone Else
 							    </label>
 							</div>
 							
@@ -198,32 +198,50 @@ class ComplaintPortal extends React.Component {
             			<fieldset className="large-6 cell">
 						    <label className="margin-bottom-1">
 						    	<Field name="q_3" component="input" type="radio" value="Bullied" />
-						    	
-						    Bullied</label>
+						    	&ensp; Bullied</label>
 						    <label className="margin-bottom-1">
 						    	<Field name="q_3" component="input" type="radio" value="Treated unfairly" />
-						    	 Treated unfairly
+						    	 &ensp; Treated unfairly
 						    	</label>
-						    <label className="margin-bottom-1">
-						    	<Field name="q_3" component="input" type="radio" value="Sexually harassed" />
-						    	 Sexually harassed <a className="tiny button primary" href="#" data-toggle="more-info-sh">?</a>
-						    	</label>
-						    <p className="hide" id="more-info-sh" data-toggler=".hide">
-						    	<small>Under the Equal Opportunity Act 2010, sexual harassment is defined as:
-								<br/>an unwelcome sexual advance
-								<br/>an unwelcome request for sexual favours
-								<br/>any other unwelcome conduct of a sexual nature
-								<br/>
-								which would lead a reasonable person to experience offence, humiliation or intimidation. It can be physical, verbal, or written.</small>
+						    <div className="grid-x">
+							    <div className="cell shrink">
+								    <label className="margin-bottom-1">
+								    	<Field name="q_3" component="input" type="radio" value="Sexually harassed" />
+								    	 &ensp; Sexually harassed &ensp; 
+								    </label>
+								</div>
+								<div className="cell shrink">
+								    <a className="tiny button primary float-right" data-toggle="more-info-sh">?</a>
+								</div>
+							</div>
+						    <p className="hide card" id="more-info-sh" data-toggler=".hide">
+							    <div className="card-section">
+							    	<small>Under the Equal Opportunity Act 2010, sexual harassment is defined as:
+									<br/>an unwelcome sexual advance
+									<br/>an unwelcome request for sexual favours
+									<br/>any other unwelcome conduct of a sexual nature
+									<br/>
+									which would lead a reasonable person to experience offence, humiliation or intimidation. It can be physical, verbal, or written.</small>
+								</div>
 							</p>
-						    <label className="margin-bottom-1">
-						    	<Field component="input" name="q_3" type="radio" value="Victimised" />
-						    	 Victimised <a className="tiny button primary" href="#" data-toggle="more-info-vi">?</a>
-						    	</label>
-						    <p className="hide" id="more-info-vi" data-toggler=".hide">
-						    	<small>Victimisation is treating someone badly because they spoke up about being treated unfairly, made a complaint or helped someone else make a complaint.
-						    	<br/>Victimisation is also against the law and can be part of a complaint.
-								</small>
+						    <div className="grid-x">
+							    <div className="cell shrink">
+								    <label className="margin-bottom-1">
+								    	<Field component="input" name="q_3" type="radio" value="Victimised" />
+								    	 &ensp; Victimised &ensp; 
+								    </label>
+								</div>
+								<div className="cell shrink">
+								    <a className="tiny button primary" data-toggle="more-info-vi">?</a>
+								</div>
+							</div>
+
+						    <p className="hide card" id="more-info-vi" data-toggler=".hide">
+							    <div className="card-section">
+							    	<small>Victimisation is treating someone badly because they spoke up about being treated unfairly, made a complaint or helped someone else make a complaint.
+							    	<br/>Victimisation is also against the law and can be part of a complaint.
+									</small>
+								</div>
 							</p>
 						</fieldset>
             		</Helper>
@@ -350,22 +368,75 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_7" sidebar={stickySidebar} isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please choose what you believe is true, you can select more than one:</h4>
             			<fieldset>
-							<ReduxCheckboxGroup 
+							<ReduxCheckboxGroupInfoBox 
 		            			data={[
-							    	{ value : "Race", displayName : "Race, skin color, ethnicity, nationality, where I came from, or my culture" },
-									{ value : "Religion", displayName : "Religious beliefs or association" },
-									{ value : "Health/Disability", displayName : "Health, disability or illness (this can be mental or physical)" },
-									{ value : "Employment activities", displayName : "Employment activities (asking for my rights or entitlements at work)" },
-									{ value : "Sex/Gender", displayName : "Sex/Gender" },
-									{ value : "LGBITQ status", displayName : "LGBITQ status" },
-									{ value : "Physical appearance", displayName : "Physical appearance (how you look)" },
-									{ value : "Parental/Carer status", displayName : "Parental/Carer status (you are providing ongoing care to someone dependent on you)" },
-									{ value : "Pregnancy/Breastfeeding", displayName : "Pregnancy/Breastfeeding" },
-									{ value : "Marital status", displayName : "Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)" },
-									{ value : "Political belief or association", displayName : "Political belief or association" },
-									{ value : "Union", displayName : "Union (participation or association)" },
-									{ value : "Personal association", displayName : "Personal association with someone who could be treated unfairly because of one or more of the above reasons  " },
-									{ value : "Other", displayName : "Other" }
+							    	{ 
+							    		value : "Race", 
+							    		displayName : "Race, skin color, ethnicity, nationality, where I came from, or my culture" ,
+							    		moreInfo : "George unsuccessfully applies for a position with a construction company. When he telephones the company’s personnel manager to ask why he did not get the position, George is told: ‘We’ve employed people from your country before. You lot simply don’t share our work ethic’."
+							    	},
+									{ 
+										value : "Religion", 
+										displayName : "Religious beliefs or association" ,
+										moreInfo : "Mariam is a Muslim. At a job interview with an insurance company she is asked about her religious background. Even though Mariam is the best candidate, the HR manager tells her he cannot offer her the job because he thinks she will have to leave her workstation for prayer several times a day."
+									},
+									{ 
+										value : "Health/Disability", 
+										displayName : "Health, disability or illness (this can be mental or physical)" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Employment activities", 
+										displayName : "Employment activities (asking for my rights or entitlements at work)" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Sex/Gender", 
+										displayName : "Sex/Gender" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "LGBITQ status", 
+										displayName : "LGBITQ status" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Physical appearance", 
+										displayName : "Physical appearance (how you look)" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Parental/Carer status", 
+										displayName : "Parental/Carer status (you are providing ongoing care to someone dependent on you)" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Pregnancy/Breastfeeding", 
+										displayName : "Pregnancy/Breastfeeding" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Marital status", 
+										displayName : "Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)" ,
+										moreInfo : ""
+},
+									{ 
+										value : "Political belief or association", 
+										displayName : "Political belief or association" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Union", 
+										displayName : "Union (participation or association)" ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Personal association", 
+										displayName : "Personal association with someone who could be treated unfairly because of one or more of the above reasons  " ,
+										moreInfo : ""
+									},
+									{ 
+										value : "Other", displayName : "Other" }
 								]}
 								name="q_7"
 							/>
@@ -860,17 +931,53 @@ data should be an array of objects structured like this:
 
 function ReduxRadioGroup(props) {
 	return (
-		props.data.map((item, idx) => <label key={idx} className="margin-bottom-1">
-				<Field component="input" type="radio" name={props.name} value={item.value} />{item.displayName}
-			</label>)
+		props.data.map(
+			(item, idx) => 
+				<label key={idx} className="margin-bottom-1">
+					<Field component="input" type="radio" name={props.name} value={item.value} />&ensp;{item.displayName}
+				</label>
+			)
 	)
 }
 
 function ReduxCheckboxGroup(props) {
 	return (
 		<FormSection name={props.name}>
-			{ props.data.map((item, idx) => <label key={idx} className="margin-bottom-1"><Field component="input" type="checkbox" name={item.value} />{item.displayName}</label>
-			)}
+			{ props.data.map(
+			 	(item, idx) => 
+					<label key={idx} className="margin-bottom-1">
+						<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
+					</label>
+			    )
+			}
+		</FormSection>
+	)
+}
+
+function ReduxCheckboxGroupInfoBox(props) {
+	return (
+		<FormSection name={props.name}>
+			{ props.data.map(
+			 	(item, idx) => 
+					<div key={idx}>
+						<div className="grid-x">
+						    <div className="cell auto">
+							    <label className="margin-bottom-1">
+									<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
+								</label>
+							</div>
+							<div className="cell shrink">
+							    &ensp;<a className="tiny button primary" data-toggle={"discinfo-"+idx}>Example</a>
+							</div>
+						</div>
+					    <p className="hide card" id={"discinfo-"+idx} data-toggler=".hide">
+						    <div className="card-section">
+						    	<small>{item.moreInfo}</small>
+							</div>
+						</p>
+					</div>
+			    )
+			}
 		</FormSection>
 	)
 }
