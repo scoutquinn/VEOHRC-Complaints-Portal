@@ -100,6 +100,8 @@ class ComplaintPortal extends React.Component {
     	// set sidebar from id
     	this.setState({sideBar: id})
     	this.props.sidebar();
+    	//console.log($("#"+id).find('input').first())
+    	//$("#"+id).find('input').first().focus()
     }
 
     componentDidMount() {
@@ -124,6 +126,7 @@ class ComplaintPortal extends React.Component {
 
 	
 	render() {
+		console.log('render!');
 		return(
 			<form onSubmit={this.props.handleSubmit}>
 				<div className="helper-hilight" style={{
@@ -161,6 +164,7 @@ class ComplaintPortal extends React.Component {
             	<br/>
             	<FormElement>
             		<h3 className="padding-top-2">Q2. What happened to you?</h3>
+            		
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_2">
             			<div className="grid-x">
 	            			<div className="cell medium-shrink">
@@ -189,7 +193,12 @@ class ComplaintPortal extends React.Component {
 	            				and I was &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
-		            			<ShowChoices field="q_3" formData={this.props.fieldData}/>
+		            			<Field 
+		            				component={ShowChoicesNew} 
+		            				name="q_3"
+		            				error="warning"
+		            				errorText="We would like to know why you think you were treated unfairly"
+		            			/>
 	            			</div>
 	            		</div>
             		</Element>
@@ -214,7 +223,7 @@ class ComplaintPortal extends React.Component {
 								    <a className="tiny button primary float-right" data-toggle="more-info-sh">?</a>
 								</div>
 							</div>
-						    <p className="hide card" id="more-info-sh" data-toggler=".hide">
+						    <div className="hide card" id="more-info-sh" data-toggler=".hide">
 							    <div className="card-section">
 							    	<small>Under the Equal Opportunity Act 2010, sexual harassment is defined as:
 									<br/>an unwelcome sexual advance
@@ -223,7 +232,7 @@ class ComplaintPortal extends React.Component {
 									<br/>
 									which would lead a reasonable person to experience offence, humiliation or intimidation. It can be physical, verbal, or written.</small>
 								</div>
-							</p>
+							</div>
 						    <div className="grid-x">
 							    <div className="cell shrink">
 								    <label className="margin-bottom-1">
@@ -236,13 +245,13 @@ class ComplaintPortal extends React.Component {
 								</div>
 							</div>
 
-						    <p className="hide card" id="more-info-vi" data-toggler=".hide">
+						    <div className="hide card" id="more-info-vi" data-toggler=".hide">
 							    <div className="card-section">
 							    	<small>Victimisation is treating someone badly because they spoke up about being treated unfairly, made a complaint or helped someone else make a complaint.
 							    	<br/>Victimisation is also against the law and can be part of a complaint.
 									</small>
 								</div>
-							</p>
+							</div>
 						</fieldset>
             		</Helper>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_4">
@@ -251,7 +260,12 @@ class ComplaintPortal extends React.Component {
 	            				This happened to me at &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
-		            			<ShowChoices field="q_4" formData={this.props.fieldData}/>
+		            			<Field 
+		            				component={ShowChoicesNew} 
+		            				name="q_4"
+		            				error="warning"
+			            			errorText="We would like to know where you were treated unfairly"
+		            			/>
 	            			</div>
 	            		</div>
             		</Element>
@@ -282,7 +296,10 @@ class ComplaintPortal extends React.Component {
 	            				The date this happened was &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
-		            			<ShowChoices field="q_5" formData={this.props.fieldData} store={store}/>
+		            			<Field 
+		            				component={ShowChoicesNew} 
+		            				name="q_5"
+		            			/>
 		            		</div>
 	            		</div>
             		</Element>
@@ -315,6 +332,7 @@ class ComplaintPortal extends React.Component {
 							            name="q_5_end"
 							            component={datePicker}
 							            type="text"
+							            startDate={moment(this.state.startDate)}
 							            selected={moment(this.state.endDate)}
 							            onChange={this.handleDateChange.bind(this, "endDate")}
 							            className="form-control"
@@ -330,7 +348,7 @@ class ComplaintPortal extends React.Component {
 	            				I want to make a complaint about the &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
-		            			<ShowChoices field="q_6" formData={this.props.fieldData} store={store}/>
+		            			<Field component={ShowChoicesNew} name="q_6"/>
 		            		</div>
 	            		</div>
             		</Element>
@@ -338,11 +356,7 @@ class ComplaintPortal extends React.Component {
             			<h4>Who are you making a complaint about?</h4>
             			<fieldset>
 					    	<label className="margin-bottom-0"><Field name="q_6" component="input" type="radio" value="Individual(s)" />Individual(s)</label>
-
 					    	<label className="margin-bottom-0"><Field name="q_6" component="input" type="radio" value="Organisation" />Organisation</label>
-					    	
-
-
 						</fieldset>
             		</Helper>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_3">
@@ -351,7 +365,7 @@ class ComplaintPortal extends React.Component {
 	            				I believe I was &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
-		            			<ShowChoices field="q_3" formData={this.props.fieldData}/>
+		            			<Field component={ShowChoicesNew} name="q_3"/>
 	            			</div>
 	            			<div className="cell medium-shrink">
 	            				&nbsp; because of my
@@ -361,7 +375,12 @@ class ComplaintPortal extends React.Component {
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_7">
             			<div className="grid-x">
 	            			<div className="cell auto">
-		            			<ShowChoices field="q_7" formData={this.props.fieldData}/>
+		            			<Field 
+		            				name="q_7" 
+		            				component={ShowChoicesNew} 
+		            				error="warning"
+		            				errorText="You have selected a lot of reasons. Please make sure that they all apply to you before submitting the form."
+		            			/>
 		            		</div>
 	            		</div>
             		</Element>
@@ -383,57 +402,57 @@ class ComplaintPortal extends React.Component {
 									{ 
 										value : "Health/Disability", 
 										displayName : "Health, disability or illness (this can be mental or physical)" ,
-										moreInfo : ""
+										moreInfo : "A store requires Linh, who is vision impaired, to produce a driver’s licence as identification before it will accept her cheque to pay for goods. Linh is not eligible to have a licence because of her vision impairment. The store will not accept other forms of official identification that Linh offers."
 									},
 									{ 
 										value : "Employment activities", 
 										displayName : "Employment activities (asking for my rights or entitlements at work)" ,
-										moreInfo : ""
+										moreInfo : "Joey works at a take away food shop that has three employees. He asks the owner if he should be receiving penalty rates for time worked on Saturdays. Soon after this, Joey’s Saturday hours are reduced."
 									},
 									{ 
 										value : "Sex/Gender", 
 										displayName : "Sex/Gender" ,
-										moreInfo : ""
+										moreInfo : "Barbara applies to a bus company for a job as a bus driver. She was a transport driver in the RAAF and has plenty of experience. When the employer gives her the job he says he doubts that she will be able to hack the pace and that she will be paid less than the men until she proves herself."
 									},
 									{ 
 										value : "LGBITQ status", 
 										displayName : "LGBITQ status" ,
-										moreInfo : ""
+										moreInfo : "Maxine contacts the local sports centre to join the weekly basketball tournament and is put in touch with a team needing players. At her second game with the team Maxine’s girlfriend comes along to cheer her on. Afterwards, the team captain tells Maxine that she doesn’t want a lesbian on the team as it might upset some of the other team members."
 									},
 									{ 
 										value : "Physical appearance", 
 										displayName : "Physical appearance (how you look)" ,
-										moreInfo : ""
+										moreInfo : "A fast food company will only recruit people with a certain 'look', that is, a specific height, weight and build."
 									},
 									{ 
 										value : "Parental/Carer status", 
 										displayName : "Parental/Carer status (you are providing ongoing care to someone dependent on you)" ,
-										moreInfo : ""
+										moreInfo : "Jasmine is keen to return to work as a marketing manager after taking two years of unpaid parental leave to have her first child. She makes an appointment with her boss to talk about coming back to work, but is told there has been a restructure in the company and Jasmine’s old job no longer exists. No other jobs have changed and Jasmine suspects that her boss simply doesn’t want to have to re-employ her now that she has a young child."
 									},
 									{ 
 										value : "Pregnancy/Breastfeeding", 
 										displayName : "Pregnancy/Breastfeeding" ,
-										moreInfo : ""
+										moreInfo : "Lee goes to the movies with her baby and a friend. She breastfeeds her baby while waiting to go into the cinema. An usher tells Lee that she cannot feed her baby in the foyer because it is embarrassing other patrons."
 									},
 									{ 
 										value : "Marital status", 
 										displayName : "Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)" ,
-										moreInfo : ""
+										moreInfo : "Domestic partners Peter and Jessica are refused accommodation because the landlord only wants to rent to a married couple. Peter and Jessica may lodge a complaint of discrimination based on marital status. It is possible that the landlord may need to provide an apology and agree to rent the place to them."
 },
 									{ 
 										value : "Political belief or association", 
 										displayName : "Political belief or association" ,
-										moreInfo : ""
+										moreInfo : "At a job interview Ally is asked if she is a member of a conservative organisation. When she says no, the interviewer abruptly ends the conversation, claiming that all employees must share the employer’s political beliefs."
 									},
 									{ 
 										value : "Union", 
 										displayName : "Union (participation or association)" ,
-										moreInfo : ""
+										moreInfo : "Zoë is a shop steward at a textiles factory. She takes two years off work to have children. When she decides to re-enter the workforce she telephones the personnel manager of her former employer. Zoë is told, \"We don’t want union types around here. There’s no room for people like you in this company\"."
 									},
 									{ 
 										value : "Personal association", 
 										displayName : "Personal association with someone who could be treated unfairly because of one or more of the above reasons  " ,
-										moreInfo : ""
+										moreInfo : "Renske is harassed and bullied at school because a newspaper prints an article that says her mother has HIV. The school fails to stop the bullying and Renske eventually leaves the school."
 									},
 									{ 
 										value : "Other", displayName : "Other" }
@@ -474,7 +493,12 @@ class ComplaintPortal extends React.Component {
 	            		</div>
 	            		<div className="grid-x">
 	            			<div className="cell medium-auto">
-		            			<ShowChoices field="q_9" formData={this.props.fieldData}/>
+		            			<Field 
+		            				component={ShowChoicesNew} 
+		            				name="q_9"
+		            				error="warning"
+		            				errorText="You have selected a lot of harms. Please make sure that they all apply to you before submitting the form."
+		            			/>
 		            		</div>
 	            		</div>
             		</Element>
@@ -505,7 +529,12 @@ class ComplaintPortal extends React.Component {
 	            		</div>
 	            		<div className="grid-x">
 	            			<div className="cell auto">
-		            			<ShowChoices field="q_10" formData={this.props.fieldData}/>
+		            			<Field 
+		            				name="q_10" 
+		            				component={ShowChoicesNew} 
+		            				error="warning"
+		            				errorText="You have selected a lot of actions. Please make sure that they all apply to you before submitting the form."
+		            			/>
 		            		</div>
 	            		</div>
             		</Element>
@@ -819,9 +848,19 @@ class Element extends React.Component{
   		this.props.refCallback(this.props.helper, this.myRef.current);
   	}
 
+  	click = () => {
+  		this.props.clickHandler.bind(this, this.props.helper, this.myRef)
+  	}
+
   	render(){
 		return(
-			<div ref={this.myRef} aria-describedby={this.props.helper} className="form_element padding-0 padding-left-1" onClick={this.props.clickHandler.bind(this, this.props.helper, this.myRef)}>
+			<div 
+				ref={this.myRef} 
+				aria-describedby={this.props.helper} 
+				className="form_element padding-0 padding-left-1" 
+				onFocus={this.props.clickHandler.bind(this, this.props.helper, this.myRef)} 
+				onClick={this.props.clickHandler.bind(this, this.props.helper, this.myRef)}
+			>
 				{this.props.children}
 			</div>
 		)
@@ -847,13 +886,17 @@ class Helper extends React.Component{
 
 
     componentDidMount(){
-    	$("#sidebar").foundation();
+    	//$("#sidebar").foundation();
     	if(this.props.sidebar) this.props.sidebar.updateSticky();
 
     }
     componentDidUpdate(){
     	if (this.props.id == this.props.isShown){
     		this.props.showHelp(this.props.id)
+    		// $("#"+this.props.id)
+    		// 	.find('input')
+    		// 	.first()
+    		// 	.focus()
     	}
     }
 
@@ -887,13 +930,22 @@ class Helper extends React.Component{
 Button element. displays choices made (if an object is provided) or radio button value
 */
 
+
 class ShowChoices extends React.Component{
 	constructor(props) {
     	super(props);
+    	this.state = {
+    		showError : false,
+    		val : 'choose'
+    	}
     }
 
 	anchorClick = (e) => {
     	e.preventDefault()
+   		$("#"+this.props.field)
+   			.find('input')
+   			.first()
+   			.focus()    	
     }
 
     /*
@@ -905,15 +957,84 @@ class ShowChoices extends React.Component{
 		Object.keys(obj).map((key) => {
 			if (obj[key]) out.push(key);
 		})
+		if(out.length > 4 && !this.state.showError) {
+			this.setState({ showError: true });
+		}else if(out.length <= 4 && this.state.showError){
+			this.setState({ showError: false });
+		}
+		return out.join(", ");
+	}
+
+	componentDidUpdate(){
+		let val = this.props.formData[this.props.field];
+		if(typeof(val) == 'object') val = this.objToString(val);
+		if(this.state.val != val ) this.setState({val: val})
+	}
+	
+	render(){
+		return(
+			<React.Fragment>
+				<a className="button expanded hollow" onClick={this.anchorClick} href="#">{this.state.val ? this.state.val : 'Choose...' }</a>
+				{ this.state.showError && <div className={"callout "+this.props.error} ><small>{this.props.errorText}</small></div>}
+			</React.Fragment>
+		)
+	}
+}
+
+class ShowChoicesNew extends React.Component{
+	constructor(props) {
+    	super(props);
+    	this.state = {
+    		showError : false,
+    		val : 'Choose...'
+    	}
+    }
+
+	anchorClick = (e) => {
+    	e.preventDefault()
+		$("#"+this.name)
+			.find('input')
+			.first()
+			.focus()    	
+    }
+
+    componentDidMount(){
+    	this.setVals()
+    }
+
+    componentDidUpdate(){
+		this.setVals()
+	}
+
+    setVals(){
+    	let val = this.props.input.value;
+		if(typeof(val) == 'object') val = this.objToString(val);
+		if(this.state.val != val ) this.setState({val: val})
+    }
+
+    /*
+	helper function to conver a checkbox object into a comma seperated string
+	*/
+
+    objToString = (obj) => {
+		let out = [];
+		Object.keys(obj).map((key) => {
+			if (obj[key]) out.push(key);
+		})
+		if(out.length > 4 && !this.state.showError) {
+			this.setState({ showError: true });
+		}else if(out.length <= 4 && this.state.showError){
+			this.setState({ showError: false });
+		}
 		return out.join(", ");
 	}
 	
 	render(){
-		let val = this.props.formData[this.props.field];
-		if(typeof(val) == 'object') val = this.objToString(val);
-
 		return(
-			<a className="button expanded hollow" onClick={this.anchorClick} href="#">{val ? val : 'Choose...' }</a>
+			<React.Fragment>
+				<a className="button expanded hollow" onClick={this.anchorClick} href="#">{this.state.val ? this.state.val : 'Choose...' }</a>
+				{ this.state.showError && <div className={"callout "+this.props.error} ><small>{this.props.errorText}</small></div>}
+			</React.Fragment>
 		)
 	}
 }
@@ -970,11 +1091,11 @@ function ReduxCheckboxGroupInfoBox(props) {
 							    &ensp;<a className="tiny button primary" data-toggle={"discinfo-"+idx}>Example</a>
 							</div>
 						</div>
-					    <p className="hide card" id={"discinfo-"+idx} data-toggler=".hide">
+					    <div className="hide card" id={"discinfo-"+idx} data-toggler=".hide">
 						    <div className="card-section">
 						    	<small>{item.moreInfo}</small>
 							</div>
-						</p>
+						</div>
 					</div>
 			    )
 			}
@@ -1008,35 +1129,10 @@ const store = (window.devToolsExtension
 
 ComplaintPortal = reduxForm({
   form: 'complaintForm',
-  destroyOnUnmount: false
+  destroyOnUnmount: false,
+
 })(ComplaintPortal);
 
-// Decorate with connect to read form values
-const selector = formValueSelector('complaintForm'); // <-- same as form name
-ComplaintPortal = connect(state => {
-  const fieldData = selector(state, 
-  	'q_1',  //string
-  	'q_2',	
-  	'q_3',
-  	'q_4',
-  	'q_4_other',
-  	'q_5',
-  	'q_5_single',
-  	'q_5_start',
-  	'q_5_end',
-  	'q_6',
-  	'q_7',
-  	'q_7_other',
-  	'q_8',
-  	'q_9',
-  	'q_9_other',
-  	'q_10',
-  	'q_11'
-  );
-  return {
-    fieldData
-  };
-})(ComplaintPortal);
 
 
 
