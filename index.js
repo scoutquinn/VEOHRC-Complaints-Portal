@@ -273,6 +273,7 @@ class ComplaintPortal extends React.Component {
             			<h4>Please choose one location:</h4>
             			<fieldset>
 		            		<ReduxRadioGroup 
+		            			other
 		            			data={[
 							    	{value : "Work", displayName : "Work" },
 							    	{value : "School, university, tafe college or training institution", displayName : "School, university, tafe college or training institution" },
@@ -282,12 +283,10 @@ class ComplaintPortal extends React.Component {
 							    	{value : "Accommodation ", displayName : "Accommodation such as public housing or real estate agents" },
 							    	{value : "Local government", displayName : "Local government (e.g. local council)" },
 							    	{value : "Sporting activities", displayName : "Sporting activities such as sports events or games" },
-							    	{value : "Club", displayName : "Club (for social, literary, cultural, political, sporting, or other lawful purposes." },
-							    	{value : "Other", displayName : "Other" }
+							    	{value : "Club", displayName : "Club (for social, literary, cultural, political, sporting, or other lawful purposes." }
 						    	]}
 						    	name="q_4"
 						    />
-					    	<input type="text" name="q4_other" placeholder="Please Specify"/>
 						</fieldset>
             		</Helper>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_5">
@@ -388,6 +387,7 @@ class ComplaintPortal extends React.Component {
             			<h4>Please choose what you believe is true, you can select more than one:</h4>
             			<fieldset>
 							<ReduxCheckboxGroupInfoBox 
+								other
 		            			data={[
 							    	{ 
 							    		value : "Race", 
@@ -453,9 +453,7 @@ class ComplaintPortal extends React.Component {
 										value : "Personal association", 
 										displayName : "Personal association with someone who could be treated unfairly because of one or more of the above reasons  " ,
 										moreInfo : "Renske is harassed and bullied at school because a newspaper prints an article that says her mother has HIV. The school fails to stop the bullying and Renske eventually leaves the school."
-									},
-									{ 
-										value : "Other", displayName : "Other" }
+									}
 								]}
 								name="q_7"
 							/>
@@ -505,7 +503,7 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_9" isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please select the harms you have experienced, you can tick more than one:</h4>
             			<fieldset>
-            				<ReduxCheckboxGroup 
+            				<ReduxCheckboxGroupHarms 
 		            			data={[
 		            				{ value: "I was not able to participate in the activity", displayName: "I was not able to participate in the activity"},
 									{ value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
@@ -513,10 +511,109 @@ class ComplaintPortal extends React.Component {
 									{ value: "I lost my reputation", displayName: "I lost my reputation"},
 									{ value: "I feel disrespected", displayName: "I feel disrespected"},
 									{ value: "I feel unhappy", displayName: "I feel unhappy"},
-									{ value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
-									{ value: "Other", displayName: "Other"}
+									{ value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"}
 		            			]}
+		            			areaHarms={{
+		            				"Work":
+							    		[
+											{ value : "I am going to lose my job", displayName: "I am going to lose my job"},
+											{ value : "I lost my hours", displayName: "I lost my hours"},
+											{ value : "I lost money", displayName: "I lost money"},
+											{ value : "I lost my reputation", displayName: "I lost my reputation"},
+											{ value : "I did not get a fair chance", displayName: "I did not get a fair chance"},
+											{ value : "I lost my job", displayName: "I lost my job"},
+											{ value : "I don't feel safe at work", displayName: "I don't feel safe at work"},
+											{ value : "I am unhappy", displayName: "I am unhappy"},
+											{ value : "I am worried", displayName: "I am worried}"}
+							    		],
+									"School, university, tafe college or training institution":
+										[
+											{value: "I don't go to school anymore", displayName: "I don't go to school anymore"},
+											{value: "I don't feel supported in class", displayName: "I don't feel supported in class"},
+											{value: "I don't feel safe ", displayName: "I don't feel safe "},
+											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I am worried", displayName: "I am worried"},
+											{value: "I am unhappy", displayName: "I am unhappy"},
+										],
+									"Hospital or a medical clinic":
+										[
+											{value: "I did not receive the care I needed", displayName: "I did not receive the care I needed"},
+											{value: "My illness was not treated", displayName: "My illness was not treated"},
+											{value: "I felt disrespected", displayName: "I felt disrespected"},
+											{value: "I was denied treatment", displayName: "I was denied treatment"},
+											{value: "I was not given an appointment", displayName: "I was not given an appointment"},
+											{value: "I did not receive medical attention", displayName: "I did not receive medical attention"},
+											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+										],
+									"A store or venue":
+										[
+											{value: "I was not able to purchase a product or service", displayName: "I was not able to purchase a product or service"},
+											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I lost money", displayName: "I lost money"},
+											{value: "I lost my reputation", displayName: "I lost my reputation"},
+											{value: "I feel disrespected", displayName: "I feel disrespected"},
+											{value: "I feel unhappy", displayName: "I feel unhappy"},
+											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+										],
+									"Public transport":
+										[
+											{value: "tbc", displayName: "tbc"}
+										],
+									"Accommodation ":
+										[
+											{value: "I lost my house", displayName: "I lost my house"},
+											{value: "I did not get a lease", displayName: "I did not get a lease"},
+											{value: "I lost money", displayName: "I lost money"},
+											{value: "I no longer have anywhere to live", displayName: "I no longer have anywhere to live"},
+											{value: "I feel unhappy", displayName: "I feel unhappy"},
+											{value: "I don't feel safe", displayName: "I don't feel safe"},
+											{value: "I was denied access to service", displayName: "I was denied access to service"},
+											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+										],
+									"Local government":
+										[
+											{value: "I was not able to purchase a product or service", displayName: "I was not able to purchase a product or service"},
+											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I lost money", displayName: "I lost money"},
+											{value: "I lost my reputation", displayName: "I lost my reputation"},
+											{value: "I feel disrespected", displayName: "I feel disrespected"},
+											{value: "I feel unhappy", displayName: "I feel unhappy"},
+											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+										],
+									"Sporting activities":
+										[
+											{value: "I was not able to participate in the activity", displayName: "I was not able to participate in the activity"},
+											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I lost money", displayName: "I lost money"},
+											{value: "I lost my reputation", displayName: "I lost my reputation"},
+											{value: "I feel disrespected", displayName: "I feel disrespected"},
+											{value: "I feel unhappy", displayName: "I feel unhappy"},
+											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+										],
+									"Club":
+										[
+											{value: "I was not able to participate in the activity", displayName: "I was not able to participate in the activity"},
+											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I lost money", displayName: "I lost money"},
+											{value: "I lost my reputation", displayName: "I lost my reputation"},
+											{value: "I feel disrespected", displayName: "I feel disrespected"},
+											{value: "I feel unhappy", displayName: "I feel unhappy"},
+											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+										],
+									"Other":
+										[
+											{value: "I was not able to do an activity ", displayName: "I was not able to do an activity "},
+											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I lost money", displayName: "I lost money"},
+											{value: "I lost my reputation", displayName: "I lost my reputation"},
+											{value: "I feel disrespected", displayName: "I feel disrespected"},
+											{value: "I feel unhappy", displayName: "I feel unhappy"},
+											{value: "I did not get access to a service or product", displayName: "I did not get access to a service or product"},
+										],
+									}}
 		            			name="q_9"
+		            			area=""
+		            			other
 		            		/>
 						</fieldset>
             		</Helper>
@@ -551,9 +648,9 @@ class ComplaintPortal extends React.Component {
 							    	{value: "Learn about the law", displayName: "Learn about the law"},
 							    	{value: "Change their human resource policy", displayName: "Change their human resource policy"},
 							    	{value: "Give me my old job back or help me with finding a new job", displayName: "Give me my old job back or help me with finding a new job"},
-							    	{value: "Give me back my work hours", displayName: "Give me back my work hours"},
-									{value: "Other", displayName: "Other"}
+							    	{value: "Give me back my work hours", displayName: "Give me back my work hours"}
 								]}
+								other
 							/>
 						</fieldset>
             		</Helper>
@@ -813,8 +910,25 @@ const datePicker = ({ input, label, type, className, selected, meta: { touched, 
     )
 
 
+/*
+Other selector
+*/
 
-
+class OtherField extends React.Component{
+	constructor(props) {
+	    super(props);
+	}
+	render(){
+		return(
+			<React.Fragment>
+				<label className="margin-bottom-1">
+					<Field component="input" type={this.props.type} name="Other" />&ensp;Other
+				</label>
+				<Field component="input" type="text" name={this.props.name+"_other"} placeholder="Please Specify"/>
+			</React.Fragment>
+		)
+	}
+}
 
 
 /*
@@ -1052,12 +1166,18 @@ data should be an array of objects structured like this:
 
 function ReduxRadioGroup(props) {
 	return (
-		props.data.map(
+		<React.Fragment>
+		{ props.data.map(
 			(item, idx) => 
 				<label key={idx} className="margin-bottom-1">
 					<Field component="input" type="radio" name={props.name} value={item.value} />&ensp;{item.displayName}
 				</label>
 			)
+		}
+		{ props.other &&
+			<OtherField name={props.name} type="radio" />
+		}
+		</React.Fragment>
 	)
 }
 
@@ -1070,6 +1190,29 @@ function ReduxCheckboxGroup(props) {
 						<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
 					</label>
 			    )
+			}
+			{ props.other &&
+				<OtherField name={props.name} type="checkbox" />
+			}
+		</FormSection>
+	)
+}
+
+function ReduxCheckboxGroupHarms(props) {
+	// console.log(props.data);
+	// props.data = props.areaHarms['Accommodation'];
+	console.log(props.areaHarms['A store or venue']);
+	return (
+		<FormSection name={props.name}>
+			{ props.data.map(
+			 	(item, idx) => 
+					<label key={idx} className="margin-bottom-1">
+						<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
+					</label>
+			    )
+			}
+			{ props.other &&
+				<OtherField name={props.name} type="checkbox" />
 			}
 		</FormSection>
 	)
@@ -1099,6 +1242,9 @@ function ReduxCheckboxGroupInfoBox(props) {
 					</div>
 			    )
 			}
+			{ props.other &&
+				<OtherField name={props.name} type="checkbox" />
+			}
 		</FormSection>
 	)
 }
@@ -1125,12 +1271,73 @@ const store = (window.devToolsExtension
   ? window.devToolsExtension()(createStore)
   : createStore)(reducer);
 
+/* dummy test data */
 
+const testData = {
+  "q_1": "Myself",
+  "q_2": "test user",
+  "q_3": "Bullied",
+  "q_4": "Work",
+  "q_5": "On this date",
+  "q_5_single": "December 28th 2018",
+  "q_6": "Individual(s)",
+  "q_7": {
+    "Race": true,
+    "Religion": true,
+    "Health/Disability": true
+  },
+  "q_8": "an example\nanother example",
+  "q_9": {
+    "My needs were ignored or rejected": true,
+    "I lost my reputation": true
+  },
+  "q_10": {
+    "Apologise": true,
+    "Give me financial compensation/money": true
+  },
+  "q_11": "some more info",
+  "q_12": {
+    "org_name": "some company",
+    "org_number": "1234567890",
+    "org_email": "1@2.com",
+    "organisation_address": {
+      "address1": "123 something st",
+      "suburb": "somewhere",
+      "postcode": "3333",
+      "address2": "unit 1"
+    },
+    "individuals": [
+      {
+        "firstName": "an",
+        "lastName": "individual"
+      },
+      {
+        "firstName": "another",
+        "lastName": "individual"
+      }
+    ]
+  },
+  "q_13": {
+    "title": "Mr",
+    "contact_number": "0987654321",
+    "contact_email": "test@user.com",
+    "personal_address": {
+      "address1": "123 blah blah",
+      "address2": "blah",
+      "suburb": "collingwood",
+      "postcode": "3066"
+    },
+    "Interpreter Service": true,
+    "Accessible Documents": true,
+    "TTY": true,
+    "Other": true
+  }
+}
 
 ComplaintPortal = reduxForm({
   form: 'complaintForm',
   destroyOnUnmount: false,
-
+  initialValues : testData
 })(ComplaintPortal);
 
 
