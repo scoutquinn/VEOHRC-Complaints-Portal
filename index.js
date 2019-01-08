@@ -141,7 +141,7 @@ class ComplaintPortal extends React.Component {
 					top: (this.state.os.top-10)+"px"
 				}}/>
 				<FormElement>
-            		<h3>Q1. Who are you lodging a complaint for?</h3>
+            		<h3>Who are you lodging a complaint for?</h3>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_1">
             			<div className="grid-x grid-margin-x">
 						    <div className="cell medium-shrink">
@@ -156,6 +156,8 @@ class ComplaintPortal extends React.Component {
 							    	&ensp; Someone Else
 							    </label>
 							</div>
+
+						{/* For Someone else Additional info */}
 							
 						</div>
             		</Element>
@@ -165,11 +167,67 @@ class ComplaintPortal extends React.Component {
 						may need to provide a consent form if you are not
 						a parent or carer of that person.</p>
             		</Helper>
+
+            	{/*  CONDITIONALLY RETURN FIELDS FOR REPORTING SOMEONE ELSE  */}
+            		{(this.props.whoFor == "Someone Else") && 
+
+            		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_1_someone_else">
+            			<div className="grid-x grid-margin-x">
+						    <div className="cell">
+        						<label>Your Full Name</label>
+        						<Field
+							        name="q_1_someone_else_full_name"
+							        type="text"
+							        component='input'
+							    />
+        						<label>Your Contact Number</label>
+        						<Field
+							        name="q_1_someone_else_contact_number"
+							        type="text"
+							        component='input'
+							    />
+        						<label>Your Email</label>
+        						<Field
+							        name="q_1_someone_else_contact_email"
+							        type="email"
+							        component='input'
+							    />
+							    <label>Name of the person or group you are making a complaint on behalf of:</label>
+        						<Field
+							        name="q_1_someone_else_their_name"
+							        type="text"
+							        component='input'
+							    />
+							    <label>Relationship to this person:</label>
+        						<Field
+							        name="q_1_someone_else_relationship"
+							        type="text"
+							        component='input'
+							    />
+							</div>
+
+						
+							
+						</div>
+            		</Element>
+
+            		
+           		}
+
+            		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_1_someone_else" isShown={this.state.sideBar} isMobile={this.isMobile()}>
+            			<h4>Tips</h4>
+            			<p>If you are lodging a complaint for someone else, you
+						may need to provide a consent form if you are not
+						a parent or carer of that person.</p>
+            		</Helper>
+
+            	{/* END CONDITIONAL RENDER */}
+
             	</FormElement>
             	<br/>
             	<FormElement>
-            		<h3 className="padding-top-2">Q2. What happened to you?</h3>
-            		
+            		<h3 className="padding-top-2">Section 1. What happened?</h3>
+            		{(this.props.whoFor == "Myself") && 
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_2">
             			<div className="grid-x">
 	            			<div className="cell medium-shrink">
@@ -185,6 +243,7 @@ class ComplaintPortal extends React.Component {
 		            		</div>
 	            		</div>
             		</Element>
+            		}
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_2" isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Suggestions</h4>
             			<p>Please tell us about your story. This box will help you
@@ -195,7 +254,7 @@ class ComplaintPortal extends React.Component {
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_3">
             			<div className="grid-x">
 	            			<div className="cell medium-shrink">
-	            				and I was &nbsp;
+	            				I was &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
 		            			<Field 
@@ -210,13 +269,26 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_3" isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please choose one of the following:</h4>
             			<fieldset className="large-6 cell">
-						    <label className="margin-bottom-1">
-						    	<Field name="q_3" component="input" type="radio" value="Bullied" />
-						    	&ensp; Bullied</label>
-						    <label className="margin-bottom-1">
-						    	<Field name="q_3" component="input" type="radio" value="Treated unfairly" />
-						    	 &ensp; Treated unfairly
-						    	</label>
+						    
+
+						    <div className="grid-x">
+							    <div className="cell shrink">
+								    <label className="margin-bottom-1">
+								    	<Field component="input" name="q_3" type="radio" value="Treated unfairly" />
+								    	 &ensp; Treated unfairly &ensp; 
+								    </label>
+								</div>
+								<div className="cell shrink">
+								    <a className="tiny button primary" data-toggle="more-info-tu">?</a>
+								</div>
+							</div>
+
+						    <div className="hide card" id="more-info-tu" data-toggler=".hide">
+							    <div className="card-section">
+							    	<small>Being treated unfairly means different things to different people. What is most important is that you feel you that have been treated unfairly in this situation. This can be anything from being deniedan opportunity or service to not beingpaid fairly for your work. 
+									</small>
+								</div>
+							</div>
 						    <div className="grid-x">
 							    <div className="cell shrink">
 								    <label className="margin-bottom-1">
@@ -257,48 +329,32 @@ class ComplaintPortal extends React.Component {
 									</small>
 								</div>
 							</div>
+
+						    <div className="grid-x">
+							    <div className="cell shrink">
+								    <label className="margin-bottom-1">
+								    	<Field component="input" name="q_3" type="radio" value="Bullied" />
+								    	 &ensp; Bullied &ensp; 
+								    </label>
+								</div>
+								<div className="cell shrink">
+								    <a className="tiny button primary" data-toggle="more-info-bu">?</a>
+								</div>
+							</div>
+
+						    <div className="hide card" id="more-info-bu" data-toggler=".hide">
+							    <div className="card-section">
+							    	<small>Bullying is when people repeatedly and intentionally use words or actions against you to cause distress and risk to your wellbeing. These actions are usually done by people who have more influence or power over you, or who want to make you feel less powerful.
+									</small>
+								</div>
+							</div>
 						</fieldset>
             		</Helper>
-            		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_4">
-            			<div className="grid-x">
-	            			<div className="cell medium-shrink">
-	            				This happened to me at &nbsp;
-	            			</div>
-	            			<div className="cell medium-auto">
-		            			<Field 
-		            				component={ShowChoicesNew} 
-		            				name="q_4"
-		            				error="warning"
-			            			errorText="We would like to know where you were treated unfairly"
-		            			/>
-	            			</div>
-	            		</div>
-            		</Element>
-            		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_4" isShown={this.state.sideBar} isMobile={this.isMobile()}>
-            			<h4>Please choose one location:</h4>
-            			<fieldset>
-		            		<ReduxRadioGroup 
-		            			other
-		            			data={[
-							    	{value : "Work", displayName : "Work" },
-							    	{value : "School, university, tafe college or training institution", displayName : "An education institution (e.g. school, tafe, college, university, or any training institutions)" },
-							    	{value : "Hospital or a medical clinic", displayName : "A hospital or medical clinic (e.g. dental clinic, physiotherapy clinic, nutritionist)" },
-							    	{value : "A store or venue", displayName : "A store or venue (e.g. shops, cinemas, bars, clubs, restaurants, massage parlors, hairdresser)" },
-							    	{value : "Service Provider", displayName : "With a service provider (e.g. Public transport, car ride services such as Uber, Didi, internet providers, mobile services)" },
-							    	{value : "Accommodation", displayName : "Any accommodation (e.g. rental property, commercial property, hotel or motel, camping or caravan sites, boarding houses or hostels, public housing, mobile homes or mobile home sites" },
-							    	{value : "Local government", displayName : "A local government (e.g. local council, VicRoads, Department of Health and Human Services, State Revenue Office)" },
-							    	{value : "Sporting activities", displayName : "A sporting event, game or activity (e.g. sports clubs, participatingin sports games, coaching teams)" },
-							    	{value : "Club", displayName : "A club (e.g. social, literary, cultural, political, sporting clubs which have more than 30 members, has a liquor licence and operates mainly from its own funds)" }
-						    	]}
-						    	changeHandler={this.areaChange}
-						    	name="q_4"
-						    />
-						</fieldset>
-            		</Helper>
+
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_5">
             			<div className="grid-x">
 	            			<div className="cell medium-shrink">
-	            				The date this happened was &nbsp;
+	            				on this date &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
 		            			<Field 
@@ -347,10 +403,68 @@ class ComplaintPortal extends React.Component {
 					    	<label className="margin-bottom-0"><Field component="input" type="radio" name="q_5" value="I don't remember" />I don't remember</label>
 						</fieldset>
             		</Helper>
+            		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_4">
+            			<div className="grid-x">
+	            			<div className="cell medium-shrink">
+	            				This happened at &nbsp;
+	            			</div>
+	            			<div className="cell medium-auto">
+		            			<Field 
+		            				component={ShowChoicesNew} 
+		            				name="q_4"
+		            				error="warning"
+			            			errorText="We would like to know where you were treated unfairly"
+		            			/>
+	            			</div>
+	            		</div>
+            		</Element>
+            		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_4" isShown={this.state.sideBar} isMobile={this.isMobile()}>
+            			<h4>Please choose one location:</h4>
+            			<fieldset>
+		            		<ReduxRadioGroup 
+		            			other
+		            			data={[
+							    	{value : "Work", displayName : "Work" },
+							    	{value : "School, university, tafe college or training institution", displayName : "An education institution (e.g. school, tafe, college, university, or any training institutions)" },
+							    	{value : "Hospital or a medical clinic", displayName : "A hospital or medical clinic (e.g. dental clinic, physiotherapy clinic, nutritionist)" },
+							    	{value : "A store or venue", displayName : "A store or venue (e.g. shops, cinemas, bars, clubs, restaurants, massage parlors, hairdresser)" },
+							    	{value : "Service Provider", displayName : "With a service provider (e.g. Public transport, car ride services such as Uber, Didi, internet providers, mobile services)" },
+							    	{value : "Accommodation", displayName : "Any accommodation (e.g. rental property, commercial property, hotel or motel, camping or caravan sites, boarding houses or hostels, public housing, mobile homes or mobile home sites" },
+							    	{value : "Local government", displayName : "A local government (e.g. local council, VicRoads, Department of Health and Human Services, State Revenue Office)" },
+							    	{value : "Sporting activities", displayName : "A sporting event, game or activity (e.g. sports clubs, participatingin sports games, coaching teams)" },
+							    	{value : "Club", displayName : "A club (e.g. social, literary, cultural, political, sporting clubs which have more than 30 members, has a liquor licence and operates mainly from its own funds)" }
+						    	]}
+						    	changeHandler={this.areaChange}
+						    	name="q_4"
+						    />
+						</fieldset>
+            		</Helper>
+            		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_6_organisation">
+            			<div className="grid-x">
+	            			<div className="cell medium-shrink">
+	            				The name of this organisation is &nbsp;
+	            			</div>
+	            			<div className="cell medium-auto">
+		            			<Field
+						            name="q_6_organisation"
+						            component="input"
+						            type="text"
+						            placeholder="Enter organisation name"
+						        />
+		            		</div>
+	            		</div>
+            		</Element>
+            		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_6_organisation" isShown={this.state.sideBar} isMobile={this.isMobile()}>
+            			<p>Please tell us the name of the organisation where this incident happenedto you. </p>
+
+						<p>For example, if this happened at a coffee shop, then write down the name of this coffee shop. If this happened at work, then write down the name of the organisation you work for. </p>
+
+						<p>If you cannot identify the name of the organisation, then put 'I don't know'. </p>
+            		</Helper>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_6">
             			<div className="grid-x">
 	            			<div className="cell medium-shrink">
-	            				I want to make a complaint about the &nbsp;
+	            				I want to make a complaint about &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
 		            			<Field component={ShowChoicesNew} name="q_6"/>
@@ -364,21 +478,12 @@ class ComplaintPortal extends React.Component {
 					    	<label className="margin-bottom-0"><Field name="q_6" component="input" type="radio" value="Organisation" />Organisation</label>
 						</fieldset>
             		</Helper>
-            		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_3">
-            			<div className="grid-x">
-	            			<div className="cell medium-shrink">
-	            				I believe I was &nbsp;
-	            			</div>
-	            			<div className="cell medium-auto">
-		            			<Field component={ShowChoicesNew} name="q_3"/>
-	            			</div>
-	            			<div className="cell medium-shrink">
-	            				&nbsp; because of my
-	            			</div>
-	            		</div>
-            		</Element>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_7">
             			<div className="grid-x">
+	            			<div className="cell medium-shrink">
+	            				I believe I was treated this way because of my
+	            			</div>
+	            		</div>            			<div className="grid-x">
 	            			<div className="cell auto">
 		            			<Field 
 		            				name="q_7" 
@@ -654,32 +759,7 @@ class ComplaintPortal extends React.Component {
             		
             	</FormElement>
             	<FormElement>
-            		<h3 className="padding-top-3">Q3. (Optional) Is there anything else you would like the Commission to know?</h3>
-            		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_11">
-            			<div className="grid-x">
-	            			<div className="cell auto">
-	            				Please provide any other information about your story.
-	            			</div>
-	            		</div>
-	            		<div className="grid-x">
-	            			<div className="cell auto">
-		            			<Field
-						            name="q_11"
-						            component="textarea"
-						            type="textarea"
-						            rows="5"
-						            placeholder="Add Something Here"
-						        />
-		            		</div>
-	            		</div>
-            		</Element>
-            		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_11" isShown={this.state.sideBar} isMobile={this.isMobile()}>
-            			<h4>This section is optional. </h4>
-            			<p>You can use this section to tell us more information about your story. </p>
-            		</Helper>
-            	</FormElement>
-            	<FormElement>
-            		<h3 className="padding-top-3">Q4. Please provide the Organisation details below</h3>
+            		<h3 className="padding-top-3">Section 2: Organisation Details</h3>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_12">
             			<div className="grid-x">
 	            			<div className="cell auto">
@@ -700,7 +780,7 @@ class ComplaintPortal extends React.Component {
             		</Helper>
             	</FormElement>
             	<FormElement>
-            		<h3 className="padding-top-3">Q5. Your Details</h3>
+            		<h3 className="padding-top-3">Section 3. Your Details</h3>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_13">
             			<div className="grid-x">
 	            			<div className="cell auto">
@@ -734,17 +814,7 @@ class ComplaintPortal extends React.Component {
 								    <FormSection name="personal_address">
 								    	<Address />
 								    </FormSection>
-            						{/*<label>Address</label>
-            						<Field
-								        name="contact_address"
-								        type="text"
-								        component='input'
-								    />*/}
-								    <p>Do you need any of the following assistance?</p>
-								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="Interpreter Service" />Interpreter Service</label>
-								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="Accessible Documents" />Accessible Documents</label>
-								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="TTY" />TTY</label>
-								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="Other" />Other</label>
+
             					</FormSection> 
             				</div>
             			</div>
@@ -754,6 +824,50 @@ class ComplaintPortal extends React.Component {
             			<p>The Commission uses this information to contact you.</p>
             			<h4>What if I don't want to share my details?</h4>
             			<p>This means we won't be able to help you with our dispute resolution service but we still want to learn about your story. Sharing your story will help the Commission to work towards helping more people like yourself.</p>
+            		</Helper>
+            	</FormElement>
+            	<FormElement>
+            		<h3 className="padding-top-3">Section 4: Additional Comments</h3>
+            		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_11">
+            			<div className="grid-x">
+	            			<div className="cell auto">
+	            				Please provide any additional information you would like to share with the Commission.
+	            			</div>
+	            		</div>
+	            		<div className="grid-x">
+	            			<div className="cell auto">
+		            			<Field
+						            name="q_11"
+						            component="textarea"
+						            type="textarea"
+						            rows="5"
+						            placeholder="Add Something Here"
+						        />
+		            		</div>
+	            		</div>
+            		</Element>
+            		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_11" isShown={this.state.sideBar} isMobile={this.isMobile()}>
+            			<h4>This section is optional. </h4>
+            			<p>You can use this section to tell us more information about your story. </p>
+            		</Helper>
+            	</FormElement>
+            	<FormElement>
+            		<h3 className="padding-top-3">Document Upload</h3>
+            		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_14">
+            			<div className="grid-x">
+	            			<div className="cell auto">
+	            				Attach any documents such as emails, letters, or images that are related to this matter.
+	            			</div>
+	            		</div>
+	            		<div className="grid-x">
+	            			<div className="cell auto">
+		            			<Field component={FieldFileInput} name="q_14" type='file'/>
+		            		</div>
+	            		</div>
+            		</Element>
+            		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_14" isShown={this.state.sideBar} isMobile={this.isMobile()}>
+            			<h4>doc upload text</h4>
+            			<p>add something here</p>
             		</Helper>
             	</FormElement>
             	<div className="padding-1">&nbsp;</div>
@@ -1262,6 +1376,33 @@ function ReduxCheckboxGroupInfoBox(props) {
 		</FormSection>
 	)
 }
+class FieldFileInput extends React.Component {
+    constructor(props) {
+        super(props)
+        this.onChange = this.onChange.bind(this)
+    }
+
+    onChange(e) {
+        const { input: { onChange } } = this.props
+        onChange(e.target.files[0])
+    }
+
+    render() {
+        const { input: { value } } = this.props
+        const { input, label, required, meta, } = this.props //whatever props you send to the component from redux-form Field
+        return (
+            <div><label>{label}</label>
+		     <div>
+		       <input
+		        type='file'
+		        accept='.jpg, .png, .jpeg, .pdf, .docx, .doc, .txt'
+		        onChange={this.onChange}
+		       />
+		     </div>
+		     </div>
+        )
+    }
+}
 
 
 
@@ -1286,7 +1427,9 @@ const store = (window.devToolsExtension
   : createStore)(reducer);
 
 /* dummy test data */
+const testData = {};
 
+/*
 const testData = {
   "q_1": "Myself",
   "q_2": "test user",
@@ -1342,6 +1485,7 @@ const testData = {
     "Other": true
   }
 }
+*/
 
 ComplaintPortal = reduxForm({
   form: 'complaintForm',
@@ -1355,7 +1499,8 @@ const selector = formValueSelector('complaintForm')
 
 ComplaintPortal = connect( state => {
 	let areaValue = selector(state, "q_4") || "Other";
-	return {areaValue};
+	let whoFor = selector(state, "q_1");
+	return {areaValue, whoFor};
 })(ComplaintPortal)
 
 
