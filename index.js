@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { reduxForm, Field, FormSection, propTypes, FieldArray, formValueSelector } from 'redux-form';
+import { reduxForm, Field, FormSection, propTypes, FieldArray, formValueSelector, formValues } from 'redux-form';
 import { Provider, connect } from "react-redux";
 import { createStore, combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
@@ -53,6 +53,7 @@ class ComplaintPortal extends React.Component {
 	    	[field]: moment(date)
 	    });
 	}
+
 
 	addSidebarRefs = ( id, ref ) => {
 		this.sideBarRefs[id] = ref;
@@ -276,15 +277,16 @@ class ComplaintPortal extends React.Component {
 		            			other
 		            			data={[
 							    	{value : "Work", displayName : "Work" },
-							    	{value : "School, university, tafe college or training institution", displayName : "School, university, tafe college or training institution" },
-							    	{value : "Hospital or a medical clinic", displayName : "Hospital or a medical clinic" },
-							    	{value : "A store or venue", displayName : "A store or venue (where you pay to purchase a product or gain access to a service)" },
-							    	{value : "Public transport", displayName : "Public transport" },
-							    	{value : "Accommodation ", displayName : "Accommodation such as public housing or real estate agents" },
-							    	{value : "Local government", displayName : "Local government (e.g. local council)" },
-							    	{value : "Sporting activities", displayName : "Sporting activities such as sports events or games" },
-							    	{value : "Club", displayName : "Club (for social, literary, cultural, political, sporting, or other lawful purposes." }
+							    	{value : "School, university, tafe college or training institution", displayName : "An education institution (e.g. school, tafe, college, university, or any training institutions)" },
+							    	{value : "Hospital or a medical clinic", displayName : "A hospital or medical clinic (e.g. dental clinic, physiotherapy clinic, nutritionist)" },
+							    	{value : "A store or venue", displayName : "A store or venue (e.g. shops, cinemas, bars, clubs, restaurants, massage parlors, hairdresser)" },
+							    	{value : "Service Provider", displayName : "With a service provider (e.g. Public transport, car ride services such as Uber, Didi, internet providers, mobile services)" },
+							    	{value : "Accommodation ", displayName : "Any accommodation (e.g. rental property, commercial property, hotel or motel, camping or caravan sites, boarding houses or hostels, public housing, mobile homes or mobile home sites" },
+							    	{value : "Local government", displayName : "A local government (e.g. local council, VicRoads, Department of Health and Human Services, State Revenue Office)" },
+							    	{value : "Sporting activities", displayName : "A sporting event, game or activity (e.g. sports clubs, participatingin sports games, coaching teams)" },
+							    	{value : "Club", displayName : "A club (e.g. social, literary, cultural, political, sporting clubs which have more than 30 members, has a liquor licence and operates mainly from its own funds)" }
 						    	]}
+						    	changeHandler={this.areaChange}
 						    	name="q_4"
 						    />
 						</fieldset>
@@ -438,7 +440,7 @@ class ComplaintPortal extends React.Component {
 										value : "Marital status", 
 										displayName : "Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)" ,
 										moreInfo : "Domestic partners Peter and Jessica are refused accommodation because the landlord only wants to rent to a married couple. Peter and Jessica may lodge a complaint of discrimination based on marital status. It is possible that the landlord may need to provide an apology and agree to rent the place to them."
-},
+									},
 									{ 
 										value : "Political belief or association", 
 										displayName : "Political belief or association" ,
@@ -516,103 +518,94 @@ class ComplaintPortal extends React.Component {
 		            			areaHarms={{
 		            				"Work":
 							    		[
-											{ value : "I am going to lose my job", displayName: "I am going to lose my job"},
-											{ value : "I lost my hours", displayName: "I lost my hours"},
-											{ value : "I lost money", displayName: "I lost money"},
-											{ value : "I lost my reputation", displayName: "I lost my reputation"},
-											{ value : "I did not get a fair chance", displayName: "I did not get a fair chance"},
 											{ value : "I lost my job", displayName: "I lost my job"},
+											{ value : "I am going to lose my job", displayName: "I am going to lose my job"},
+											{ value : "My work hours were reduced", displayName: "My work hours were reduced"},
+											{ value : "I was not paid", displayName: "I was not paid"},
 											{ value : "I don't feel safe at work", displayName: "I don't feel safe at work"},
-											{ value : "I am unhappy", displayName: "I am unhappy"},
-											{ value : "I am worried", displayName: "I am worried}"}
+											{ value : "I did not get a fair chance", displayName: "I did not get a fair chance"},
+											{ value : "I was denied access to an opportunity, service or venue", displayName: "I was denied access to an opportunity, service or venue"},
+											{ value : "I lost my reputation", displayName: "I lost my reputation"},
+											{ value : "I am stressed, unhappy or depressed", displayName: "I am stressed, unhappy or depressed"}
 							    		],
 									"School, university, tafe college or training institution":
 										[
-											{value: "I don't go to school anymore", displayName: "I don't go to school anymore"},
 											{value: "I don't feel supported in class", displayName: "I don't feel supported in class"},
-											{value: "I don't feel safe ", displayName: "I don't feel safe "},
+											{value: "I don't go to class anymore", displayName: "I don't go to class anymore"},
+											{value: "I don't feel safe", displayName: "I don't feel safe"},
 											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
-											{value: "I am worried", displayName: "I am worried"},
-											{value: "I am unhappy", displayName: "I am unhappy"},
+											{value: "I lost my reputation", displayName: "I lost my reputation"},
+											{value: "I did not get a fair chance", displayName: "I did not get a fair chance"},
 										],
 									"Hospital or a medical clinic":
 										[
 											{value: "I did not receive the care I needed", displayName: "I did not receive the care I needed"},
-											{value: "My illness was not treated", displayName: "My illness was not treated"},
-											{value: "I felt disrespected", displayName: "I felt disrespected"},
 											{value: "I was denied treatment", displayName: "I was denied treatment"},
 											{value: "I was not given an appointment", displayName: "I was not given an appointment"},
-											{value: "I did not receive medical attention", displayName: "I did not receive medical attention"},
-											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+											{value: "I felt disrespected", displayName: "I felt disrespected"},
 										],
 									"A store or venue":
 										[
-											{value: "I was not able to purchase a product or service", displayName: "I was not able to purchase a product or service"},
-											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I was refused service or was not able to make a purchase", displayName: "I was refused service or was not able to make a purchase"},
+											{value: "I was denied entry into a venue", displayName: "I was denied entry into a venue"},
+											{value: "I felt disrespected ", displayName: "I felt disrespected "},
 											{value: "I lost money", displayName: "I lost money"},
-											{value: "I lost my reputation", displayName: "I lost my reputation"},
-											{value: "I feel disrespected", displayName: "I feel disrespected"},
-											{value: "I feel unhappy", displayName: "I feel unhappy"},
-											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+											{value: "I was not treated fairly", displayName: "I was not treated fairly"}
 										],
-									"Public transport":
+									"Service Provider":
 										[
-											{value: "tbc", displayName: "tbc"}
-										],
-									"Accommodation ":
-										[
-											{value: "I lost my house", displayName: "I lost my house"},
-											{value: "I did not get a lease", displayName: "I did not get a lease"},
+											{value: "I was refused service or was not able to make a purchase", displayName: "I was refused service or was not able to make a purchase"},
+											{value: "I felt disrespected ", displayName: "I felt disrespected "},
 											{value: "I lost money", displayName: "I lost money"},
-											{value: "I no longer have anywhere to live", displayName: "I no longer have anywhere to live"},
-											{value: "I feel unhappy", displayName: "I feel unhappy"},
-											{value: "I don't feel safe", displayName: "I don't feel safe"},
+											{value: "I was not treated fairly", displayName: "I was not treated fairly"}
+										],
+									"Accommodation":
+										[
+											{value: "I was not able to rent the house/flat/apartment", displayName: "I was not able to rent the house/flat/apartment"},
 											{value: "I was denied access to service", displayName: "I was denied access to service"},
-											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I was not able to obtain accomodation", displayName: "I was not able to obtain accomodation"},
+											{value: "I lost money", displayName: "I lost money"},
+											{value: "I was not treated fairly", displayName: "I was not treated fairly"},
+											{value: "I felt disrespected", displayName: "I felt disrespected "}
 										],
 									"Local government":
 										[
-											{value: "I was not able to purchase a product or service", displayName: "I was not able to purchase a product or service"},
-											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I was not able to access the service I needed", displayName: "I was not able to access the service I needed"},
 											{value: "I lost money", displayName: "I lost money"},
 											{value: "I lost my reputation", displayName: "I lost my reputation"},
-											{value: "I feel disrespected", displayName: "I feel disrespected"},
-											{value: "I feel unhappy", displayName: "I feel unhappy"},
-											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+											{value: "I felt disrespected", displayName: "I felt disrespected"},
+											{value: "I was not treated fairly", displayName: "I was not treated fairly"}
 										],
 									"Sporting activities":
 										[
-											{value: "I was not able to participate in the activity", displayName: "I was not able to participate in the activity"},
-											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I was not able to participate in a sports game or activity", displayName: "I was not able to participate in a sports game or activity"},
+											{value: "I was denied entry", displayName: "I was denied entry"},
+											{value: "My membership was rejected or cancelled", displayName: "My membership was rejected or cancelled"},
+											{value: "I was not treated fairly", displayName: "I was not treated fairly"},
 											{value: "I lost money", displayName: "I lost money"},
 											{value: "I lost my reputation", displayName: "I lost my reputation"},
-											{value: "I feel disrespected", displayName: "I feel disrespected"},
-											{value: "I feel unhappy", displayName: "I feel unhappy"},
-											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+											{value: "I felt disrepected", displayName: "I felt disrepected"},
 										],
 									"Club":
 										[
-											{value: "I was not able to participate in the activity", displayName: "I was not able to participate in the activity"},
-											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I was denied entry or participaton", displayName: "I was denied entry or participaton"},
+											{value: "My membership was rejected or cancelled", displayName: "My membership was rejected or cancelled"},
+											{value: "I was not treated fairly", displayName: "I was not treated fairly"},
 											{value: "I lost money", displayName: "I lost money"},
 											{value: "I lost my reputation", displayName: "I lost my reputation"},
-											{value: "I feel disrespected", displayName: "I feel disrespected"},
-											{value: "I feel unhappy", displayName: "I feel unhappy"},
-											{value: "I did not get a fair treatment", displayName: "I did not get a fair treatment"},
+											{value: "I felt disrepected", displayName: "I felt disrepected"}
 										],
 									"Other":
 										[
-											{value: "I was not able to do an activity ", displayName: "I was not able to do an activity "},
-											{value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
+											{value: "I was not able to access the service I needed", displayName: "I was not able to access the service I needed"},
 											{value: "I lost money", displayName: "I lost money"},
 											{value: "I lost my reputation", displayName: "I lost my reputation"},
-											{value: "I feel disrespected", displayName: "I feel disrespected"},
-											{value: "I feel unhappy", displayName: "I feel unhappy"},
-											{value: "I did not get access to a service or product", displayName: "I did not get access to a service or product"},
+											{value: "I felt disrespected", displayName: "I felt disrespected"},
+											{value: "I was not treated fairly", displayName: "I was not treated fairly"}
 										],
 									}}
 		            			name="q_9"
-		            			area=""
+		            			condition={this.props.areaValue}
 		            			other
 		            		/>
 						</fieldset>
@@ -917,14 +910,20 @@ Other selector
 class OtherField extends React.Component{
 	constructor(props) {
 	    super(props);
+	    this.state = {
+	    	showOther: false
+	    } 
+	}
+	changeHandle = (event) => {
+		this.setState({"showOther": event.target.checked})
 	}
 	render(){
 		return(
 			<React.Fragment>
 				<label className="margin-bottom-1">
-					<Field component="input" type={this.props.type} name="Other" />&ensp;Other
+					<Field onChange={this.changeHandle} component="input" type={this.props.type} name={ (this.props.type == "radio") ? this.props.name : "Other"  } value={ (this.props.type == "radio") && "Other" } />&ensp;Other
 				</label>
-				<Field component="input" type="text" name={this.props.name+"_other"} placeholder="Please Specify"/>
+				{ this.state.showOther && <Field component="input" type="text" name={this.props.name+"_other"} placeholder="Please Specify"/> }
 			</React.Fragment>
 		)
 	}
@@ -1165,6 +1164,7 @@ data should be an array of objects structured like this:
 */
 
 function ReduxRadioGroup(props) {
+
 	return (
 		<React.Fragment>
 		{ props.data.map(
@@ -1199,15 +1199,12 @@ function ReduxCheckboxGroup(props) {
 }
 
 function ReduxCheckboxGroupHarms(props) {
-	// console.log(props.data);
-	// props.data = props.areaHarms['Accommodation'];
-	console.log(props.areaHarms['A store or venue']);
 	return (
 		<FormSection name={props.name}>
-			{ props.data.map(
+			{ props.areaHarms[props.condition].map(
 			 	(item, idx) => 
 					<label key={idx} className="margin-bottom-1">
-						<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
+						<Field component="input" type="checkbox" change="false" name={item.value} />&ensp;{item.displayName}
 					</label>
 			    )
 			}
@@ -1277,7 +1274,6 @@ const testData = {
   "q_1": "Myself",
   "q_2": "test user",
   "q_3": "Bullied",
-  "q_4": "Work",
   "q_5": "On this date",
   "q_5_single": "December 28th 2018",
   "q_6": "Individual(s)",
@@ -1287,10 +1283,6 @@ const testData = {
     "Health/Disability": true
   },
   "q_8": "an example\nanother example",
-  "q_9": {
-    "My needs were ignored or rejected": true,
-    "I lost my reputation": true
-  },
   "q_10": {
     "Apologise": true,
     "Give me financial compensation/money": true
@@ -1340,7 +1332,15 @@ ComplaintPortal = reduxForm({
   initialValues : testData
 })(ComplaintPortal);
 
+/* EXTRACT VALUES */
 
+const selector = formValueSelector('complaintForm') 
+
+ComplaintPortal = connect( state => {
+	let areaValue = selector(state, "q_4") || "Other";
+	//areaValue = "Other";
+	return {areaValue};
+})(ComplaintPortal)
 
 
 /** RENDER CODE **/
