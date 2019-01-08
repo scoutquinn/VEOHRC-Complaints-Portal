@@ -1267,7 +1267,7 @@ function showResults(values) {
 		contentType: 'application/json',
 		dataType: 'json',
 		data: JSON.stringify(values, null, 2)
-}
+});
 
 ComplaintPortal = reduxForm({
   form: 'complaintForm',
