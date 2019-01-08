@@ -29,7 +29,7 @@ const MobileContext = React.createContext('desktop');
 class ComplaintPortal extends React.Component {
 	constructor (props) {
         super(props)
-        this.state = { 
+        this.state = {
           sideBar: "q_1",
           os:{
           	w: 0,
@@ -94,7 +94,7 @@ class ComplaintPortal extends React.Component {
 
     }
 
-    // sidebar 
+    // sidebar
     showHelp = (id) => {
     	this.showHilight(id)
     	// set sidebar from id
@@ -124,7 +124,7 @@ class ComplaintPortal extends React.Component {
 		window.removeEventListener("resize", this.handleResize )
 	}
 
-	
+
 	render() {
 		console.log('render!');
 		return(
@@ -151,7 +151,7 @@ class ComplaintPortal extends React.Component {
 							    	&ensp; Someone Else
 							    </label>
 							</div>
-							
+
 						</div>
             		</Element>
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_1" isShown={this.state.sideBar} isMobile={this.isMobile()}>
@@ -164,7 +164,7 @@ class ComplaintPortal extends React.Component {
             	<br/>
             	<FormElement>
             		<h3 className="padding-top-2">Q2. What happened to you?</h3>
-            		
+
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_2">
             			<div className="grid-x">
 	            			<div className="cell medium-shrink">
@@ -193,8 +193,8 @@ class ComplaintPortal extends React.Component {
 	            				and I was &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
-		            			<Field 
-		            				component={ShowChoicesNew} 
+		            			<Field
+		            				component={ShowChoicesNew}
 		            				name="q_3"
 		            				error="warning"
 		            				errorText="We would like to know why you think you were treated unfairly"
@@ -216,7 +216,7 @@ class ComplaintPortal extends React.Component {
 							    <div className="cell shrink">
 								    <label className="margin-bottom-1">
 								    	<Field name="q_3" component="input" type="radio" value="Sexually harassed" />
-								    	 &ensp; Sexually harassed &ensp; 
+								    	 &ensp; Sexually harassed &ensp;
 								    </label>
 								</div>
 								<div className="cell shrink">
@@ -237,7 +237,7 @@ class ComplaintPortal extends React.Component {
 							    <div className="cell shrink">
 								    <label className="margin-bottom-1">
 								    	<Field component="input" name="q_3" type="radio" value="Victimised" />
-								    	 &ensp; Victimised &ensp; 
+								    	 &ensp; Victimised &ensp;
 								    </label>
 								</div>
 								<div className="cell shrink">
@@ -260,8 +260,8 @@ class ComplaintPortal extends React.Component {
 	            				This happened to me at &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
-		            			<Field 
-		            				component={ShowChoicesNew} 
+		            			<Field
+		            				component={ShowChoicesNew}
 		            				name="q_4"
 		            				error="warning"
 			            			errorText="We would like to know where you were treated unfairly"
@@ -272,7 +272,7 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_4" isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please choose one location:</h4>
             			<fieldset>
-		            		<ReduxRadioGroup 
+		            		<ReduxRadioGroup
 		            			other
 		            			data={[
 							    	{value : "Work", displayName : "Work" },
@@ -295,8 +295,8 @@ class ComplaintPortal extends React.Component {
 	            				The date this happened was &nbsp;
 	            			</div>
 	            			<div className="cell medium-auto">
-		            			<Field 
-		            				component={ShowChoicesNew} 
+		            			<Field
+		            				component={ShowChoicesNew}
 		            				name="q_5"
 		            			/>
 		            		</div>
@@ -374,9 +374,9 @@ class ComplaintPortal extends React.Component {
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_7">
             			<div className="grid-x">
 	            			<div className="cell auto">
-		            			<Field 
-		            				name="q_7" 
-		            				component={ShowChoicesNew} 
+		            			<Field
+		            				name="q_7"
+		            				component={ShowChoicesNew}
 		            				error="warning"
 		            				errorText="You have selected a lot of reasons. Please make sure that they all apply to you before submitting the form."
 		            			/>
@@ -386,71 +386,71 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_7" sidebar={stickySidebar} isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please choose what you believe is true, you can select more than one:</h4>
             			<fieldset>
-							<ReduxCheckboxGroupInfoBox 
+							<ReduxCheckboxGroupInfoBox
 								other
 		            			data={[
-							    	{ 
-							    		value : "Race", 
+							    	{
+							    		value : "Race",
 							    		displayName : "Race, skin color, ethnicity, nationality, where I came from, or my culture" ,
 							    		moreInfo : "George unsuccessfully applies for a position with a construction company. When he telephones the company’s personnel manager to ask why he did not get the position, George is told: ‘We’ve employed people from your country before. You lot simply don’t share our work ethic’."
 							    	},
-									{ 
-										value : "Religion", 
+									{
+										value : "Religion",
 										displayName : "Religious beliefs or association" ,
 										moreInfo : "Mariam is a Muslim. At a job interview with an insurance company she is asked about her religious background. Even though Mariam is the best candidate, the HR manager tells her he cannot offer her the job because he thinks she will have to leave her workstation for prayer several times a day."
 									},
-									{ 
-										value : "Health/Disability", 
+									{
+										value : "Health/Disability",
 										displayName : "Health, disability or illness (this can be mental or physical)" ,
 										moreInfo : "A store requires Linh, who is vision impaired, to produce a driver’s licence as identification before it will accept her cheque to pay for goods. Linh is not eligible to have a licence because of her vision impairment. The store will not accept other forms of official identification that Linh offers."
 									},
-									{ 
-										value : "Employment activities", 
+									{
+										value : "Employment activities",
 										displayName : "Employment activities (asking for my rights or entitlements at work)" ,
 										moreInfo : "Joey works at a take away food shop that has three employees. He asks the owner if he should be receiving penalty rates for time worked on Saturdays. Soon after this, Joey’s Saturday hours are reduced."
 									},
-									{ 
-										value : "Sex/Gender", 
+									{
+										value : "Sex/Gender",
 										displayName : "Sex/Gender" ,
 										moreInfo : "Barbara applies to a bus company for a job as a bus driver. She was a transport driver in the RAAF and has plenty of experience. When the employer gives her the job he says he doubts that she will be able to hack the pace and that she will be paid less than the men until she proves herself."
 									},
-									{ 
-										value : "LGBITQ status", 
+									{
+										value : "LGBITQ status",
 										displayName : "LGBITQ status" ,
 										moreInfo : "Maxine contacts the local sports centre to join the weekly basketball tournament and is put in touch with a team needing players. At her second game with the team Maxine’s girlfriend comes along to cheer her on. Afterwards, the team captain tells Maxine that she doesn’t want a lesbian on the team as it might upset some of the other team members."
 									},
-									{ 
-										value : "Physical appearance", 
+									{
+										value : "Physical appearance",
 										displayName : "Physical appearance (how you look)" ,
 										moreInfo : "A fast food company will only recruit people with a certain 'look', that is, a specific height, weight and build."
 									},
-									{ 
-										value : "Parental/Carer status", 
+									{
+										value : "Parental/Carer status",
 										displayName : "Parental/Carer status (you are providing ongoing care to someone dependent on you)" ,
 										moreInfo : "Jasmine is keen to return to work as a marketing manager after taking two years of unpaid parental leave to have her first child. She makes an appointment with her boss to talk about coming back to work, but is told there has been a restructure in the company and Jasmine’s old job no longer exists. No other jobs have changed and Jasmine suspects that her boss simply doesn’t want to have to re-employ her now that she has a young child."
 									},
-									{ 
-										value : "Pregnancy/Breastfeeding", 
+									{
+										value : "Pregnancy/Breastfeeding",
 										displayName : "Pregnancy/Breastfeeding" ,
 										moreInfo : "Lee goes to the movies with her baby and a friend. She breastfeeds her baby while waiting to go into the cinema. An usher tells Lee that she cannot feed her baby in the foyer because it is embarrassing other patrons."
 									},
-									{ 
-										value : "Marital status", 
+									{
+										value : "Marital status",
 										displayName : "Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)" ,
 										moreInfo : "Domestic partners Peter and Jessica are refused accommodation because the landlord only wants to rent to a married couple. Peter and Jessica may lodge a complaint of discrimination based on marital status. It is possible that the landlord may need to provide an apology and agree to rent the place to them."
 },
-									{ 
-										value : "Political belief or association", 
+									{
+										value : "Political belief or association",
 										displayName : "Political belief or association" ,
 										moreInfo : "At a job interview Ally is asked if she is a member of a conservative organisation. When she says no, the interviewer abruptly ends the conversation, claiming that all employees must share the employer’s political beliefs."
 									},
-									{ 
-										value : "Union", 
+									{
+										value : "Union",
 										displayName : "Union (participation or association)" ,
 										moreInfo : "Zoë is a shop steward at a textiles factory. She takes two years off work to have children. When she decides to re-enter the workforce she telephones the personnel manager of her former employer. Zoë is told, \"We don’t want union types around here. There’s no room for people like you in this company\"."
 									},
-									{ 
-										value : "Personal association", 
+									{
+										value : "Personal association",
 										displayName : "Personal association with someone who could be treated unfairly because of one or more of the above reasons  " ,
 										moreInfo : "Renske is harassed and bullied at school because a newspaper prints an article that says her mother has HIV. The school fails to stop the bullying and Renske eventually leaves the school."
 									}
@@ -468,7 +468,7 @@ class ComplaintPortal extends React.Component {
 	            		</div>
 	            		<div className="grid-x">
 	            			<div className="cell auto">
-	            				
+
 		            			<Field
 						            name="q_8"
 						            component="textarea"
@@ -491,8 +491,8 @@ class ComplaintPortal extends React.Component {
 	            		</div>
 	            		<div className="grid-x">
 	            			<div className="cell medium-auto">
-		            			<Field 
-		            				component={ShowChoicesNew} 
+		            			<Field
+		            				component={ShowChoicesNew}
 		            				name="q_9"
 		            				error="warning"
 		            				errorText="You have selected a lot of harms. Please make sure that they all apply to you before submitting the form."
@@ -503,7 +503,7 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_9" isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please select the harms you have experienced, you can tick more than one:</h4>
             			<fieldset>
-            				<ReduxCheckboxGroupHarms 
+            				<ReduxCheckboxGroupHarms
 		            			data={[
 		            				{ value: "I was not able to participate in the activity", displayName: "I was not able to participate in the activity"},
 									{ value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
@@ -617,7 +617,7 @@ class ComplaintPortal extends React.Component {
 		            		/>
 						</fieldset>
             		</Helper>
-            		
+
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_10">
             			<div className="grid-x">
 	            			<div className="cell auto">
@@ -626,9 +626,9 @@ class ComplaintPortal extends React.Component {
 	            		</div>
 	            		<div className="grid-x">
 	            			<div className="cell auto">
-		            			<Field 
-		            				name="q_10" 
-		            				component={ShowChoicesNew} 
+		            			<Field
+		            				name="q_10"
+		            				component={ShowChoicesNew}
 		            				error="warning"
 		            				errorText="You have selected a lot of actions. Please make sure that they all apply to you before submitting the form."
 		            			/>
@@ -638,7 +638,7 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_10" isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please select the outcome you are seeking, you can choose more than one:</h4>
             			<fieldset>
-            				<ReduxCheckboxGroup 
+            				<ReduxCheckboxGroup
             					name="q_10"
             					data={[
 							    	{value: "Apologise", displayName: "Apologise"},
@@ -654,7 +654,7 @@ class ComplaintPortal extends React.Component {
 							/>
 						</fieldset>
             		</Helper>
-            		
+
             	</FormElement>
             	<FormElement>
             		<h3 className="padding-top-3">Q3. (Optional) Is there anything else you would like the Commission to know?</h3>
@@ -748,7 +748,7 @@ class ComplaintPortal extends React.Component {
 								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="Accessible Documents" />Accessible Documents</label>
 								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="TTY" />TTY</label>
 								    <label className="margin-bottom-0"><Field component="input" type="checkbox" name="Other" />Other</label>
-            					</FormSection> 
+            					</FormSection>
             				</div>
             			</div>
             		</Element>
@@ -788,7 +788,7 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
 const FieldArraysForm = props => {
   const { handleSubmit, pristine, reset, submitting } = props
   return (
-    <FormSection name="q_12"> 
+    <FormSection name="q_12">
       <Field
         name="org_name"
         type="text"
@@ -811,7 +811,7 @@ const FieldArraysForm = props => {
     	  <Address />
       </FormSection>
       <FieldArray name="individuals" component={renderIndividuals} />
-    </FormSection>  
+    </FormSection>
   )
 }
 
@@ -822,7 +822,7 @@ const renderIndividuals = ({ fields, meta: { error, submitFailed } }) => (
       {submitFailed && error && <span>{error}</span>}
 	    {fields.map((member, index) => (
 	      <div className="card" key={index}>
-	        
+
 	        <div className="card-divider clearfix">Individual No. {index + 1} &emsp;<a className="button hollow float-right"
 	          type="button"
 	          onClick={() => fields.remove(index)}
@@ -864,7 +864,7 @@ class Address extends React.Component {
 	    		    </div>
 	    		    <div className="cell medium-auto">
 			            <label>Postcode</label>
-	    		        <Field name="postcode" component="input" type="text"/> 
+	    		        <Field name="postcode" component="input" type="text"/>
 	    		    </div>
 	    		</div>
 	        </div>
@@ -968,11 +968,11 @@ class Element extends React.Component{
 
   	render(){
 		return(
-			<div 
-				ref={this.myRef} 
-				aria-describedby={this.props.helper} 
-				className="form_element padding-0 padding-left-1" 
-				onFocus={this.props.clickHandler.bind(this, this.props.helper, this.myRef)} 
+			<div
+				ref={this.myRef}
+				aria-describedby={this.props.helper}
+				className="form_element padding-0 padding-left-1"
+				onFocus={this.props.clickHandler.bind(this, this.props.helper, this.myRef)}
 				onClick={this.props.clickHandler.bind(this, this.props.helper, this.myRef)}
 			>
 				{this.props.children}
@@ -1017,7 +1017,7 @@ class Helper extends React.Component{
     shownClass = () => {
     	return (this.props.id == this.props.isShown) ? "show" : "hide";
     }
-	
+
 	render(){
 		let children = <div className={"padding-1 margin-bottom-1 " + this.shownClass()} id={this.props.id}>{this.props.children}</div>
 		if (!this.props.isMobile) {
@@ -1040,7 +1040,7 @@ class Helper extends React.Component{
 
 
 
-/* 
+/*
 Button element. displays choices made (if an object is provided) or radio button value
 */
 
@@ -1059,7 +1059,7 @@ class ShowChoices extends React.Component{
    		$("#"+this.props.field)
    			.find('input')
    			.first()
-   			.focus()    	
+   			.focus()
     }
 
     /*
@@ -1084,7 +1084,7 @@ class ShowChoices extends React.Component{
 		if(typeof(val) == 'object') val = this.objToString(val);
 		if(this.state.val != val ) this.setState({val: val})
 	}
-	
+
 	render(){
 		return(
 			<React.Fragment>
@@ -1109,7 +1109,7 @@ class ShowChoicesNew extends React.Component{
 		$("#"+this.name)
 			.find('input')
 			.first()
-			.focus()    	
+			.focus()
     }
 
     componentDidMount(){
@@ -1142,7 +1142,7 @@ class ShowChoicesNew extends React.Component{
 		}
 		return out.join(", ");
 	}
-	
+
 	render(){
 		return(
 			<React.Fragment>
@@ -1168,7 +1168,7 @@ function ReduxRadioGroup(props) {
 	return (
 		<React.Fragment>
 		{ props.data.map(
-			(item, idx) => 
+			(item, idx) =>
 				<label key={idx} className="margin-bottom-1">
 					<Field component="input" type="radio" name={props.name} value={item.value} />&ensp;{item.displayName}
 				</label>
@@ -1185,7 +1185,7 @@ function ReduxCheckboxGroup(props) {
 	return (
 		<FormSection name={props.name}>
 			{ props.data.map(
-			 	(item, idx) => 
+			 	(item, idx) =>
 					<label key={idx} className="margin-bottom-1">
 						<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
 					</label>
@@ -1205,7 +1205,7 @@ function ReduxCheckboxGroupHarms(props) {
 	return (
 		<FormSection name={props.name}>
 			{ props.data.map(
-			 	(item, idx) => 
+			 	(item, idx) =>
 					<label key={idx} className="margin-bottom-1">
 						<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
 					</label>
@@ -1222,7 +1222,7 @@ function ReduxCheckboxGroupInfoBox(props) {
 	return (
 		<FormSection name={props.name}>
 			{ props.data.map(
-			 	(item, idx) => 
+			 	(item, idx) =>
 					<div key={idx}>
 						<div className="grid-x">
 						    <div className="cell auto">
@@ -1260,7 +1260,79 @@ Return function for form. just outputs to console currently
 */
 
 function showResults(values) {
-  console.log(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+  //console.log(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
+	$.ajax({
+		url: 'https://22q75fpfs0.execute-api.eu-west-1.amazonaws.com/default/veohrc-portal-api',
+		type: 'POST',
+		contentType: 'application/json',
+		dataType: 'json',
+		data: JSON.stringify({
+			  "q_1": "Myself",
+			  "q_2": "test user",
+			  "q_3": "Bullied",
+			  "q_4": "Work",
+			  "q_5": "On this date",
+			  "q_5_single": "December 28th 2018",
+			  "q_6": "Individual(s)",
+			  "q_7": {
+			    "Race": true,
+			    "Religion": true,
+			    "Health/Disability": true
+			  },
+			  "q_8": "an example\nanother example",
+			  "q_9": {
+			    "My needs were ignored or rejected": true,
+			    "I lost my reputation": true
+			  },
+			  "q_10": {
+			    "Apologise": true,
+			    "Give me financial compensation/money": true
+			  },
+			  "q_11": "some more info",
+			  "q_12": {
+			    "org_name": "some company",
+			    "org_number": "1234567890",
+			    "org_email": "1@2.com",
+			    "organisation_address": {
+			      "address1": "123 something st",
+			      "suburb": "somewhere",
+			      "postcode": "3333",
+			      "address2": "unit 1"
+			    },
+			    "individuals": [
+			      {
+			        "firstName": "an",
+			        "lastName": "individual"
+			      },
+			      {
+			        "firstName": "another",
+			        "lastName": "individual"
+			      }
+			    ]
+			  },
+			  "q_13": {
+			    "title": "Mr",
+			    "contact_number": "0987654321",
+			    "contact_email": "test@user.com",
+			    "personal_address": {
+			      "address1": "123 blah blah",
+			      "address2": "blah",
+			      "suburb": "collingwood",
+			      "postcode": "3066"
+			    },
+			    "Interpreter Service": true,
+			    "Accessible Documents": true,
+			    "TTY": true,
+			    "Other": true
+			  }
+		}),
+		success: function success(result) {
+			console.log(result);
+		},
+		error: function error(xhr, resp, text) {
+			console.log(xhr, resp, text);
+		}
+	});
 };
 
 const reducer = combineReducers({
