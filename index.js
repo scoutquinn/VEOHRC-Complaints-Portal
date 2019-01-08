@@ -1276,6 +1276,83 @@ function showResults(values) {
 	})
 };
 
+
+const reducer = combineReducers({
+  form: reduxFormReducer, // mounted under "form"
+});
+
+const store = (window.devToolsExtension
+  ? window.devToolsExtension()(createStore)
+  : createStore)(reducer);
+
+/* dummy test data */
+
+const testData = {
+  "q_1": "Myself",
+  "q_2": "test user",
+  "q_3": "Bullied",
+  "q_5": "On this date",
+  "q_5_single": "December 28th 2018",
+  "q_6": "Individual(s)",
+  "q_7": {
+    "Race": true,
+    "Religion": true,
+    "Health/Disability": true
+  },
+  "q_8": "an example\nanother example",
+  "q_10": {
+    "Apologise": true,
+    "Give me financial compensation/money": true
+  },
+  "q_11": "some more info",
+  "q_12": {
+    "org_name": "some company",
+    "org_number": "1234567890",
+    "org_email": "1@2.com",
+    "organisation_address": {
+      "address1": "123 something st",
+      "suburb": "somewhere",
+      "postcode": "3333",
+      "address2": "unit 1"
+    },
+    "individuals": [
+      {
+        "firstName": "an",
+        "lastName": "individual"
+      },
+      {
+        "firstName": "another",
+        "lastName": "individual"
+      }
+    ]
+  },
+  "q_13": {
+    "title": "Mr",
+    "contact_number": "0987654321",
+    "contact_email": "test@user.com",
+    "personal_address": {
+      "address1": "123 blah blah",
+      "address2": "blah",
+      "suburb": "collingwood",
+      "postcode": "3066"
+    },
+    "Interpreter Service": true,
+    "Accessible Documents": true,
+    "TTY": true,
+    "Other": true
+  }
+}
+
+ComplaintPortal = reduxForm({
+  form: 'complaintForm',
+  destroyOnUnmount: false,
+  initialValues : testData
+})(ComplaintPortal);
+
+/* EXTRACT VALUES */
+
+const selector = formValueSelector('complaintForm') 
+
 ComplaintPortal = reduxForm({
   form: 'complaintForm',
   destroyOnUnmount: false,
