@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { reduxForm, Field, FormSection, propTypes, FieldArray, formValueSelector, formValues } from 'redux-form';
+import { reduxForm, Field, FormSection, propTypes, FieldArray, formValueSelector, formValues, clearFields, change } from 'redux-form';
 import { Provider, connect } from "react-redux";
 import { createStore, combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
@@ -45,6 +45,10 @@ class ComplaintPortal extends React.Component {
     }
 
     sideBarRefs = {}
+
+    areaChange = (e) => {
+    	this.props.change('q_9', null);
+    }
 
 
     // set state of date fields
@@ -281,7 +285,7 @@ class ComplaintPortal extends React.Component {
 							    	{value : "Hospital or a medical clinic", displayName : "A hospital or medical clinic (e.g. dental clinic, physiotherapy clinic, nutritionist)" },
 							    	{value : "A store or venue", displayName : "A store or venue (e.g. shops, cinemas, bars, clubs, restaurants, massage parlors, hairdresser)" },
 							    	{value : "Service Provider", displayName : "With a service provider (e.g. Public transport, car ride services such as Uber, Didi, internet providers, mobile services)" },
-							    	{value : "Accommodation ", displayName : "Any accommodation (e.g. rental property, commercial property, hotel or motel, camping or caravan sites, boarding houses or hostels, public housing, mobile homes or mobile home sites" },
+							    	{value : "Accommodation", displayName : "Any accommodation (e.g. rental property, commercial property, hotel or motel, camping or caravan sites, boarding houses or hostels, public housing, mobile homes or mobile home sites" },
 							    	{value : "Local government", displayName : "A local government (e.g. local council, VicRoads, Department of Health and Human Services, State Revenue Office)" },
 							    	{value : "Sporting activities", displayName : "A sporting event, game or activity (e.g. sports clubs, participatingin sports games, coaching teams)" },
 							    	{value : "Club", displayName : "A club (e.g. social, literary, cultural, political, sporting clubs which have more than 30 members, has a liquor licence and operates mainly from its own funds)" }
@@ -1170,7 +1174,7 @@ function ReduxRadioGroup(props) {
 		{ props.data.map(
 			(item, idx) => 
 				<label key={idx} className="margin-bottom-1">
-					<Field component="input" type="radio" name={props.name} value={item.value} />&ensp;{item.displayName}
+					<Field component="input" type="radio" onChange={ props.changeHandler } name={props.name} value={item.value} />&ensp;{item.displayName}
 				</label>
 			)
 		}
@@ -1198,21 +1202,34 @@ function ReduxCheckboxGroup(props) {
 	)
 }
 
-function ReduxCheckboxGroupHarms(props) {
-	return (
-		<FormSection name={props.name}>
-			{ props.areaHarms[props.condition].map(
-			 	(item, idx) => 
-					<label key={idx} className="margin-bottom-1">
-						<Field component="input" type="checkbox" change="false" name={item.value} />&ensp;{item.displayName}
-					</label>
-			    )
-			}
-			{ props.other &&
-				<OtherField name={props.name} type="checkbox" />
-			}
-		</FormSection>
-	)
+class ReduxCheckboxGroupHarms extends React.Component {
+	/*
+	psuedocode 
+	when area is changed fire event that will clear "q_9" checkboxes
+	*/
+	componentWillUnmount(){
+		console.log('unmount')
+	}
+	render(){
+		console.log(this.props.condition);
+		return (
+			<FormSection name={this.props.name}>
+				{ this.props.areaHarms[this.props.condition].map(
+				 	(item, idx) => 
+						<label key={idx} className="margin-bottom-1">
+							<Field 
+							component="input" 
+							type="checkbox" 
+							name={item.value} />&ensp;{item.displayName}
+						</label>
+				    )
+				}
+				{ this.props.other &&
+					<OtherField name={this.props.name} type="checkbox" />
+				}
+			</FormSection>
+		)
+	}
 }
 
 function ReduxCheckboxGroupInfoBox(props) {
@@ -1282,7 +1299,7 @@ const testData = {
     "Religion": true,
     "Health/Disability": true
   },
-  "q_8": "an example\nanother example",
+  // "q_8": "an example\nanother example",
   "q_10": {
     "Apologise": true,
     "Give me financial compensation/money": true
@@ -1338,7 +1355,6 @@ const selector = formValueSelector('complaintForm')
 
 ComplaintPortal = connect( state => {
 	let areaValue = selector(state, "q_4") || "Other";
-	//areaValue = "Other";
 	return {areaValue};
 })(ComplaintPortal)
 
