@@ -1310,7 +1310,7 @@ var stickySidebar = new StickySidebar(sidebar,{
 
 function updateSidebar(){
 	stickySidebar.updateSticky()
-}
+};
 
 
 $(document).ready(function(){
