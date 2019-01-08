@@ -1262,8 +1262,8 @@ Return function for form. just outputs to console currently
 function showResults(values) {
   //console.log(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
 	$.ajax({
-		url: 'https://22q75fpfs0.execute-api.eu-west-1.amazonaws.com/default/veohrc-widget-api',
-		type: 'PUT',
+		url: 'https://22q75fpfs0.execute-api.eu-west-1.amazonaws.com/default/veohrc-portal-api',
+		type: 'POST',
 		contentType: 'application/json',
 		dataType: 'json',
 		data: JSON.stringify({
