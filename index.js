@@ -1266,7 +1266,7 @@ function showResults(values) {
 		type: 'POST',
 		contentType: 'application/json',
 		dataType: 'json',
-		data: JSON.stringify(values, null, 2),
+		data: JSON.stringify(values),
 		success: function success(result) {
 			console.log(result);
 		},
