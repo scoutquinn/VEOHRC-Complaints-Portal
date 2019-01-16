@@ -6,6 +6,11 @@ import { createStore, combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 
 
+/* custom components */
+
+import {FormElement, Element, Helper} from './components/form_elements.jsx'
+
+
 import "./scss/style.scss";
 import $ from "jquery";
 import Foundation from "foundation-sites";
@@ -24,7 +29,7 @@ Submit is handled by "showResults" function on line: 888
 
 ***/
 
-const MobileContext = React.createContext('desktop');
+//const MobileContext = React.createContext('desktop');
 
 class ComplaintPortal extends React.Component {
 	constructor (props) {
@@ -215,10 +220,8 @@ class ComplaintPortal extends React.Component {
            		}
 
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_1_someone_else" isShown={this.state.sideBar} isMobile={this.isMobile()}>
-            			<h4>Tips</h4>
-            			<p>If you are lodging a complaint for someone else, you
-						may need to provide a consent form if you are not
-						a parent or carer of that person.</p>
+            			<p>You have selected to make a complaint on behalf of an individual or a group of people.</p>
+						<p>Please provide us your details in case the Commission needs to contact you for further information. A copy of this form will be sent to the email you provided.</p>
             		</Helper>
 
             	{/* END CONDITIONAL RENDER */}
@@ -245,11 +248,8 @@ class ComplaintPortal extends React.Component {
             		</Element>
             		}
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_2" isShown={this.state.sideBar} isMobile={this.isMobile()}>
-            			<h4>Suggestions</h4>
-            			<p>Please tell us about your story. This box will help you
-						fill in your story as you click through each selection
-						field.</p>
-						<p>Let's start by filling in your name.</p>
+            			<p>Your story is important to us, by sharing your experience with the Commission, we are better able to help you resolve your dispute.</p>
+						<p>Our guided form will assist you in telling your story. If there is more information you would like to share with the Commission, you can do so in Section 4 of this form.</p>
             		</Helper>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_3">
             			<div className="grid-x">
@@ -401,6 +401,7 @@ class ComplaintPortal extends React.Component {
 								</div>
 							</div>
 					    	<label className="margin-bottom-0"><Field component="input" type="radio" name="q_5" value="I don't remember" />I don't remember</label>
+					    	<p>It's okay if you do not remember. You can still submit your application.</p>
 						</fieldset>
             		</Helper>
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_4">
@@ -1048,109 +1049,12 @@ class OtherField extends React.Component{
 }
 
 
-/*
-Dummy holder for top level for sections
-Possibly uneeded
-*/
-
-function FormElement(props){
-	return props.children;
-}
 
 
 
 
 
 
-
-/*
-Holder for question/ input field in left side of form.
-also handles clicks for highlighting the section
-*/
-
-
-class Element extends React.Component{
-  	constructor(props) {
-	    super(props);
-	    this.myRef = React.createRef();
-  	}
-
-  	componentDidMount(){
-  		this.props.refCallback(this.props.helper, this.myRef.current);
-  	}
-
-  	click = () => {
-  		this.props.clickHandler.bind(this, this.props.helper, this.myRef)
-  	}
-
-  	render(){
-		return(
-			<div 
-				ref={this.myRef} 
-				aria-describedby={this.props.helper} 
-				className="form_element padding-0 padding-left-1" 
-				onFocus={this.props.clickHandler.bind(this, this.props.helper, this.myRef)} 
-				onClick={this.props.clickHandler.bind(this, this.props.helper, this.myRef)}
-			>
-				{this.props.children}
-			</div>
-		)
-	}
-}
-
-
-
-
-
-/*
-Helper section.
-Is displayed in the sidebar for desktop, and below the element for mobile
-*/
-
-class Helper extends React.Component{
-	static contextType = MobileContext;
-
-	constructor(props) {
-    	super(props);
-    	this.el = document.createElement('div');
-  	}
-
-
-    componentDidMount(){
-    	//$("#sidebar").foundation();
-    	if(this.props.sidebar) this.props.sidebar.updateSticky();
-
-    }
-    componentDidUpdate(){
-    	if (this.props.id == this.props.isShown){
-    		this.props.showHelp(this.props.id)
-    		// $("#"+this.props.id)
-    		// 	.find('input')
-    		// 	.first()
-    		// 	.focus()
-    	}
-    }
-
-    shownClass = () => {
-    	return (this.props.id == this.props.isShown) ? "show" : "hide";
-    }
-	
-	render(){
-		let children = <div className={"padding-1 margin-bottom-1 " + this.shownClass()} id={this.props.id}>{this.props.children}</div>
-		if (!this.props.isMobile) {
-			return ReactDOM.createPortal(children, sidebarNode);
-		} else if (this.props.isMobile){
-			return(
-				<div className="helper">
-					{children}
-				</div>
-			)
-
-		}else {
-			return false;
-		}
-	}
-}
 
 
 
@@ -1507,8 +1411,8 @@ ComplaintPortal = connect( state => {
 /** RENDER CODE **/
 
 
-let mountNode = document.getElementById("app"),
-	sidebarNode = document.getElementById("sidebar");
+
+let mountNode = document.getElementById("app");
 
 
 
