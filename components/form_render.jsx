@@ -9,6 +9,19 @@ These are a holder to hold a form section and the actual form element
 and the helper text that shows up on the right on desktop and below
 the form element on mobile.
 
+Each section is comprised like the following:
+
+FormElement
+|
+|
+|----Element
+|
+|
+|----Helper
+        |
+        |
+        |----ShowChoices (redux Field)
+
 */
 
 

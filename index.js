@@ -1,25 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { reduxForm, Field, FormSection, propTypes, FieldArray, formValueSelector, formValues, clearFields, change } from 'redux-form';
+import { reduxForm, Field, FormSection, propTypes, formValueSelector, formValues, clearFields, change } from 'redux-form';
 import { Provider, connect } from "react-redux";
 import { createStore, combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
-
-
-/* custom components */
-
-import {FormElement, Element, Helper} from './components/form_elements.jsx'
 
 
 import "./scss/style.scss";
 import $ from "jquery";
 import Foundation from "foundation-sites";
 import moment from 'moment';
-import DatePicker from 'react-datepicker';
 import StickySidebar from 'sticky-sidebar';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+/* custom components */
+
+import {FormElement, Element, Helper} from './components/form_render.jsx';
+import {renderField, FieldArraysForm, renderIndividuals} from './components/form_org_and_ind.jsx';
+import Address from "./components/form_address.jsx";
+import datePicker from "./components/field_datepicker.jsx";
 
 /***
 
@@ -880,184 +880,6 @@ class ComplaintPortal extends React.Component {
 	}
 }
 
-/*
-Repeatable fields for organisation and individuals
-*/
-
-// individual field and label
-const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} type={type} placeholder={label} />
-      {touched && error && <span>{error}</span>}
-    </div>
-  </div>
-)
-
-
-// initial organisation fields
-const FieldArraysForm = props => {
-  const { handleSubmit, pristine, reset, submitting } = props
-  return (
-    <FormSection name="q_12"> 
-      <Field
-        name="org_name"
-        type="text"
-        component={renderField}
-        label="Organisation Name"
-      />
-      <Field
-        name="org_number"
-        type="text"
-        component={renderField}
-        label="Contact Number"
-      />
-      <Field
-        name="org_email"
-        type="email"
-        component={renderField}
-        label="Email Address"
-      />
-      <FormSection name="organisation_address">
-    	  <Address />
-      </FormSection>
-      <FieldArray name="individuals" component={renderIndividuals} />
-    </FormSection>  
-  )
-}
-
-
-// subfields for individuaLs
-const renderIndividuals = ({ fields, meta: { error, submitFailed } }) => (
-	<React.Fragment>
-      {submitFailed && error && <span>{error}</span>}
-	    {fields.map((member, index) => (
-	      <div className="card" key={index}>
-	        
-	        <div className="card-divider clearfix">Individual No. {index + 1} &emsp;<a className="button hollow float-right"
-	          type="button"
-	          onClick={() => fields.remove(index)}
-	        >Remove Individual</a></div>
-	        <div className="card-section">
-		        <Field
-		          name={`${member}.firstName`}
-		          type="text"
-		          component={renderField}
-		          label="First Name"
-		        />
-		        <Field
-		          name={`${member}.lastName`}
-		          type="text"
-		          component={renderField}
-		          label="Last Name"
-		        />
-	        </div>
-	      </div>
-	    ))}
-      <a className="button hollow" onClick={() => fields.push({})}>Add Individual</a>
-	</React.Fragment>
-)
-
-
-/* address fields */
-
-class Address extends React.Component {
-    render() {
-        return (
-        	<div>
-	            <label>Address</label>
-	            <Field name="address1" component="input" type="text"/>
-	            <Field name="address2" component="input" type="text"/>
-	            <div className="grid-x grid-margin-x">
-	            	<div className="cell medium-auto">
-			            <label>Town/Suburb</label>
-	    		        <Field name="suburb" component="input" type="text"/>
-	    		    </div>
-	    		    <div className="cell medium-auto">
-			            <label>Postcode</label>
-	    		        <Field name="postcode" component="input" type="text"/> 
-	    		    </div>
-	    		</div>
-	        </div>
-	    )
-    }
-}
-
-
-
-/*
-DatePicker Element:
-renders datepicker into a redux-form element
-uses "moment" for time calculations
-
-usage:
-
-<Field
-    name="q_5_start"
-    component={datePicker}
-    type="text"
-    selected={moment(this.state.startDate)}
-    onChange={this.handleChange.bind(this)}
-    className="form-control"
-/>
-
-*/
-
-const datePicker = ({ input, label, type, className, selected, meta: { touched, error } }) => (
-      <div>
-        <div>
-          <DatePicker {...input}
-            selected={moment(selected)} placeholder={label}
-            type={type} className={className}
-            dateFormat="MMMM Do YYYY"
-            peekNextMonth
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-          />
-          {touched && error && <span className="error_field">{error}</span>}
-        </div>
-      </div>
-    )
-
-
-/*
-Other selector
-*/
-
-class OtherField extends React.Component{
-	constructor(props) {
-	    super(props);
-	    this.state = {
-	    	showOther: false
-	    } 
-	}
-	changeHandle = (event) => {
-		this.setState({"showOther": event.target.checked})
-	}
-	render(){
-		return(
-			<React.Fragment>
-				<label className="margin-bottom-1">
-					<Field onChange={this.changeHandle} component="input" type={this.props.type} name={ (this.props.type == "radio") ? this.props.name : "Other"  } value={ (this.props.type == "radio") && "Other" } />&ensp;Other
-				</label>
-				{ this.state.showOther && <Field component="input" type="text" name={this.props.name+"_other"} placeholder="Please Specify"/> }
-			</React.Fragment>
-		)
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1280,6 +1102,37 @@ function ReduxCheckboxGroupInfoBox(props) {
 		</FormSection>
 	)
 }
+
+
+/*
+Other selector
+*/
+
+class OtherField extends React.Component{
+	constructor(props) {
+	    super(props);
+	    this.state = {
+	    	showOther: false
+	    } 
+	}
+	changeHandle = (event) => {
+		this.setState({"showOther": event.target.checked})
+	}
+	render(){
+		return(
+			<React.Fragment>
+				<label className="margin-bottom-1">
+					<Field onChange={this.changeHandle} component="input" type={this.props.type} name={ (this.props.type == "radio") ? this.props.name : "Other"  } value={ (this.props.type == "radio") && "Other" } />&ensp;Other
+				</label>
+				{ this.state.showOther && <Field component="input" type="text" name={this.props.name+"_other"} placeholder="Please Specify"/> }
+			</React.Fragment>
+		)
+	}
+}
+
+
+
+
 class FieldFileInput extends React.Component {
     constructor(props) {
         super(props)
