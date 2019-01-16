@@ -3,6 +3,7 @@ import { Field } from 'redux-form';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 
+import 'react-datepicker/dist/react-datepicker.css';
 /*
 DatePicker Element:
 renders datepicker into a redux-form element

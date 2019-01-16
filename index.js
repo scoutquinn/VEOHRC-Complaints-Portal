@@ -12,24 +12,23 @@ import Foundation from "foundation-sites";
 import moment from 'moment';
 import StickySidebar from 'sticky-sidebar';
 
-import 'react-datepicker/dist/react-datepicker.css';
 
 /* custom components */
 
-import {FormElement, Element, Helper} from './components/form_render.jsx';
-import {renderField, FieldArraysForm, renderIndividuals} from './components/form_org_and_ind.jsx';
+import { FormElement, Element, Helper } from './components/form_render.jsx';
+import { renderField, FieldArraysForm, renderIndividuals } from './components/form_org_and_ind.jsx';
 import Address from "./components/form_address.jsx";
 import datePicker from "./components/field_datepicker.jsx";
+import { ReduxRadioGroup, ReduxCheckboxGroup, ReduxCheckboxGroupInfoBox, OtherField } from './components/fields_repeating_other.jsx';
+import ShowChoicesNew from './components/form_choice_button.jsx';
 
 /***
 
 COMPLAINT FORM
 
-Submit is handled by "showResults" function on line: 888
+Submit is handled by "showResults" function
 
 ***/
-
-//const MobileContext = React.createContext('desktop');
 
 class ComplaintPortal extends React.Component {
 	constructor (props) {
@@ -87,6 +86,7 @@ class ComplaintPortal extends React.Component {
     // show hilight box / scroll action for mobile
 
     showHilight = (id) => {
+    	console.log('highlight change');
     	let os_old = this.state.os;
     	//get DOM element and calc offset, width and height (jQuery)
     	const $e = $(this.sideBarRefs[id])
@@ -98,10 +98,13 @@ class ComplaintPortal extends React.Component {
 	    	if(!this.isMobile()){
 	    		this.setState({os})
 	    	}else{
-	    		$(window).scrollTop(os.top)
+	    		this.mobileScrollTo(id, os);
 	    	}
     	}
+    }
 
+    mobileScrollTo(id, os){
+    	if(id != this.state.sideBar) $(window).scrollTop(os.top)
     }
 
     // sidebar 
@@ -110,8 +113,6 @@ class ComplaintPortal extends React.Component {
     	// set sidebar from id
     	this.setState({sideBar: id})
     	this.props.sidebar();
-    	//console.log($("#"+id).find('input').first())
-    	//$("#"+id).find('input').first().focus()
     }
 
     componentDidMount() {
@@ -122,7 +123,7 @@ class ComplaintPortal extends React.Component {
 	}
 
 	handleResize = ({ target }) => {
-		console.log(this.isMobile());
+//		console.log(this.isMobile());
 		this.setState({ width: target.innerWidth })
 	}
 
@@ -136,7 +137,7 @@ class ComplaintPortal extends React.Component {
 
 	
 	render() {
-		console.log('render!');
+//		console.log('render!');
 		return(
 			<form onSubmit={this.props.handleSubmit}>
 				<div className="helper-hilight" style={{
@@ -209,14 +210,9 @@ class ComplaintPortal extends React.Component {
 							        type="text"
 							        component='input'
 							    />
-							</div>
-
-						
-							
+							</div>							
 						</div>
-            		</Element>
-
-            		
+            		</Element>           		
            		}
 
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_1_someone_else" isShown={this.state.sideBar} isMobile={this.isMobile()}>
@@ -615,7 +611,7 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_9" isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please select the harms you have experienced, you can tick more than one:</h4>
             			<fieldset>
-            				<ReduxCheckboxGroupHarms 
+            				<ReduxCheckboxGroup
 		            			data={[
 		            				{ value: "I was not able to participate in the activity", displayName: "I was not able to participate in the activity"},
 									{ value: "My needs were ignored or rejected", displayName: "My needs were ignored or rejected"},
@@ -882,257 +878,6 @@ class ComplaintPortal extends React.Component {
 
 
 
-
-/* 
-Button element. displays choices made (if an object is provided) or radio button value
-*/
-
-
-class ShowChoices extends React.Component{
-	constructor(props) {
-    	super(props);
-    	this.state = {
-    		showError : false,
-    		val : 'choose'
-    	}
-    }
-
-	anchorClick = (e) => {
-    	e.preventDefault()
-   		$("#"+this.props.field)
-   			.find('input')
-   			.first()
-   			.focus()    	
-    }
-
-    /*
-	helper function to conver a checkbox object into a comma seperated string
-	*/
-
-    objToString = (obj) => {
-		let out = [];
-		Object.keys(obj).map((key) => {
-			if (obj[key]) out.push(key);
-		})
-		if(out.length > 4 && !this.state.showError) {
-			this.setState({ showError: true });
-		}else if(out.length <= 4 && this.state.showError){
-			this.setState({ showError: false });
-		}
-		return out.join(", ");
-	}
-
-	componentDidUpdate(){
-		let val = this.props.formData[this.props.field];
-		if(typeof(val) == 'object') val = this.objToString(val);
-		if(this.state.val != val ) this.setState({val: val})
-	}
-	
-	render(){
-		return(
-			<React.Fragment>
-				<a className="button expanded hollow" onClick={this.anchorClick} href="#">{this.state.val ? this.state.val : 'Choose...' }</a>
-				{ this.state.showError && <div className={"callout "+this.props.error} ><small>{this.props.errorText}</small></div>}
-			</React.Fragment>
-		)
-	}
-}
-
-class ShowChoicesNew extends React.Component{
-	constructor(props) {
-    	super(props);
-    	this.state = {
-    		showError : false,
-    		val : 'Choose...'
-    	}
-    }
-
-	anchorClick = (e) => {
-    	e.preventDefault()
-		$("#"+this.name)
-			.find('input')
-			.first()
-			.focus()    	
-    }
-
-    componentDidMount(){
-    	this.setVals()
-    }
-
-    componentDidUpdate(){
-		this.setVals()
-	}
-
-    setVals(){
-    	let val = this.props.input.value;
-		if(typeof(val) == 'object') val = this.objToString(val);
-		if(this.state.val != val ) this.setState({val: val})
-    }
-
-    /*
-	helper function to conver a checkbox object into a comma seperated string
-	*/
-
-    objToString = (obj) => {
-		let out = [];
-		Object.keys(obj).map((key) => {
-			if (obj[key]) out.push(key);
-		})
-		if(out.length > 4 && !this.state.showError) {
-			this.setState({ showError: true });
-		}else if(out.length <= 4 && this.state.showError){
-			this.setState({ showError: false });
-		}
-		return out.join(", ");
-	}
-	
-	render(){
-		return(
-			<React.Fragment>
-				<a className="button expanded hollow" onClick={this.anchorClick} href="#">{this.state.val ? this.state.val : 'Choose...' }</a>
-				{ this.state.showError && <div className={"callout "+this.props.error} ><small>{this.props.errorText}</small></div>}
-			</React.Fragment>
-		)
-	}
-}
-
-
-
-
-
-// FORM HELPERS
-
-/*
-data should be an array of objects structured like this:
-{value : "Work", displayName : "Work" }
-*/
-
-function ReduxRadioGroup(props) {
-
-	return (
-		<React.Fragment>
-		{ props.data.map(
-			(item, idx) => 
-				<label key={idx} className="margin-bottom-1">
-					<Field component="input" type="radio" onChange={ props.changeHandler } name={props.name} value={item.value} />&ensp;{item.displayName}
-				</label>
-			)
-		}
-		{ props.other &&
-			<OtherField name={props.name} type="radio" />
-		}
-		</React.Fragment>
-	)
-}
-
-function ReduxCheckboxGroup(props) {
-	return (
-		<FormSection name={props.name}>
-			{ props.data.map(
-			 	(item, idx) => 
-					<label key={idx} className="margin-bottom-1">
-						<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
-					</label>
-			    )
-			}
-			{ props.other &&
-				<OtherField name={props.name} type="checkbox" />
-			}
-		</FormSection>
-	)
-}
-
-class ReduxCheckboxGroupHarms extends React.Component {
-	/*
-	psuedocode 
-	when area is changed fire event that will clear "q_9" checkboxes
-	*/
-	componentWillUnmount(){
-		console.log('unmount')
-	}
-	render(){
-		console.log(this.props.condition);
-		return (
-			<FormSection name={this.props.name}>
-				{ this.props.areaHarms[this.props.condition].map(
-				 	(item, idx) => 
-						<label key={idx} className="margin-bottom-1">
-							<Field 
-							component="input" 
-							type="checkbox" 
-							name={item.value} />&ensp;{item.displayName}
-						</label>
-				    )
-				}
-				{ this.props.other &&
-					<OtherField name={this.props.name} type="checkbox" />
-				}
-			</FormSection>
-		)
-	}
-}
-
-function ReduxCheckboxGroupInfoBox(props) {
-	return (
-		<FormSection name={props.name}>
-			{ props.data.map(
-			 	(item, idx) => 
-					<div key={idx}>
-						<div className="grid-x">
-						    <div className="cell auto">
-							    <label className="margin-bottom-1">
-									<Field component="input" type="checkbox" name={item.value} />&ensp;{item.displayName}
-								</label>
-							</div>
-							<div className="cell shrink">
-							    &ensp;<a className="tiny button primary" data-toggle={"discinfo-"+idx}>Example</a>
-							</div>
-						</div>
-					    <div className="hide card" id={"discinfo-"+idx} data-toggler=".hide">
-						    <div className="card-section">
-						    	<small>{item.moreInfo}</small>
-							</div>
-						</div>
-					</div>
-			    )
-			}
-			{ props.other &&
-				<OtherField name={props.name} type="checkbox" />
-			}
-		</FormSection>
-	)
-}
-
-
-/*
-Other selector
-*/
-
-class OtherField extends React.Component{
-	constructor(props) {
-	    super(props);
-	    this.state = {
-	    	showOther: false
-	    } 
-	}
-	changeHandle = (event) => {
-		this.setState({"showOther": event.target.checked})
-	}
-	render(){
-		return(
-			<React.Fragment>
-				<label className="margin-bottom-1">
-					<Field onChange={this.changeHandle} component="input" type={this.props.type} name={ (this.props.type == "radio") ? this.props.name : "Other"  } value={ (this.props.type == "radio") && "Other" } />&ensp;Other
-				</label>
-				{ this.state.showOther && <Field component="input" type="text" name={this.props.name+"_other"} placeholder="Please Specify"/> }
-			</React.Fragment>
-		)
-	}
-}
-
-
-
-
 class FieldFileInput extends React.Component {
     constructor(props) {
         super(props)
@@ -1263,17 +1008,11 @@ ComplaintPortal = connect( state => {
 
 /** RENDER CODE **/
 
-
-
-let mountNode = document.getElementById("app");
-
-
-
 ReactDOM.render(
 		<Provider store={store}>
 			<ComplaintPortal sidebar={updateSidebar} onSubmit={showResults}/>
 		</Provider>
-	, mountNode
+	, document.getElementById("app")
 );
 
 

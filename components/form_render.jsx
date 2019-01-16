@@ -82,6 +82,8 @@ Helper section.
 Is displayed in the sidebar for desktop, and below the element for mobile
 */
 
+
+// declare sidebarnode for react portal
 let sidebarNode = document.getElementById("sidebar");
 
 class Helper extends React.Component{

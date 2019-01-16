@@ -24,12 +24,6 @@ const FieldArraysForm = props => {
   return (
     <FormSection name="q_12"> 
       <Field
-        name="org_name"
-        type="text"
-        component={renderField}
-        label="Organisation Name"
-      />
-      <Field
         name="org_number"
         type="text"
         component={renderField}
