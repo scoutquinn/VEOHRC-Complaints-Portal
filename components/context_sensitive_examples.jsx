@@ -5,8 +5,8 @@ function ContextSensitiveExamples(props){
 	return (
 		<React.Fragment>
 		{data.map((item, idx) => 
-			<div className="card">
-			    <div key={idx} className="card-section">
+			<div key={idx} className="card">
+			    <div className="card-section">
 			    	<small>{item}</small>
 				</div>
 			</div>

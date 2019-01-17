@@ -1,3 +1,4 @@
+// app framework
 import React from "react";
 import ReactDOM from "react-dom";
 import { reduxForm, Field, FormSection, propTypes, formValueSelector, formValues, clearFields, change } from 'redux-form';
@@ -5,16 +6,16 @@ import { Provider, connect } from "react-redux";
 import { createStore, combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 
-
-import "./scss/style.scss";
+// front-end libraries
 import $ from "jquery";
 import Foundation from "foundation-sites";
 import moment from 'moment';
 import StickySidebar from 'sticky-sidebar';
 
+// styles
+import "./scss/style.scss";
 
 /* custom components */
-
 import { FormElement, Element, Helper } from './components/form_render.jsx';
 import { renderField, FieldArraysForm, renderIndividuals } from './components/form_org_and_ind.jsx';
 import Address from "./components/form_address.jsx";
@@ -22,6 +23,11 @@ import datePicker from "./components/field_datepicker.jsx";
 import { ReduxRadioGroup, ReduxCheckboxGroup, ReduxCheckboxGroupInfoBox, OtherField } from './components/fields_repeating_other.jsx';
 import ShowChoicesNew from './components/form_choice_button.jsx';
 import ContextSensitiveExamples from './components/context_sensitive_examples.jsx';
+
+/* form actions */
+import showResults from './handlers/results_handler.js';
+
+
 
 /***
 
@@ -87,7 +93,7 @@ class ComplaintPortal extends React.Component {
     // show hilight box / scroll action for mobile
 
     showHilight = (id) => {
-    	console.log('highlight change');
+    	//console.log('highlight change');
     	let os_old = this.state.os;
     	//get DOM element and calc offset, width and height (jQuery)
     	const $e = $(this.sideBarRefs[id])
@@ -163,8 +169,6 @@ class ComplaintPortal extends React.Component {
 							    	&ensp; Someone Else
 							    </label>
 							</div>
-
-						{/* For Someone else Additional info */}
 							
 						</div>
             		</Element>
@@ -227,7 +231,7 @@ class ComplaintPortal extends React.Component {
             	<br/>
             	<FormElement>
             		<h3 className="padding-top-2">Section 1. What happened?</h3>
-            		{(this.props.whoFor == "Myself") && 
+            		{(this.props.whoFor != "Someone Else") && 
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_2">
             			<div className="grid-x">
 	            			<div className="cell medium-shrink">
@@ -598,7 +602,7 @@ class ComplaintPortal extends React.Component {
 	            						"I was refused entry into an advanced maths class by my highschool teacher even though I had very good grades. When I asked her, she told me it was because of where I came from and as a result, she believed I would not be able to keep up in class. "
 	            					],
 		            				"Work" : [
-		            					"I work at a take away restaurant. When I asked the ownerif I should be receiving penalty rates for working on Saturday's, he reduced my Saturday shift hours.",
+		            					"I work at a take away restaurant. When I asked the owner if I should be receiving penalty rates for working on Saturday's, he reduced my Saturday shift hours.",
 		            					"I am pregnant, I currently work for a car dealership. When I asked my manager about maternity leave entitlement, the manager later told me I was dismissed and that my position was no longer required.",
 		            					"At a job interview, I mentioned that I spend a lot of time looking after my mother who has Alzheimer's disease. The interviewer ended the interview saying, 'I'm sorry, we can't afford to employ people with heavy carer responsibilities'."
 		            				],
@@ -956,15 +960,6 @@ class FieldFileInput extends React.Component {
     }
 }
 
-
-/*
-Return function for form. just outputs to console currently
-*/
-
-function showResults(values) {
-  console.log(`You submitted:\n\n${JSON.stringify(values, null, 2)}`);
-};
-
 const reducer = combineReducers({
   form: reduxFormReducer, // mounted under "form"
 });
@@ -973,37 +968,50 @@ const store = (window.devToolsExtension
   ? window.devToolsExtension()(createStore)
   : createStore)(reducer);
 
-/* dummy test data */
+/* 
+dummy test data 
+Uncomment the data below to get a test payload
+*/
+
 const testData = {};
 
 /*
 const testData = {
-  "q_1": "Myself",
-  "q_2": "test user",
-  "q_3": "Bullied",
-  "q_5": "On this date",
-  "q_5_single": "December 28th 2018",
-  "q_6": "Individual(s)",
-  "q_7": {
-    "Race": true,
-    "Religion": true,
-    "Health/Disability": true
+  "q_1": "Someone Else",
+  "q_9": {
+    "My work hours were reduced": true,
+    "I was not paid": true
   },
-  // "q_8": "an example\nanother example",
+  "q_4": "Work",
+  "q_3": "Treated unfairly",
+  "q_1_someone_else_full_name": "a name",
+  "q_1_someone_else_contact_number": "1234567890",
+  "q_1_someone_else_contact_email": "1@2.com",
+  "q_1_someone_else_their_name": "an individual",
+  "q_1_someone_else_relationship": "carer",
+  "q_5": "Between these dates",
+  "q_5_start": "January 1st 2019",
+  "q_5_end": "January 5th 2019",
+  "q_6_organisation": "some company",
+  "q_6": "Organisation",
+  "q_7": {
+    "Religion": true,
+    "Health/Disability": true,
+    "Race": true
+  },
+  "q_8": "I work at a take away restaurant. When I asked the ownerif I should be receiving penalty rates for working on Saturday's, he reduced my Saturday shift hours.",
   "q_10": {
     "Apologise": true,
     "Give me financial compensation/money": true
   },
-  "q_11": "some more info",
   "q_12": {
-    "org_name": "some company",
-    "org_number": "1234567890",
+    "org_number": "01234567890",
     "org_email": "1@2.com",
     "organisation_address": {
       "address1": "123 something st",
+      "address2": "unit 1",
       "suburb": "somewhere",
-      "postcode": "3333",
-      "address2": "unit 1"
+      "postcode": "3333"
     },
     "individuals": [
       {
@@ -1017,22 +1025,19 @@ const testData = {
     ]
   },
   "q_13": {
-    "title": "Mr",
-    "contact_number": "0987654321",
+    "contact_number": "987654321",
     "contact_email": "test@user.com",
     "personal_address": {
       "address1": "123 blah blah",
       "address2": "blah",
       "suburb": "collingwood",
       "postcode": "3066"
-    },
-    "Interpreter Service": true,
-    "Accessible Documents": true,
-    "TTY": true,
-    "Other": true
-  }
-}
+    }
+  },
+  "q_11": "some additional comments"
+} 
 */
+
 
 ComplaintPortal = reduxForm({
   form: 'complaintForm',
@@ -1043,6 +1048,8 @@ ComplaintPortal = reduxForm({
 /* EXTRACT VALUES */
 
 const selector = formValueSelector('complaintForm') 
+
+// extract values for questions that affect the context of other questions
 
 ComplaintPortal = connect( state => {
 	let areaValue = selector(state, "q_4") || "Other";
@@ -1060,20 +1067,18 @@ ReactDOM.render(
 	, document.getElementById("app")
 );
 
-
+// add code to handle sidebar scrolling
 var sidebar = document.getElementById('sidebar_holder');
-
 var stickySidebar = new StickySidebar(sidebar,{
     containerSelector: '#complaints_portal',
     topSpacing: 0,
     bottomSpacing: 0,
 });
-
 function updateSidebar(){
 	stickySidebar.updateSticky()
 }
 
-
+// hooks for jQuery and Foundation
 $(document).ready(function(){
 	$(document).foundation();
 });
