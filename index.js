@@ -21,6 +21,7 @@ import Address from "./components/form_address.jsx";
 import datePicker from "./components/field_datepicker.jsx";
 import { ReduxRadioGroup, ReduxCheckboxGroup, ReduxCheckboxGroupInfoBox, OtherField } from './components/fields_repeating_other.jsx';
 import ShowChoicesNew from './components/form_choice_button.jsx';
+import ContextSensitiveExamples from './components/context_sensitive_examples.jsx';
 
 /***
 
@@ -494,73 +495,68 @@ class ComplaintPortal extends React.Component {
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_7" sidebar={stickySidebar} isShown={this.state.sideBar} isMobile={this.isMobile()}>
             			<h4>Please choose what you believe is true, you can select more than one:</h4>
             			<fieldset>
-							<ReduxCheckboxGroupInfoBox 
+							<ReduxCheckboxGroup 
 								other
 		            			data={[
 							    	{ 
 							    		value : "Race", 
-							    		displayName : "Race, skin color, ethnicity, nationality, where I came from, or my culture" ,
-							    		moreInfo : "George unsuccessfully applies for a position with a construction company. When he telephones the company’s personnel manager to ask why he did not get the position, George is told: ‘We’ve employed people from your country before. You lot simply don’t share our work ethic’."
+							    		displayName : "Race, skin color, ethnicity, nationality, where I came from (e.g. I have dark colored skin, I come from a war torn country,)" ,
 							    	},
 									{ 
 										value : "Religion", 
-										displayName : "Religious beliefs or association" ,
-										moreInfo : "Mariam is a Muslim. At a job interview with an insurance company she is asked about her religious background. Even though Mariam is the best candidate, the HR manager tells her he cannot offer her the job because he thinks she will have to leave her workstation for prayer several times a day."
+										displayName : "Religious beliefs or activity (Whether or not I have a religious belief,or choose to take part in any religious activities e.g. praying)." ,
 									},
 									{ 
 										value : "Health/Disability", 
-										displayName : "Health, disability or illness (this can be mental or physical)" ,
-										moreInfo : "A store requires Linh, who is vision impaired, to produce a driver’s licence as identification before it will accept her cheque to pay for goods. Linh is not eligible to have a licence because of her vision impairment. The store will not accept other forms of official identification that Linh offers."
+										displayName : "Health, illness or disability (I have a physical or mental illness whichcan be a temporary or permanent health issue e.g. a broken limb, cold or flu, depression, vision impairment, epilepsy)." ,
 									},
 									{ 
 										value : "Employment activities", 
-										displayName : "Employment activities (asking for my rights or entitlements at work)" ,
-										moreInfo : "Joey works at a take away food shop that has three employees. He asks the owner if he should be receiving penalty rates for time worked on Saturdays. Soon after this, Joey’s Saturday hours are reduced."
-									},
-									{ 
-										value : "Sex/Gender", 
-										displayName : "Sex/Gender" ,
-										moreInfo : "Barbara applies to a bus company for a job as a bus driver. She was a transport driver in the RAAF and has plenty of experience. When the employer gives her the job he says he doubts that she will be able to hack the pace and that she will be paid less than the men until she proves herself."
-									},
-									{ 
-										value : "LGBITQ status", 
-										displayName : "LGBITQ status" ,
-										moreInfo : "Maxine contacts the local sports centre to join the weekly basketball tournament and is put in touch with a team needing players. At her second game with the team Maxine’s girlfriend comes along to cheer her on. Afterwards, the team captain tells Maxine that she doesn’t want a lesbian on the team as it might upset some of the other team members."
-									},
-									{ 
-										value : "Physical appearance", 
-										displayName : "Physical appearance (how you look)" ,
-										moreInfo : "A fast food company will only recruit people with a certain 'look', that is, a specific height, weight and build."
+										displayName : "Employment activities (e.g. I asked for a pay rise or penalty rates, applied for flexible work, went on sick leave or annual leave)." ,
 									},
 									{ 
 										value : "Parental/Carer status", 
-										displayName : "Parental/Carer status (you are providing ongoing care to someone dependent on you)" ,
-										moreInfo : "Jasmine is keen to return to work as a marketing manager after taking two years of unpaid parental leave to have her first child. She makes an appointment with her boss to talk about coming back to work, but is told there has been a restructure in the company and Jasmine’s old job no longer exists. No other jobs have changed and Jasmine suspects that her boss simply doesn’t want to have to re-employ her now that she has a young child."
+										displayName : "Carer and parental status (I have substantial responsibility for ongoing care and support for a child, partner, parent, relative or friend. This does not apply to if you are paid to provide care)." ,
 									},
 									{ 
 										value : "Pregnancy/Breastfeeding", 
-										displayName : "Pregnancy/Breastfeeding" ,
-										moreInfo : "Lee goes to the movies with her baby and a friend. She breastfeeds her baby while waiting to go into the cinema. An usher tells Lee that she cannot feed her baby in the foyer because it is embarrassing other patrons."
+										displayName : "Pregnancy or breastfeeding (I am pregnant or may become pregnant, or I am breastfeeding a child or expressing milk)." ,
+									},
+									{ 
+										value : "Sex/Gender", 
+										displayName : "Sex (I am treated unfairly because I'm a woman or because I'm associated with carer responsibilities, pregnancy and breastfeeding, or because I'm a man)." ,
+									},
+									{ 
+										value : "LGBITQ identity", 
+										displayName : "LGBTIQ identity (I identify as a member of the other sex, as a lesbian, gay, bisexual, transgender, intersex, or questioning)." ,
+									},
+									{ 
+										value : "Physical features", 
+										displayName : "Physical features (e.g. my height, weight, size, or shape of my body. These also include facial features, hair and birthmarks)." ,
 									},
 									{ 
 										value : "Marital status", 
-										displayName : "Marital status (you are single, married, divorced, widowed, separated, or living together with your partner)" ,
-										moreInfo : "Domestic partners Peter and Jessica are refused accommodation because the landlord only wants to rent to a married couple. Peter and Jessica may lodge a complaint of discrimination based on marital status. It is possible that the landlord may need to provide an apology and agree to rent the place to them."
+										displayName : "Marital status (e.g. I am single, married, divorced, widowed, separated, or living together with my partner)." ,
 									},
 									{ 
 										value : "Political belief or association", 
-										displayName : "Political belief or association" ,
-										moreInfo : "At a job interview Ally is asked if she is a member of a conservative organisation. When she says no, the interviewer abruptly ends the conversation, claiming that all employees must share the employer’s political beliefs."
+										displayName : "Political belief or activity (I may or may not have a political belief, be a member of a political party, or take part in political action)." ,
 									},
 									{ 
 										value : "Union", 
-										displayName : "Union (participation or association)" ,
-										moreInfo : "Zoë is a shop steward at a textiles factory. She takes two years off work to have children. When she decides to re-enter the workforce she telephones the personnel manager of her former employer. Zoë is told, \"We don’t want union types around here. There’s no room for people like you in this company\"."
+										displayName : "Union activities (I am a union member, or I participated in strikes, marches, or undertook any lawful union related activities)." ,
+									},
+									{ 
+										value : "Lawful sexual activity", 
+										displayName : "Lawful sexual activity (I taking part in or not take part in any form of sexual activity that is legal in Victoria, including legal sex work e.g. I work in a competitive scientific field, when my employer discovered I was in a relationship with a staff member from a rival company, he sacked me because he was afraid I was \"giving away trade secrets to the competition\"." ,
+									},
+									{ 
+										value : "Expunged homosexual conviction", 
+										displayName : "Expunged homosexual conviction (I was convicted of certain sexual or public morality offences prior to 1981)" ,
 									},
 									{ 
 										value : "Personal association", 
-										displayName : "Personal association with someone who could be treated unfairly because of one or more of the above reasons  " ,
-										moreInfo : "Renske is harassed and bullied at school because a newspaper prints an article that says her mother has HIV. The school fails to stop the bullying and Renske eventually leaves the school."
+										displayName : "I have personal association with someone who could be treated unfairly because of one or more of the above reasons (e.g. I applied for a role at the bank and was rejected because the bank  was uncomfortable that my brother is a trade union official)." ,
 									}
 								]}
 								name="q_7"
@@ -588,7 +584,61 @@ class ComplaintPortal extends React.Component {
 	            		</div>
             		</Element>
             		<Helper sidebar={stickySidebar} showHelp={this.showHilight} id="q_8" isShown={this.state.sideBar} isMobile={this.isMobile()}>
-            			<h4>Help copy here</h4>
+            			<h5>Please provide some examples of when they treated you this way.</h5>
+
+						<p><small>Below are some examples provided by other people, it may help you write your own examples.</small></p>
+            			<ContextSensitiveExamples 
+            				context={this.props.areaValue} 
+            				defaultChoice="Other"
+            				choices={
+            					{
+            						Other : [
+	            						"I noticed that the younger co-workers at the factory I work at were receiving training on new machinery. When I asked why I wasn't invited to the training sessions, my supervisor told me that I was too old to learn new tricks and should just stick to what I know.",
+	            						"My friends and I, are all between the ages of 19 and 21 tried to book a cruise with a travel company but we were told that our booking would not be accepted because we are not over 21 years of age and want to travel without a legal guardian.",
+	            						"I was refused entry into an advanced maths class by my highschool teacher even though I had very good grades. When I asked her, she told me it was because of where I came from and as a result, she believed I would not be able to keep up in class. "
+	            					],
+		            				"Work" : [
+		            					"I work at a take away restaurant. When I asked the ownerif I should be receiving penalty rates for working on Saturday's, he reduced my Saturday shift hours.",
+		            					"I am pregnant, I currently work for a car dealership. When I asked my manager about maternity leave entitlement, the manager later told me I was dismissed and that my position was no longer required.",
+		            					"At a job interview, I mentioned that I spend a lot of time looking after my mother who has Alzheimer's disease. The interviewer ended the interview saying, 'I'm sorry, we can't afford to employ people with heavy carer responsibilities'."
+		            				],
+									"School, university, tafe college or training institution" : [
+										"I am studying in university and I've just enrolled in a politics and international relations subject. My class is currently studying the conflict in my home country. My tutor frequently makes derogatory comments about people in my country while looking and pointing at me. This makes me feel very uncomfortable.",
+										"I am a year 11 student. I submitted an assignment for my politics class which supports making euthanasia legal and a political party that advocates for law reform in this area. My teacher became concerned about my political beliefs and told the principal, who then suspended me because of my political views.",
+										"I am hassled and bullied at school because a newspaper printed an article that says my mother has HIV. I have told the school but they failed to stop the bullying. I don't feel safe at school and now I've stopped going to class."
+									],
+									"Hospital or a medical clinic" : [
+										"I was feeling unwell, when I called the medical clinic to make an appointment to see the doctor this week, the receptionist told me they had no available appointments. When I asked my friend, who had no accent, to call for me, they told her they had appointments available all week.",
+										"I was feeling very ill and when I went to see the doctor, he wasn't interested in learning about my illness and sent me away very quickly, I felt that he did not give me the care I needed and treated me this way because of my race.",
+										"I am Aboriginal, I went to a medical clinic for a consultation which was organised by a Community Health Service. The Community Health Service was going to pay for my appointment. When the doctor saw that I was Aboriginal, he demanded payment for the appointment immediately, otherwise he would not see me. He was very intimidating and I felt that he treated his way because of my race."
+									],
+									"A store or venue" : [
+										"I am vision impaired, but the store I visited required me to produce a driver's licence as identification before they could accept my cheque to pay for goods. I am not eligible to have a license because of my vision impairment. The store refused to accept other forms of official identification that I offered.",
+										"I was with my friends waiting in line at a nightclub. When we got to the front of the line, the security guard called us racially offensive names and wouldn't let us in. He said that people from our country \"start all the fights around here\". I may have been treated unfairly because of my race, and the color of my skin.",
+										"I was at the cinema with my baby and a friend. Whist we were waiting to go into the cinema, I breastfed my baby. An usher came and told me that I could not feed my baby in the foyer because it is embarassing for other patrons.",
+										"My friends and I who are all Chinese were at a pharmacy to buy some vitamins which were limited to one per customer. The store assistant told us we could only buy one each and we respected this. The store assistant then followed us and told us we could not buy the same vitamins because we are all together and she believes we're going to send them overseas."
+									],
+									"Service Provider" : [
+										"I am a young man from an African country. While I was on the train with my friends, a group of ticket inspectors got on and asked for to see our Myki cards. They didn't ask anyone else on the train. After we got off the train, they followed us out of the station. I felt intimidated and it felt like they were targetting my friends and I because of our race.",
+										"I move around in a wheelchair and had to change from a train to a bus, due to issues on the train line. When I went out to the bus stop, there were no low floor express buses and I was told that I would need to get on a limited express bus which takes longer or wait (in peak hour) for a taxi. I was late for my new job."
+									],
+									"Accommodation" : [
+										"I am vision impaired and rely on my assistance dog to get around. The staff at the hotel refused to let my assistance dog enter, even after I explained to them about my disability. ",
+										"I applied for a rental property through a real estate agent and was informed that my application was successful via email. However, when I called the agent, he informed me that the property was no longer available. I believe it was because of my accent and where I came. When I asked my friend to call the agent to ask about the same property, the agent told my friend that the property was still available for rent. "
+									],
+									"Local government" : [
+										"My neighbour made a complaint to the local council that my dog bit him. I was invited by the local council to tell my side of the story. I went to the council and was not told how to book an interpreter for myself. I requested an interpreter and I was told by the local council that my story was simple and did not require an interpreter. I am not fluent in English and really needed an interpreter to help tell my story"
+									],
+									"Sporting activities" : [
+										"I contacted my local sports club to join the weekly basketball tournament and was put in touch with a team needing players. At my second game with the team, my girlfriend came along to cheer for me. Afterwards, the team captain told me that she doesn't want a lesbian on the team as it might upset some of the other team members. I may have been treated unfairly because of my sexual orientation.",
+										"I volunteer as a coach for a junior girls soccor team. When the paretns found out that I am male, they contacted the club and insisted that I know longer coach the team, as they believed a male should not be coaching an all-girls junior team. The club president told me that while the club was sorry to lose me, it had no choice but to dismiss me as coach. I may have been treated unfairly because of my sex."
+									],
+									"Club" : [
+										"I was set to compete in a competition being held by my Tennis Club. The competition was set down for a Saturday morning. I am Jewish and I observe the Shabbat (which is observed from Friday night until Saturday night), so I would not be able to compete. I asked the tennis club if they could move the competition to the Sunday, but they did not agree. I felt I had been indirectly discriminated against because of my religious belief. "
+									]
+	            				}
+            				}
+            			/>
             		</Helper>
 
             		<Element refCallback={this.addSidebarRefs} clickHandler={this.showHelp} helper="q_9">
@@ -905,11 +955,6 @@ class FieldFileInput extends React.Component {
         )
     }
 }
-
-
-
-
-
 
 
 /*
