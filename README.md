@@ -12,9 +12,14 @@ run `npm install` for deps
 Front end tech:
 
 React - https://reactjs.org/
+
 Redux - https://redux.js.org/
+
 Redux-form - https://redux-form.com/8.1.0/
+
 Foundation - https://foundation.zurb.com/sites/docs/
+
+
 
 Build system:
 
