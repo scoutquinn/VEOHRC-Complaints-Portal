@@ -69,15 +69,17 @@ class ComplaintPortal extends React.Component {
 	    });
 	}
 
-
-	addSidebarRefs = ( id, ref ) => {
-		this.sideBarRefs[id] = ref;
-	}
-
     // function to prevent default actions
     anchorClick = (e) => {
     	e.preventDefault()
     }
+
+
+	// Build array of refs to the sidebar objects
+
+	addSidebarRefs = ( id, ref ) => {
+		this.sideBarRefs[id] = ref;
+	}
 
     // return if offset position has changed
 
@@ -122,6 +124,7 @@ class ComplaintPortal extends React.Component {
     	this.props.sidebar();
     }
 
+    // add a resize handler to redraw the highlight box
     componentDidMount() {
 	    this.setState(
 	      { width: window.innerWidth},
@@ -130,7 +133,6 @@ class ComplaintPortal extends React.Component {
 	}
 
 	handleResize = ({ target }) => {
-//		console.log(this.isMobile());
 		this.setState({ width: target.innerWidth })
 	}
 
@@ -144,7 +146,6 @@ class ComplaintPortal extends React.Component {
 
 	
 	render() {
-//		console.log('render!');
 		return(
 			<form onSubmit={this.props.handleSubmit}>
 				<div className="helper-hilight" style={{
@@ -929,7 +930,6 @@ class ComplaintPortal extends React.Component {
 		)
 	}
 }
-
 
 
 class FieldFileInput extends React.Component {
